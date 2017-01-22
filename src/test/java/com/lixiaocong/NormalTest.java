@@ -32,15 +32,15 @@
 
 package com.lixiaocong;
 
-import com.lixiaocong.util.VideoFileHelper;
-
-import java.io.File;
-import java.util.List;
+import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class NormalTest
 {
-    @org.junit.Test
+    @Test
     public void test() throws Exception
     {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        System.out.println(bCryptPasswordEncoder.encode("123456"));
     }
 }

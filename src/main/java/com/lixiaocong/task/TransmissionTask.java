@@ -52,17 +52,15 @@ import java.util.List;
 @Component
 public class TransmissionTask {
     private Log logger = LogFactory.getLog(getClass());
-
     private TransmissionClient client;
 
-    @Value("${downloadFilePath}")
+    @Value("${nginx.root}")
     private String fileDestination;
-
     @Value("${videoType}")
     private String fileTypes;
 
     @Autowired
-    public TransmissionTask(@Value("${transmissionUsername}") String username, @Value("${transmissionPassword}") String password) {
+    public TransmissionTask(@Value("${transmission.username}") String username, @Value("${transmission.password}") String password) {
         this.client = new TransmissionClient(username, password, "http://127.0.0.1:9091/transmission/rpc");
     }
 

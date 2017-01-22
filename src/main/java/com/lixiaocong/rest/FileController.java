@@ -64,9 +64,9 @@ public class FileController {
     private String imageFolder;
     @Value("${image.server}")
     private String imageServer;
-    @Value("${downloadFilePath}")
+    @Value("${nginx.root}")
     private String downloadFilePath;
-    @Value("${serverUrl}")
+    @Value("${nginx.url}")
     private String serverUrl;
 
     @Autowired

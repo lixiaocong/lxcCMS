@@ -58,7 +58,7 @@ public class TransmissionController {
     private TransmissionClient client;
 
     @Autowired
-    public TransmissionController(@Value("${transmissionUsername}") String username, @Value("${transmissionPassword}") String password) {
+    public TransmissionController(@Value("${transmission.username}") String username, @Value("${transmission.password}") String password) {
         this.client = new TransmissionClient(username, password, "http://127.0.0.1:9091/transmission/rpc");
     }
 
