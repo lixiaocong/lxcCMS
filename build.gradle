@@ -9,11 +9,9 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'spring-boot'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -26,6 +24,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-freemarker')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-devtools")
 
     compile('org.springframework.social:spring-social-core')
     compile('org.springframework.social:spring-social-web')
@@ -35,12 +34,11 @@ dependencies {
     compile('net.gplatform:spring-social-qq:1.0.2')
 
     runtime('mysql:mysql-connector-java')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
 
     compile('commons-codec:commons-codec:1.10')
     compile('net.htmlparser.jericho:jericho-html:3.4')
     compile('com.github.lixiaocong:transmission4j:0.2')
     compile('com.github.binarywang:weixin-java-mp:2.0.0')
 
-    compile("org.springframework.boot:spring-boot-devtools")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }

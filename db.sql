@@ -7,7 +7,7 @@ CREATE TABLE user
     password VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL
 );
-CREATE UNIQUE INDEX UK_sb8bbouer5wak8vyiiy4pf2bx ON user (username);
+CREATE UNIQUE INDEX UK_user_index ON user (username);
 
 CREATE TABLE article
 (
@@ -19,9 +19,9 @@ CREATE TABLE article
     summary VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     user_id BIGINT(20) NOT NULL,
-    CONSTRAINT FKbc2qerk3l47javnl2yvn51uoi FOREIGN KEY (user_id) REFERENCES user (id)
+    CONSTRAINT FK_article_user FOREIGN KEY (user_id) REFERENCES user (id)
 );
-CREATE INDEX FKbc2qerk3l47javnl2yvn51uoi ON article (user_id);
+CREATE INDEX FK_article_user ON article (user_id);
 
 CREATE TABLE comment
 (
@@ -31,14 +31,15 @@ CREATE TABLE comment
     content LONGTEXT NOT NULL,
     article_id BIGINT(20) NOT NULL,
     user_id BIGINT(20) NOT NULL,
-    CONSTRAINT FK5yx0uphgjc6ik6hb82kkw501y FOREIGN KEY (article_id) REFERENCES article (id),
-    CONSTRAINT FK8kcum44fvpupyw6f5baccx25c FOREIGN KEY (user_id) REFERENCES user (id)
+    CONSTRAINT FK_comment_article FOREIGN KEY (article_id) REFERENCES article (id),
+    CONSTRAINT FK_comment_user FOREIGN KEY (user_id) REFERENCES user (id)
 );
-CREATE INDEX FK5yx0uphgjc6ik6hb82kkw501y ON comment (article_id);
-CREATE INDEX FK8kcum44fvpupyw6f5baccx25c ON comment (user_id);
+CREATE INDEX FK_comment_article ON comment (article_id);
+CREATE INDEX FK_comment_user ON comment (user_id);
 
 -- 创建spring social 数据库 --
-create table UserConnection (userId varchar(255) not null,
+create table UserConnection (
+  userId varchar(255) not null,
 	providerId varchar(255) not null,
 	providerUserId varchar(255),
 	rank int not null,
@@ -49,5 +50,8 @@ create table UserConnection (userId varchar(255) not null,
 	secret varchar(512),
 	refreshToken varchar(512),
 	expireTime bigint,
-	primary key (userId, providerId, providerUserId));
+	primary key (userId, providerId, providerUserId)
+);
 create unique index UserConnectionRank on UserConnection(userId, providerId, rank);
+
+INSERT INTO blog.user (create_time, last_update_time, admin, password, username) VALUES ('2017-01-01 00:00:00', '2017-01-01 00:00:00', true, '$2a$10$mQStoPcXwGUIRzJXbr87aukqNhtl5np325iof39Rdt7zIMI8oUYaG', 'admin');

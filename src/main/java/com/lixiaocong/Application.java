@@ -32,13 +32,28 @@
 
 package com.lixiaocong;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
-public class Application {
+//@EnableScheduling
+public class Application extends SpringBootServletInitializer {
+
+    private final Log log = LogFactory.getLog(getClass());
+
+    /**
+     * 打包war文件放在tomcat下运行必须实现这个借口
+     */
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(Application.class);
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
