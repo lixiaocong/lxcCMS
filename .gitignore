@@ -1,5 +1,4 @@
+*.log
 /.idea/
-/.gradle/
 /build/
-/src/main/resources/application.properties
-/src/main/resources/qqconnectconfig.properties
+*.properties
