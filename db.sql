@@ -1,3 +1,6 @@
+CREATE DATABASE lxcCMS;
+USE lxcCMS;
+
 CREATE TABLE user
 (
     id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -54,4 +57,4 @@ create table UserConnection (
 );
 create unique index UserConnectionRank on UserConnection(userId, providerId, rank);
 
-INSERT INTO blog.user (create_time, last_update_time, admin, password, username) VALUES ('2017-01-01 00:00:00', '2017-01-01 00:00:00', true, '$2a$10$mQStoPcXwGUIRzJXbr87aukqNhtl5np325iof39Rdt7zIMI8oUYaG', 'admin');
+INSERT INTO user (create_time, last_update_time, admin, password, username) VALUES ('2017-01-01 00:00:00', '2017-01-01 00:00:00', true, '$2a$10$mQStoPcXwGUIRzJXbr87aukqNhtl5np325iof39Rdt7zIMI8oUYaG', 'admin');
