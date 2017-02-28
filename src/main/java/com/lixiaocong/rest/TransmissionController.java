@@ -34,7 +34,6 @@ package com.lixiaocong.rest;
 
 import com.lixiaocong.transmission4j.TransmissionClient;
 import com.lixiaocong.transmission4j.response.torrent.accessors.Torrent;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +65,7 @@ public class TransmissionController {
     @RequestMapping(method = RequestMethod.POST)
     public Map<String, Object> post(MultipartFile file) {
         try {
-            String metainfo = Base64.encodeBase64String(file.getBytes());
+            String metainfo = Base64.getEncoder().encodeToString(file.getBytes());
             if (client.torrentAdd(metainfo)) return ResponseMsgFactory.createSuccessResponse();
             return ResponseMsgFactory.createFailedResponse("transmission内部错误");
         } catch (Exception e) {
