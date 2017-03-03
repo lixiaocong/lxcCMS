@@ -33,7 +33,7 @@
 package com.lixiaocong.rest;
 
 import com.lixiaocong.transmission4j.TransmissionClient;
-import com.lixiaocong.transmission4j.response.torrent.accessors.Torrent;
+import com.lixiaocong.transmission4j.response.Torrent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class TransmissionController {
     public Map<String, Object> post(MultipartFile file) {
         try {
             String metainfo = Base64.getEncoder().encodeToString(file.getBytes());
-            if (client.torrentAdd(metainfo)) return ResponseMsgFactory.createSuccessResponse();
+            if (client.add(metainfo)) return ResponseMsgFactory.createSuccessResponse();
             return ResponseMsgFactory.createFailedResponse("transmission内部错误");
         } catch (Exception e) {
             logger.error("transmission 配置错误");
@@ -82,7 +82,7 @@ public class TransmissionController {
             ids.add(id);
         }
         try {
-            if (client.torrentRemove(ids, true)) return ResponseMsgFactory.createSuccessResponse();
+            if (client.remove(ids)) return ResponseMsgFactory.createSuccessResponse();
             return ResponseMsgFactory.createFailedResponse("transmission内部错误");
         } catch (Exception e) {
             logger.error("transmission 配置错误");
@@ -98,7 +98,7 @@ public class TransmissionController {
             ids.add(id);
         }
         try {
-            if (client.torrentStart(ids)) return ResponseMsgFactory.createSuccessResponse();
+            if (client.start(ids)) return ResponseMsgFactory.createSuccessResponse();
             return ResponseMsgFactory.createFailedResponse("transmission内部错误");
         } catch (Exception e) {
             logger.error("transmission 配置错误");
@@ -114,7 +114,7 @@ public class TransmissionController {
             ids.add(id);
         }
         try {
-            if (client.torrentStop(ids)) return ResponseMsgFactory.createSuccessResponse();
+            if (client.stop(ids)) return ResponseMsgFactory.createSuccessResponse();
             return ResponseMsgFactory.createFailedResponse("transmission内部错误");
         } catch (Exception e) {
             logger.error("transmission 配置错误");
@@ -125,7 +125,7 @@ public class TransmissionController {
     @RequestMapping(method = RequestMethod.GET)
     public Map<String, Object> get() {
         try {
-            List<Torrent> torrents = client.torrentGet(null);
+            List<Torrent> torrents = client.getAll();
             return ResponseMsgFactory.createSuccessResponse("torrents", torrents);
         } catch (Exception e) {
             logger.error("transmission 配置错误");

@@ -36,7 +36,7 @@ import com.lixiaocong.transmission4j.TransmissionClient;
 import com.lixiaocong.transmission4j.exception.AuthException;
 import com.lixiaocong.transmission4j.exception.JsonException;
 import com.lixiaocong.transmission4j.exception.NetworkException;
-import com.lixiaocong.transmission4j.response.torrent.accessors.Torrent;
+import com.lixiaocong.transmission4j.response.Torrent;
 import com.lixiaocong.util.VideoFileHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,7 +66,7 @@ public class TransmissionTask {
 
     @Scheduled(fixedDelay = 5000)
     public void task() throws JsonException, AuthException, NetworkException {
-        List<Torrent> torrents = client.torrentGet(null);
+        List<Torrent> torrents = client.getAll();
         List<Integer> ids2remove = new LinkedList<>();
         for (Torrent torrent : torrents) {
             if (torrent.getDoneDate() > 0)//没有下载成功,结果是0
@@ -78,6 +78,6 @@ public class TransmissionTask {
                 } else logger.warn(torrent.getName() + "移动出现错误");
             }
         }
-        if (ids2remove.size() > 0 && client.torrentRemove(ids2remove, true)) logger.info("完成任务已删除");
+        if (ids2remove.size() > 0 && client.remove(ids2remove)) logger.info("完成任务已删除");
     }
 }
