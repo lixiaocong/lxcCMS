@@ -32,6 +32,7 @@
 
 package com.lixiaocong.rest;
 
+import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -67,5 +69,30 @@ public class DownloaderController {
             log.error(e);
         }
         return ResponseMsgFactory.createFailedResponse("下载服务器异常");
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public Map<String, Object> delete(String id) {
+        if(downloader.remove(id))
+        return ResponseMsgFactory.createSuccessResponse();
+        return ResponseMsgFactory.createFailedResponse("error");
+    }
+
+    @RequestMapping(value = "/start", method = RequestMethod.PUT)
+    public Map<String, Object> start(String id) {
+        downloader.start(id);
+        return ResponseMsgFactory.createSuccessResponse();
+    }
+
+    @RequestMapping(value = "/stop", method = RequestMethod.PUT)
+    public Map<String, Object> stop(String id) {
+        downloader.stop(id);
+        return ResponseMsgFactory.createSuccessResponse();
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public Map<String, Object> get() {
+        List<DownloadTask> tasks = downloader.get();
+        return ResponseMsgFactory.createSuccessResponse("tasks", tasks);
     }
 }

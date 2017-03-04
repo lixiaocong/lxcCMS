@@ -67,7 +67,7 @@
             <li><a href="#/user">用户</a></li>
             <li><a href="#/article">文章</a></li>
             <li><a href="#/comment">评论</a></li>
-            <li><a href="#/transmission">BT</a></li>
+            <li><a href="#/downloader">BT</a></li>
             <li><a href="#/file">文件</a></li>
         </ul>
         <ul class="nav navbar-nav right-nav">
@@ -105,7 +105,7 @@
 <script src="/js/user.js"></script>
 <script src="/js/article.js"></script>
 <script src="/js/comment.js"></script>
-<script src="/js/transmission.js"></script>
+<script src="/js/downloader.js"></script>
 <script src="/js/file.js"></script>
 </body>
 </html>

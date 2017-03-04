@@ -44,7 +44,6 @@ public class Aria2cDownloader implements IDownloader {
 
     public Aria2cDownloader(String token) {
         this.token = token;
-        log.info("created with token "+token);
     }
 
     @Override

@@ -41,7 +41,7 @@ angular.module('Admin', [
     'user',
     'article',
     'comment',
-    'transmission',
+    'downloader',
     'file'
 ]).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/dashboard', {
@@ -59,9 +59,9 @@ angular.module('Admin', [
     }).when('/comment', {
         templateUrl: '/html/comment.html',
         controller: 'CommentCtrl'
-    }).when('/transmission', {
-        templateUrl: '/html/transmission.html',
-        controller: 'TransmissionCtrl'
+    }).when('/downloader', {
+        templateUrl: '/html/downloader.html',
+        controller: 'DownloaderCtrl'
     }).when('/file', {
         templateUrl: '/html/file.html',
         controller: 'FileCtrl'

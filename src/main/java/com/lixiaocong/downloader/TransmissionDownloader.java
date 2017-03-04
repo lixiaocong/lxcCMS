@@ -49,7 +49,6 @@ public class TransmissionDownloader implements IDownloader {
 
     public TransmissionDownloader(String username,String password) {
         client = new TransmissionClient(username, password, "http://127.0.0.1:9091/transmission/rpc");
-        log.info("created with username "+username);
     }
 
     @Override
@@ -162,7 +161,7 @@ public class TransmissionDownloader implements IDownloader {
         List<Integer> list = new LinkedList<>();
         list.add(Integer.parseInt(id));
         try {
-            return client.start(list);
+            return client.stop(list);
         } catch (AuthException | NetworkException e) {
             e.printStackTrace();
         }

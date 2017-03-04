@@ -32,7 +32,7 @@
 
 'use strict';
 
-angular.module('transmission', ['ngRoute'])
+angular.module('downloader', ['ngRoute'])
     .directive('fileModel', ['$parse', function ($parse) {
         return {
             restrict: 'A',
@@ -47,32 +47,10 @@ angular.module('transmission', ['ngRoute'])
                 });
             }
         };
-    }]).filter("transmissionStatus", function () {
-    return function (input) {
-        switch (input) {
-            case 0:
-                return "停止";
-            case 1:
-                return "等待检查文件";
-            case 2:
-                return "检查文件";
-            case 3:
-                return "等待下载";
-            case 4:
-                return "下载中";
-            case 5:
-                return "等待做种";
-            case 6:
-                return "做种中";
-            case 7:
-                return "找不到可用节点";
-            default:
-                return "未知状态!!!";
-        }
-    }
-}).filter("bytes", function () {
+    }]).filter("bytes", function () {
     return function (bytes, precision) {
-        if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
+        if(bytes==0)
+            return '-';
         if (typeof precision === 'undefined') precision = 1;
         var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
             number = Math.floor(Math.log(bytes) / Math.log(1024));
@@ -92,7 +70,7 @@ angular.module('transmission', ['ngRoute'])
         });
     }
 }])
-    .controller('TransmissionCtrl', ['$scope', '$uibModal', '$http', '$interval', function ($scope, $uibModal, $http, $interval) {
+    .controller('DownloaderCtrl', ['$scope', '$uibModal', '$http', '$interval', function ($scope, $uibModal, $http, $interval) {
         $scope.onAddSuccess = function (result) {
             if (!result)
                 $scope.addAlert({type: 'success', msg: '添加失败'});
@@ -113,9 +91,9 @@ angular.module('transmission', ['ngRoute'])
         };
 
         $scope.start = function () {
-            $scope.torrents.forEach(function (torrent) {
-                if (torrent.isChecked) {
-                    $http.put('/transmission/start?id=' + torrent.id, null).success(function (data) {
+            $scope.tasks.forEach(function (task) {
+                if (task.isChecked) {
+                    $http.put('/downloader/start?id=' + task.id, null).success(function (data) {
                         if (data.result != 'success')
                             $scope.addAlert({type: 'success', msg: '启动失败'});
                     })
@@ -124,9 +102,9 @@ angular.module('transmission', ['ngRoute'])
         };
 
         $scope.stop = function () {
-            $scope.torrents.forEach(function (torrent) {
-                if (torrent.isChecked) {
-                    $http.put('/transmission/stop?id=' + torrent.id, null).success(function (data) {
+            $scope.tasks.forEach(function (task) {
+                if (task.isChecked) {
+                    $http.put('/downloader/stop?id=' + task.id, null).success(function (data) {
                         if (data.result != 'success')
                             $scope.addAlert({type: 'success', msg: '暂停失败'});
                     })
@@ -135,9 +113,9 @@ angular.module('transmission', ['ngRoute'])
         };
 
         $scope.delete = function () {
-            $scope.torrents.forEach(function (torrent) {
-                if (torrent.isChecked) {
-                    $http.delete('/transmission?id=' + torrent.id).success(function (data) {
+            $scope.tasks.forEach(function (task) {
+                if (task.isChecked) {
+                    $http.delete('/downloader?id=' + task.id).success(function (data) {
                         if (data.result != 'success')
                             $scope.addAlert({type: 'success', msg: '删除失败'});
                     })
@@ -150,39 +128,40 @@ angular.module('transmission', ['ngRoute'])
         };
 
         $scope.getTorrents = function () {
-            $http.get('/transmission').success(function (data) {
+            $http.get('/downloader').success(function (data) {
                 if (data.result == 'success') {
-                    for (var i = 0; i < $scope.torrents.length; i++) {
+                    for (var i = 0; i < $scope.tasks.length; i++) {
                         var find = false;
-                        var oldTorrent = $scope.torrents[i];
-                        for (var j = 0; j < data.torrents.length; j++) {
-                            var newTorrent = data.torrents[j];
+                        var oldTorrent = $scope.tasks[i];
+                        for (var j = 0; j < data.tasks.length; j++) {
+                            var newTorrent = data.tasks[j];
                             if (oldTorrent.id == newTorrent.id) {
                                 //update the existing item and mark the data,break loop
+                                oldTorrent.downloadType= newTorrent.downloadType;
                                 oldTorrent.name = newTorrent.name;
-                                oldTorrent.percentDone = newTorrent.percentDone;
-                                oldTorrent.status = newTorrent.status;
-                                oldTorrent.totalSize = newTorrent.totalSize;
-                                oldTorrent.downloadedEver = newTorrent.downloadedEver;
-                                oldTorrent.rateDownload = newTorrent.rateDownload;
-                                data.torrents.splice(j--, 1);
+                                oldTorrent.totalLength= newTorrent.totalLength;
+                                oldTorrent.downloadedLength= newTorrent.downloadedLength;
+                                oldTorrent.speed= newTorrent.speed;
+                                oldTorrent.status= newTorrent.status;
+                                oldTorrent.finished= newTorrent.finished;
+                                data.tasks.splice(j--, 1);
                                 find = true;
                                 break;
                             }
                         }
                         if (!find)
-                            $scope.torrents.splice(i--, 1);//delete the deleted item
+                            $scope.tasks.splice(i--, 1);//delete the deleted item
                     }
                     //add unmarked items
-                    data.torrents.forEach(function (newTorrent) {
+                    data.tasks.forEach(function (newTorrent) {
                         newTorrent.isChecked = false;
-                        $scope.torrents.push(newTorrent);
+                        $scope.tasks.push(newTorrent);
                     })
                 }
             });
         };
 
-        $scope.torrents = [];
+        $scope.tasks = [];
         $scope.getTorrents();
 
         var timer = $interval($scope.getTorrents, 2000);
@@ -194,7 +173,7 @@ angular.module('transmission', ['ngRoute'])
     }])
     .controller('chooseFileCtrl', function ($scope, fileUpload, $uibModalInstance, callback) {
         $scope.ok = function () {
-            fileUpload.uploadFileToUrl($scope.file, '/transmission', callback);
+            fileUpload.uploadFileToUrl($scope.file, '/downloader', callback);
             $uibModalInstance.close();
         };
 

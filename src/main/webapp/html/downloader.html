@@ -69,19 +69,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="torrent in torrents" ng-click="onCheck(torrent)">
+        <tr ng-repeat="task in tasks" ng-click="onCheck(task)">
             <td>
                 <span class="glyphicon"
-                      ng-class="{true:'glyphicon-check',false:'glyphicon-unchecked'}[torrent.isChecked]"></span>
+                      ng-class="{true:'glyphicon-check',false:'glyphicon-unchecked'}[task.isChecked]"></span>
             </td>
-            <td>{{torrent.name}}</td>
+            <td>{{task.name}}</td>
             <td>
-                <uib-progressbar class="progress-striped active" max="1" value="torrent.percentDone"
+                <uib-progressbar class="progress-striped active" max="1" value="task.downloadedLength/task.totalLength"
                                  type="info"></uib-progressbar>
             </td>
-            <td>{{torrent.rateDownload|bytes}}/s</td>
-            <td>{{torrent.downloadedEver|bytes}}/{{torrent.totalSize|bytes}}</td>
-            <td>{{torrent.status|transmissionStatus}}</td>
+            <td>{{task.speed|bytes}}/s</td>
+            <td>{{task.downloadedLength|bytes}}/{{task.totalLength|bytes}}</td>
+            <td>{{task.status}}</td>
         </tr>
         </tbody>
     </table>
