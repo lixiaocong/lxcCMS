@@ -33,6 +33,7 @@
 package com.lixiaocong.rest;
 
 import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,26 +73,26 @@ public class DownloaderController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public Map<String, Object> delete(String id) {
+    public Map<String, Object> delete(String id) throws DownloaderException {
         if(downloader.remove(id))
         return ResponseMsgFactory.createSuccessResponse();
         return ResponseMsgFactory.createFailedResponse("error");
     }
 
     @RequestMapping(value = "/start", method = RequestMethod.PUT)
-    public Map<String, Object> start(String id) {
+    public Map<String, Object> start(String id) throws DownloaderException {
         downloader.start(id);
         return ResponseMsgFactory.createSuccessResponse();
     }
 
     @RequestMapping(value = "/stop", method = RequestMethod.PUT)
-    public Map<String, Object> stop(String id) {
+    public Map<String, Object> stop(String id) throws DownloaderException {
         downloader.stop(id);
         return ResponseMsgFactory.createSuccessResponse();
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Map<String, Object> get() {
+    public Map<String, Object> get() throws DownloaderException {
         List<DownloadTask> tasks = downloader.get();
         return ResponseMsgFactory.createSuccessResponse("tasks", tasks);
     }
