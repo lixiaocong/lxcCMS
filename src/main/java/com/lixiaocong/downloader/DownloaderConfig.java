@@ -32,6 +32,7 @@
 
 package com.lixiaocong.downloader;
 
+import com.lixiaocong.downloader.Aria2c.Aria2cDownloader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

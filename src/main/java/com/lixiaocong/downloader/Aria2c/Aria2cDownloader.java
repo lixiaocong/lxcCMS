@@ -30,8 +30,10 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.downloader.Aria2c;
 
+import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
