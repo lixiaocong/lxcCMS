@@ -36,4 +36,7 @@ package com.lixiaocong.downloader.Aria2c;
 public class Aria2cRequestMethod {
     public static final String ADD_TORRENT = "aria2.addTorrent";
     public static final String ADD_URI = "aria2.addUri";
+    public static final String TELL_ACTIVE = "aria2.tellActive";
+    public static final String TELL_WAITING = "aria2.tellWaiting";
+    public static final String TELL_STOPPED= "aria2.tellStopped";
 }

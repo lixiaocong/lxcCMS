@@ -50,4 +50,24 @@ public class Aria2cReuqestFactory {
         params.add(torrentBase64Content);
         return request;
     }
+
+    public static Aria2cRequest getTellActiveReuqest(String token) {
+        return new Aria2cRequest(token, Aria2cRequestMethod.TELL_ACTIVE);
+    }
+
+    public static Aria2cRequest getTellWaitingRequest(String token) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_WAITING);
+        List<Object> params = request.getParams();
+        params.add(0);
+        params.add(1000);
+        return request;
+    }
+
+    public static Aria2cRequest getTellStoppedRequest(String token) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_STOPPED);
+        List<Object> params = request.getParams();
+        params.add(0);
+        params.add(1000);
+        return request;
+    }
 }

@@ -110,4 +110,17 @@ public class DownloadTask {
         this.finished = finished;
     }
 
+    @Override
+    public String toString() {
+        return "DownloadTask{" +
+                "id='" + id + '\'' +
+                ", downloadType='" + downloadType + '\'' +
+                ", name='" + name + '\'' +
+                ", totalLength=" + totalLength +
+                ", downloadedLength=" + downloadedLength +
+                ", speed=" + speed +
+                ", status='" + status + '\'' +
+                ", finished=" + finished +
+                '}';
+    }
 }
