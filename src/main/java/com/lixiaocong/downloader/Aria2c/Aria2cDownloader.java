@@ -52,6 +52,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -161,18 +162,31 @@ public class Aria2cDownloader implements IDownloader {
     }
 
     @Override
-    public boolean stop(String[] ids) {
-        return false;
+    public boolean stop(String[] ids) throws DownloaderException {
+        boolean success = true;
+        for (String id : ids) {
+            if (!stop(id))
+                success = false;
+        }
+        return success;
     }
 
     @Override
-    public boolean stop(String id) {
-        return false;
+    public boolean stop(String id) throws DownloaderException {
+        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getPauseReuqest(token, id);
+        String resultJson = post(pauseReuqest);
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
+        String result = jsonObject.get("result").getAsString();
+        return result != null;
     }
 
     @Override
-    public boolean stop() {
-        return false;
+    public boolean stop() throws DownloaderException {
+        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getPauseAllReuqest(token);
+        String resultJson = post(pauseReuqest);
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
+        String result = jsonObject.get("result").getAsString();
+        return result != null;
     }
 
     @Override

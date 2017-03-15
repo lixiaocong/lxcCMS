@@ -70,4 +70,14 @@ public class Aria2cReuqestFactory {
         params.add(1000);
         return request;
     }
+
+    public static Aria2cRequest getPauseReuqest(String token, String gid) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.PAUSE);
+        request.getParams().add(gid);
+        return request;
+    }
+
+    public static Aria2cRequest getPauseAllReuqest(String token) {
+        return new Aria2cRequest(token, Aria2cRequestMethod.PAUSE_ALL);
+    }
 }

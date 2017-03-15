@@ -102,17 +102,18 @@ public class Aria2cDownloaderTest {
 
     @Test
     public void stop() throws Exception {
-
+        assert(downloader.stop("1f54f630d8f5a4e8"));
     }
 
     @Test
     public void stop1() throws Exception {
-
+        String[] ids = {"1f54f630d8f5a4e8"};
+        assert(downloader.stop(ids));
     }
 
     @Test
     public void stop2() throws Exception {
-
+        assert(downloader.stop());
     }
 
     @Test

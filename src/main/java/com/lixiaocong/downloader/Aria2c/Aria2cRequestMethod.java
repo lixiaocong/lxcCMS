@@ -39,4 +39,6 @@ public class Aria2cRequestMethod {
     public static final String TELL_ACTIVE = "aria2.tellActive";
     public static final String TELL_WAITING = "aria2.tellWaiting";
     public static final String TELL_STOPPED= "aria2.tellStopped";
+    public static final String PAUSE = "aria2.pause";
+    public static final String PAUSE_ALL = "aria2.pauseAll";
 }
