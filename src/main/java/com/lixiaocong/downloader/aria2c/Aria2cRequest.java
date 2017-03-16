@@ -42,14 +42,13 @@ public class Aria2cRequest {
 
     private String id;
     private String method;
-
     private List<Object> params;
 
     Aria2cRequest(String token, String method) {
         this.id = UUID.randomUUID().toString();
         this.method = method;
         this.params = new LinkedList<>() ;
-        params.add("token:"+token);
+        this.params.add("token:"+token);
         jsonrpc = "2.0";
     }
 
@@ -67,5 +66,17 @@ public class Aria2cRequest {
 
     List<Object> getParams() {
         return params;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setParams(List<Object> params) {
+        this.params = params;
     }
 }

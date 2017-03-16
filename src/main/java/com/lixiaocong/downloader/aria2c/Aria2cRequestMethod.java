@@ -41,4 +41,6 @@ class Aria2cRequestMethod {
     static final String TELL_STOPPED= "aria2.tellStopped";
     static final String PAUSE = "aria2.pause";
     static final String PAUSE_ALL = "aria2.pauseAll";
+    static final String UNPAUSE = "aria2.unpause";
+    static final String UNPAUSE_ALL = "aria2.unpauseAll";
 }

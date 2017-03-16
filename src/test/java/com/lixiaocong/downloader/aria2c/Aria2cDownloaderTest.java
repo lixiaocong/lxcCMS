@@ -46,6 +46,7 @@ import java.util.List;
 public class Aria2cDownloaderTest {
     private Log log = LogFactory.getLog(getClass().getName());
     private Aria2cDownloader downloader = new Aria2cDownloader("123456");
+    private final String gid = "2980925a101e212a";
 
     @Test
     public void addByMetainfo() throws Exception {
@@ -66,7 +67,6 @@ public class Aria2cDownloaderTest {
 
     @Test
     public void addByUrl() throws Exception {
-
         downloader.addByUrl("http://www.baidu.com");
     }
 
@@ -87,27 +87,28 @@ public class Aria2cDownloaderTest {
 
     @Test
     public void start() throws Exception {
-
+        assert(downloader.start(gid));
     }
 
     @Test
     public void start1() throws Exception {
-
+        String[] ids = {gid};
+        assert(downloader.start(ids));
     }
 
     @Test
     public void start2() throws Exception {
-
+        assert(downloader.start());
     }
 
     @Test
     public void stop() throws Exception {
-        assert(downloader.stop("1f54f630d8f5a4e8"));
+        assert(downloader.stop(gid));
     }
 
     @Test
     public void stop1() throws Exception {
-        String[] ids = {"1f54f630d8f5a4e8"};
+        String[] ids = {gid};
         assert(downloader.stop(ids));
     }
 
@@ -122,4 +123,18 @@ public class Aria2cDownloaderTest {
         downloadTasks.forEach(System.out::println);
     }
 
+    @Test
+    public void test() throws Exception {
+        start();
+        Thread.sleep(1000);
+        stop();
+        Thread.sleep(1000);
+        start1();
+        Thread.sleep(1000);
+        stop1();
+        Thread.sleep(1000);
+        start2();
+        Thread.sleep(1000);
+        stop2();
+    }
 }

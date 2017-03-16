@@ -32,14 +32,13 @@
 
 package com.lixiaocong.downloader.aria2c;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
-import com.lixiaocong.transmission4j.exception.JsonException;
-import com.lixiaocong.transmission4j.utils.JsonUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
@@ -72,14 +71,8 @@ public class Aria2cDownloader implements IDownloader {
     }
 
     private String post(Aria2cRequest request) throws DownloaderException {
-        String json;
-        try {
-            json = JsonUtil.getJson(request);
-        } catch (JsonException e) {
-            log.error(e);
-            throw new DownloaderException("Gen Json Error");
-        }
-
+        Gson gson = new Gson();
+        String json = gson.toJson(request);
         StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         HttpPost httpPost = new HttpPost(uri);
         httpPost.setEntity(entity);
@@ -103,6 +96,11 @@ public class Aria2cDownloader implements IDownloader {
             }
         } else {
             log.error("post to " + httpPost.getURI() + " error:" + statusCode);
+            try {
+                log.error(EntityUtils.toString(response.getEntity()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             throw new DownloaderException("network error with error code " + statusCode);
         }
     }
@@ -146,18 +144,31 @@ public class Aria2cDownloader implements IDownloader {
     }
 
     @Override
-    public boolean start(String[] ids) {
-        return false;
+    public boolean start(String[] ids) throws DownloaderException {
+        boolean success = true;
+        for (String id : ids) {
+            if (!start(id))
+                success = false;
+        }
+        return success;
     }
 
     @Override
-    public boolean start(String id) {
-        return false;
+    public boolean start(String id) throws DownloaderException {
+        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getUnpauseReuqest(token, id);
+        String resultJson = post(pauseReuqest);
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
+        String result = jsonObject.get("result").getAsString();
+        return result != null;
     }
 
     @Override
-    public boolean start() {
-        return false;
+    public boolean start() throws DownloaderException {
+        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getUnpauseAllReuqest(token);
+        String resultJson = post(pauseReuqest);
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
+        String result = jsonObject.get("result").getAsString();
+        return result != null;
     }
 
     @Override

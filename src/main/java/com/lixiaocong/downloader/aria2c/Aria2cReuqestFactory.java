@@ -80,4 +80,14 @@ class Aria2cReuqestFactory {
     static Aria2cRequest getPauseAllReuqest(String token) {
         return new Aria2cRequest(token, Aria2cRequestMethod.PAUSE_ALL);
     }
+
+    static Aria2cRequest getUnpauseReuqest(String token, String gid) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.UNPAUSE);
+        request.getParams().add(gid);
+        return request;
+    }
+
+    static Aria2cRequest getUnpauseAllReuqest(String token) {
+        return new Aria2cRequest(token, Aria2cRequestMethod.UNPAUSE_ALL);
+    }
 }
