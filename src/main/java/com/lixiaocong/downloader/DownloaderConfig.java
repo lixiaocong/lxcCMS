@@ -32,7 +32,9 @@
 
 package com.lixiaocong.downloader;
 
-import com.lixiaocong.downloader.Aria2c.Aria2cDownloader;
+import com.lixiaocong.downloader.aria2c.Aria2cDownloader;
+import com.lixiaocong.downloader.transmission.TransmissionDownloaderAdapter;
+import com.lixiaocong.transmission4j.TransmissionClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +53,7 @@ public class DownloaderConfig {
     public IDownloader getDownloader(){
         if(token!=null)
             return new Aria2cDownloader(token);
-        return new TransmissionDownloader(username, password);
+        TransmissionClient client = new TransmissionClient(username, password, "http://127.0.0.1:9091/transmission/rpc");
+        return new TransmissionDownloaderAdapter(client);
     }
 }

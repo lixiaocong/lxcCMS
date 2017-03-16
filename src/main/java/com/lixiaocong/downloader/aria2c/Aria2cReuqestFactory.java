@@ -31,31 +31,31 @@
  */
 
 
-package com.lixiaocong.downloader.Aria2c;
+package com.lixiaocong.downloader.aria2c;
 
 import java.util.List;
 
-public class Aria2cReuqestFactory {
+class Aria2cReuqestFactory {
 
-    public static Aria2cRequest getAddUriRequest(String token, String uri) {
+    static Aria2cRequest getAddUriRequest(String token, String uri) {
         Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.ADD_URI);
         List<Object> params = request.getParams();
         params.add(new String[]{uri});
         return request;
     }
 
-    public static Aria2cRequest getAddTorrentRequest(String token, String torrentBase64Content){
+    static Aria2cRequest getAddTorrentRequest(String token, String torrentBase64Content){
         Aria2cRequest request = new Aria2cRequest(token,Aria2cRequestMethod.ADD_TORRENT);
         List<Object> params = request.getParams();
         params.add(torrentBase64Content);
         return request;
     }
 
-    public static Aria2cRequest getTellActiveReuqest(String token) {
+    static Aria2cRequest getTellActiveReuqest(String token) {
         return new Aria2cRequest(token, Aria2cRequestMethod.TELL_ACTIVE);
     }
 
-    public static Aria2cRequest getTellWaitingRequest(String token) {
+    static Aria2cRequest getTellWaitingRequest(String token) {
         Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_WAITING);
         List<Object> params = request.getParams();
         params.add(0);
@@ -63,7 +63,7 @@ public class Aria2cReuqestFactory {
         return request;
     }
 
-    public static Aria2cRequest getTellStoppedRequest(String token) {
+    static Aria2cRequest getTellStoppedRequest(String token) {
         Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_STOPPED);
         List<Object> params = request.getParams();
         params.add(0);
@@ -71,13 +71,13 @@ public class Aria2cReuqestFactory {
         return request;
     }
 
-    public static Aria2cRequest getPauseReuqest(String token, String gid) {
+    static Aria2cRequest getPauseReuqest(String token, String gid) {
         Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.PAUSE);
         request.getParams().add(gid);
         return request;
     }
 
-    public static Aria2cRequest getPauseAllReuqest(String token) {
+    static Aria2cRequest getPauseAllReuqest(String token) {
         return new Aria2cRequest(token, Aria2cRequestMethod.PAUSE_ALL);
     }
 }

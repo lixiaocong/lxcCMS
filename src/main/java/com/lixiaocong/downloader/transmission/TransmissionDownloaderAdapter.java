@@ -30,8 +30,10 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.downloader.transmission;
 
+import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.IDownloader;
 import com.lixiaocong.transmission4j.TransmissionClient;
 import com.lixiaocong.transmission4j.exception.AuthException;
 import com.lixiaocong.transmission4j.exception.NetworkException;
@@ -43,12 +45,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TransmissionDownloader implements IDownloader {
+public class TransmissionDownloaderAdapter implements IDownloader {
     private Log log = LogFactory.getLog(getClass().getName());
     private TransmissionClient client;
 
-    public TransmissionDownloader(String username,String password) {
-        client = new TransmissionClient(username, password, "http://127.0.0.1:9091/transmission/rpc");
+    public TransmissionDownloaderAdapter(TransmissionClient client) {
+        this.client = client;
     }
 
     @Override

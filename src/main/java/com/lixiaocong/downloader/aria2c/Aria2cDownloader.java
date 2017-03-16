@@ -30,10 +30,9 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader.Aria2c;
+package com.lixiaocong.downloader.aria2c;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.lixiaocong.downloader.DownloadTask;
@@ -52,7 +51,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,8 +58,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 public class Aria2cDownloader implements IDownloader {
     private final Log log = LogFactory.getLog(getClass().getName());
-    private final String uri = "http://127.0.0.1:6800/jsonrpc";
-    private String token;
+    private final String uri;
+    private final String token;
 
     private HttpClient httpClient;
     private JsonParser jsonParser;
@@ -70,6 +68,7 @@ public class Aria2cDownloader implements IDownloader {
         this.token = token;
         this.httpClient = HttpClients.custom().build();
         this.jsonParser = new JsonParser();
+        this.uri = "http://127.0.0.1:6800/jsonrpc";
     }
 
     private String post(Aria2cRequest request) throws DownloaderException {

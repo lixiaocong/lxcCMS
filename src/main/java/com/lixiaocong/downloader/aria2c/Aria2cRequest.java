@@ -31,26 +31,26 @@
  */
 
 
-package com.lixiaocong.downloader.Aria2c;
+package com.lixiaocong.downloader.aria2c;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 public class Aria2cRequest {
-    private final String jsonrpc = "2.0";
+    private final String jsonrpc;
 
     private String id;
     private String method;
 
     private List<Object> params;
 
-    public Aria2cRequest(String token, String method) {
+    Aria2cRequest(String token, String method) {
         this.id = UUID.randomUUID().toString();
         this.method = method;
         this.params = new LinkedList<>() ;
         params.add("token:"+token);
+        jsonrpc = "2.0";
     }
 
     public String getJsonrpc() {
@@ -65,7 +65,7 @@ public class Aria2cRequest {
         return method;
     }
 
-    public List<Object> getParams() {
+    List<Object> getParams() {
         return params;
     }
 }

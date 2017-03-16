@@ -31,14 +31,14 @@
  */
 
 
-package com.lixiaocong.downloader.Aria2c;
+package com.lixiaocong.downloader.aria2c;
 
-public class Aria2cRequestMethod {
-    public static final String ADD_TORRENT = "aria2.addTorrent";
-    public static final String ADD_URI = "aria2.addUri";
-    public static final String TELL_ACTIVE = "aria2.tellActive";
-    public static final String TELL_WAITING = "aria2.tellWaiting";
-    public static final String TELL_STOPPED= "aria2.tellStopped";
-    public static final String PAUSE = "aria2.pause";
-    public static final String PAUSE_ALL = "aria2.pauseAll";
+class Aria2cRequestMethod {
+    static final String ADD_TORRENT = "aria2.addTorrent";
+    static final String ADD_URI = "aria2.addUri";
+    static final String TELL_ACTIVE = "aria2.tellActive";
+    static final String TELL_WAITING = "aria2.tellWaiting";
+    static final String TELL_STOPPED= "aria2.tellStopped";
+    static final String PAUSE = "aria2.pause";
+    static final String PAUSE_ALL = "aria2.pauseAll";
 }
