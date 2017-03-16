@@ -91,7 +91,7 @@ public class Aria2cDownloader implements IDownloader {
             } catch (IOException e) {
                 log.error(e);
                 throw new DownloaderException("network error when read post response");
-            }finally {
+            } finally {
                 httpPost.releaseConnection();
             }
         } else {
@@ -129,18 +129,40 @@ public class Aria2cDownloader implements IDownloader {
     }
 
     @Override
-    public boolean remove(String[] ids) {
-        return false;
+    public boolean remove(String[] ids) throws DownloaderException {
+        boolean success = true;
+        for (String id : ids) {
+            if (!remove(id))
+                success = false;
+        }
+        return success;
     }
 
     @Override
-    public boolean remove(String id) {
-        return false;
+    public boolean remove(String id) throws DownloaderException {
+        Aria2cRequest removeReuqest = Aria2cReuqestFactory.getRemoveReuqest(token, id);
+        String resultJson = post(removeReuqest);
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
+        String result = jsonObject.get("result").getAsString();
+        purge();
+        return result != null;
     }
 
     @Override
-    public boolean remove() {
-        return false;
+    public boolean remove() throws DownloaderException {
+        boolean success = true;
+        List<DownloadTask> downloadTasks = get();
+
+        for (DownloadTask downloadTask : downloadTasks) {
+            try {
+                remove(downloadTask.getId());
+            } catch (DownloaderException e) {
+                log.error(e);
+                success = false;
+            }
+        }
+        purge();
+        return success;
     }
 
     @Override
@@ -243,5 +265,14 @@ public class Aria2cDownloader implements IDownloader {
             ret.add(task);
         });
         return ret;
+    }
+
+    private void purge() {
+        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getPargeRquest(token);
+        try {
+            post(pauseReuqest);
+        } catch (DownloaderException e) {
+            log.error(e);
+        }
     }
 }

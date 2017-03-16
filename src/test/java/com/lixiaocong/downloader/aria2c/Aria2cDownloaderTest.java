@@ -50,7 +50,7 @@ public class Aria2cDownloaderTest {
 
     @Test
     public void addByMetainfo() throws Exception {
-    File file = new File("src/test/resources/test.torrent");
+        File file = new File("src/test/resources/test.torrent");
         InputStream in = new FileInputStream(file);
         int len = in.available();
         byte[] data = new byte[len];
@@ -72,49 +72,50 @@ public class Aria2cDownloaderTest {
 
     @Test
     public void remove() throws Exception {
-
+        assert (downloader.remove(gid));
     }
 
     @Test
     public void remove1() throws Exception {
-
+        String[] ids = {gid};
+        assert (downloader.remove(ids));
     }
 
     @Test
     public void remove2() throws Exception {
-
+        assert (downloader.remove());
     }
 
     @Test
     public void start() throws Exception {
-        assert(downloader.start(gid));
+        assert (downloader.start(gid));
     }
 
     @Test
     public void start1() throws Exception {
         String[] ids = {gid};
-        assert(downloader.start(ids));
+        assert (downloader.start(ids));
     }
 
     @Test
     public void start2() throws Exception {
-        assert(downloader.start());
+        assert (downloader.start());
     }
 
     @Test
     public void stop() throws Exception {
-        assert(downloader.stop(gid));
+        assert (downloader.stop(gid));
     }
 
     @Test
     public void stop1() throws Exception {
         String[] ids = {gid};
-        assert(downloader.stop(ids));
+        assert (downloader.stop(ids));
     }
 
     @Test
     public void stop2() throws Exception {
-        assert(downloader.stop());
+        assert (downloader.stop());
     }
 
     @Test

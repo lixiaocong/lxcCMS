@@ -90,4 +90,14 @@ class Aria2cReuqestFactory {
     static Aria2cRequest getUnpauseAllReuqest(String token) {
         return new Aria2cRequest(token, Aria2cRequestMethod.UNPAUSE_ALL);
     }
+
+    static Aria2cRequest getRemoveReuqest(String token, String gid) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.REMOVE);
+        request.getParams().add(gid);
+        return request;
+    }
+
+    static Aria2cRequest getPargeRquest(String token) {
+        return new Aria2cRequest(token, Aria2cRequestMethod.PURGE_DOWNLOAD_RESULT);
+    }
 }
