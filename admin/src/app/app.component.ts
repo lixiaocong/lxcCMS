@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Admin Lixiaocong';
+  title: string = 'Admin Lixiaocong';
+  
+  sideBarMode: string = 'over';
+  isSideBarOpen: boolean = false;
+
+  sideBarClicked(){
+      this.isSideBarOpen = !this.isSideBarOpen;
+  }
 }

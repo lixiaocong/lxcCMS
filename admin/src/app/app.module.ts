@@ -10,6 +10,7 @@ import { ArticleComponent } from './article/article.component';
 import { CommentComponent } from './comment/comment.component';
 import { DownloaderComponent } from './downloader/downloader.component';
 import { FileComponent } from './file/file.component';
+import { MaterialModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -18,13 +19,14 @@ import { FileComponent } from './file/file.component';
     ArticleComponent,
     CommentComponent,
     DownloaderComponent,
-    FileComponent
+    FileComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     routes,
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
