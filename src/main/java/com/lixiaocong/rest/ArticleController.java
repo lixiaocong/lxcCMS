@@ -58,7 +58,7 @@ import java.util.Map;
 public class ArticleController {
     private final IArticleService articleService;
     private final IUserService userService;
-    private Log logger = LogFactory.getLog(getClass());
+    private Log log= LogFactory.getLog(getClass());
 
     @Autowired
     public ArticleController(IArticleService articleService, IUserService userService) {

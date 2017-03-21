@@ -30,30 +30,10 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.security;
+package com.lixiaocong.socket;
 
-import com.lixiaocong.service.IArticleService;
-import com.lixiaocong.service.ICommentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-@Configuration
-@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
-    private final IArticleService articleService;
-    private final ICommentService commentService;
+public class SocketHandler extends TextWebSocketHandler{
 
-    @Autowired
-    public MethodSecurityConfig(IArticleService articleService, ICommentService commentService) {
-        this.articleService = articleService;
-        this.commentService = commentService;
-    }
-
-    @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return new SecurityExpressionHandler(articleService, commentService);
-    }
 }

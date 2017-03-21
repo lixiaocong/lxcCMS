@@ -53,8 +53,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/weixin")
 public class WeixinController {
-    private Log logger = LogFactory.getLog(getClass());
-    private WxMpService wxService;
+    private Log log = LogFactory.getLog(getClass());
     private IArticleService articleService;
 
     @Autowired
@@ -67,8 +66,8 @@ public class WeixinController {
         config.setToken(token);
         config.setAesKey(key);
 
-        this.wxService = new WxMpServiceImpl();
-        this.wxService.setWxMpConfigStorage(config);
+        WxMpService wxService = new WxMpServiceImpl();
+        wxService.setWxMpConfigStorage(config);
     }
 
     @RequestMapping(method = RequestMethod.GET)

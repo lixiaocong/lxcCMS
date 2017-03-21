@@ -27,6 +27,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-freemarker')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-websocket')
     compile("org.springframework.boot:spring-boot-devtools")
 
     compile('org.springframework.social:spring-social-core')

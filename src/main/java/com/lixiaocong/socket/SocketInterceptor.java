@@ -30,30 +30,24 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.security;
+package com.lixiaocong.socket;
 
-import com.lixiaocong.service.IArticleService;
-import com.lixiaocong.service.ICommentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.server.HandshakeInterceptor;
 
-@Configuration
-@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
-    private final IArticleService articleService;
-    private final ICommentService commentService;
+import java.util.Map;
 
-    @Autowired
-    public MethodSecurityConfig(IArticleService articleService, ICommentService commentService) {
-        this.articleService = articleService;
-        this.commentService = commentService;
+public class SocketInterceptor implements HandshakeInterceptor{
+
+    @Override
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        return false;
     }
 
     @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return new SecurityExpressionHandler(articleService, commentService);
+    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+
     }
 }

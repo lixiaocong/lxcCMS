@@ -29,31 +29,40 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.lixiaocong.socket;
 
-package com.lixiaocong.security;
-
-import com.lixiaocong.service.IArticleService;
-import com.lixiaocong.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 @Configuration
-@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
-    private final IArticleService articleService;
-    private final ICommentService commentService;
+@EnableWebSocket
+public class SocketConfig implements WebSocketConfigurer {
+
+    private final SocketHandler handler;
+    private final SocketInterceptor interceptor;
 
     @Autowired
-    public MethodSecurityConfig(IArticleService articleService, ICommentService commentService) {
-        this.articleService = articleService;
-        this.commentService = commentService;
+    public SocketConfig(SocketHandler handler, SocketInterceptor interceptor) {
+        this.handler = handler;
+        this.interceptor = interceptor;
     }
 
     @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return new SecurityExpressionHandler(articleService, commentService);
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+         registry.addHandler(handler,"/admin").addInterceptors(interceptor).withSockJS();
+    }
+
+    @Bean
+    public SocketHandler getSocketHandler(){
+        return new SocketHandler();
+    }
+
+    @Bean
+    public SocketInterceptor getSocketInterceptor(){
+        return new SocketInterceptor();
     }
 }
