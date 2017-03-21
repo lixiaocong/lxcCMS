@@ -1,43 +1,18 @@
 <md-toolbar>
-    <button md-button (click)="sideBarClicked()">
-        <md-icon>dehaze</md-icon>
-    </button> {{title}}
+  <i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i>
+  {{title}}
 </md-toolbar>
 
 <md-sidenav-container>
-    <md-sidenav [mode]='sideBarMode' [opened]="isSideBarOpen">
-        <ul>
-            <li>
-                <a routerLink="user">
-                    <md-icon>account_box</md-icon>
-                    User
-                </a>
-            </li>
-            <li>
-                <a routerLink="article">
-                    <md-icon>book</md-icon>
-                    Aricle
-                </a>
-            </li>
-            <li>
-                <a routerLink="comment">
-                    <md-icon>comment</md-icon>
-                    Comment
-                </a>
-            </li>
-            <li>
-                <a routerLink="downloader">
-                    <md-icon>cloud_download</md-icon>
-                    Downloader
-                </a>
-            </li>
-            <li>
-                <a routerLink="file">
-                    <md-icon>insert_drive_file</md-icon>
-                    file
-                </a>
-            </li>
-        </ul>
-    </md-sidenav>
-    <router-outlet></router-outlet>
+  <md-sidenav id="sidebar" [mode]='sideBarMode' [opened]="isSideBarOpen">
+    <md-list>
+      <md-list-item *ngFor="let item of menu">
+        <a routerLink={{item.link}}>
+          <md-icon>{{item.icon}}</md-icon>
+          {{item.text}}
+        </a>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+  <router-outlet></router-outlet>
 </md-sidenav-container>

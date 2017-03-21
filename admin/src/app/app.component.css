@@ -1,0 +1,16 @@
+#menuIcon{
+  cursor: pointer;
+  padding: 5px;
+}
+
+#menuIcon:hover{
+  color: gray;
+}
+
+#sidebar{
+  width: 200px;
+}
+
+md-sidenav-container{
+  min-height: 100%;
+}

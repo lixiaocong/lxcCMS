@@ -1,3 +1,31 @@
-<p>
-  downloader works!
-</p>
+<div id="downloader">
+  <div id="menu">
+    <i class="material-icons" (click)="upload_task()">file_upload</i>
+    <i class="material-icons" (click)="start_task()">play_arrow</i>
+    <i class="material-icons" (click)="pause_task()">pause</i>
+    <i class="material-icons" (click)="delete_task()">delete_sweep</i>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>check</th>
+      <th>名称</th>
+      <th>进度</th>
+      <th>速度</th>
+      <th>Size</th>
+      <th>状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><i class="material-icons">done</i></td>
+      <td>task.name</td>
+      <td>100%</td>
+      <td>task.speed/s</td>
+      <td>task.downloadedLength</td>
+      <td>task.status</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
