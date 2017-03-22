@@ -1,25 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import {Http, Response} from '@angular/http';
-import 'rxjs/add/operator/toPromise'
+
 @Component({
   selector: 'app-downloader',
   templateUrl: './downloader.component.html',
   styleUrls: ['./downloader.component.css']
 })
 export class DownloaderComponent implements OnInit {
-  url:string = 'http://localhost:8081/article?page=1';
-
-  constructor(private http:Http) {}
+  ws:WebSocket ;
 
   ngOnInit() {
+    let url:string = 'ws://localhost:8081/socket';
+    this.ws = new WebSocket(url);
+
+    this.ws.onopen = event => {
+      console.log('open');
+    };
+    this.ws.onclose = event =>{
+      console.log('close');
+    };
+    this.ws.onerror = event =>{
+      console.log('error');
+    };
+    this.ws.onmessage = event =>{
+      console.log(event.data);
+    }
   }
 
   upload_task(){
-    this.http.get(this.url).map(this.extractData).toPromise();
-  }
-
-  private extractData(rep:Response) {
-    console.log(rep.text());
+    this.ws.send("hello")
   }
 
   start_task(){

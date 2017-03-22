@@ -43,8 +43,9 @@ public class SocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-         registry.addHandler(getSocketHandler(),"/admin").
-                 addInterceptors(getSocketInterceptor()).withSockJS();
+         registry.addHandler(getSocketHandler(),"/socket")
+                 .setAllowedOrigins("http://localhost:4200")
+                 .addInterceptors(getSocketInterceptor());
     }
 
     @Bean

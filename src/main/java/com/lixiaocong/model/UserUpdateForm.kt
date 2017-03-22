@@ -34,7 +34,7 @@ package com.lixiaocong.model
 
 import org.hibernate.validator.constraints.Length
 
-data class UserUpdateForm (
-    @Length(min = 6, max = 255)
-    var password: String = "123456"
+data class UserUpdateForm(
+        @Length(min = 6, max = 255)
+        var password: String = "123456"
 )

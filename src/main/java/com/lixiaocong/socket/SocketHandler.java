@@ -32,8 +32,19 @@
 
 package com.lixiaocong.socket;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 public class SocketHandler extends TextWebSocketHandler{
 
+    private Log log= LogFactory.getLog(getClass());
+
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        log.info(message.getPayload());
+        session.sendMessage(new TextMessage("ack hello"));
+    }
 }
