@@ -30,19 +30,11 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.model;
+package com.lixiaocong.model
 
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Length
 
-public class UserUpdateForm {
+data class UserUpdateForm (
     @Length(min = 6, max = 255)
-    private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-}
+    var password: String = "123456"
+)

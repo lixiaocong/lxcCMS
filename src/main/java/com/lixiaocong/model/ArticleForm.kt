@@ -30,30 +30,14 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.model;
+package com.lixiaocong.model
 
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Length
 
-public class ArticleForm {
-    @Length(min = 1, max = 255)
-    private String title;
+data class ArticleForm(
+        @Length(min = 1, max = 255)
+        var title: String = "默认标题",
 
-    @Length(min = 1)
-    private String content;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-}
+        @Length(min = 1)
+        var content: String = "默认内容"
+)

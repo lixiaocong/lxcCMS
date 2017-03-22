@@ -30,19 +30,11 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.model;
+package com.lixiaocong.model
 
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Length
 
-public class CommentForm {
-    @Length(min = 1)
-    private String content;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-}
+data class CommentForm(
+        @Length(min = 1)
+        var content: String = "默认评论"
+)
