@@ -32,19 +32,38 @@
 
 package com.lixiaocong.socket;
 
+import com.google.gson.Gson;
+import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.List;
+
 public class SocketHandler extends TextWebSocketHandler{
 
     private Log log= LogFactory.getLog(getClass());
+    private IDownloader downloader;
+    private Gson gson;
+
+    public SocketHandler(IDownloader downloader) {
+        this.downloader = downloader;
+        this.gson = new Gson();
+    }
+
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        log.info(message.getPayload());
-        session.sendMessage(new TextMessage("ack hello"));
+        String payload = message.getPayload();
+        log.info(payload);
+
+        SocketCommand socketCommand = gson.fromJson(payload, SocketCommand.class);
+        if(socketCommand.getMethod().equals(SocketCommand.GET)) {
+            List<DownloadTask> downloadTasks = downloader.get();
+            session.sendMessage(new TextMessage(gson.toJson(downloadTasks)));
+        }
     }
 }

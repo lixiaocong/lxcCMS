@@ -32,12 +32,12 @@
 
 package com.lixiaocong.task;
 
-import com.lixiaocong.transmission4j.TransmissionClient;
+import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.DownloaderException;
+import com.lixiaocong.downloader.IDownloader;
 import com.lixiaocong.transmission4j.exception.AuthException;
 import com.lixiaocong.transmission4j.exception.JsonException;
 import com.lixiaocong.transmission4j.exception.NetworkException;
-import com.lixiaocong.transmission4j.response.Torrent;
-import com.lixiaocong.util.VideoFileHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +45,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class TransmissionTask {
-    private Log logger = LogFactory.getLog(getClass());
-    private TransmissionClient client;
+public class DownloaderTask {
+    private Log log = LogFactory.getLog(getClass());
+
+    private IDownloader downloader;
 
     @Value("${nginx.root}")
     private String fileDestination;
@@ -60,24 +59,28 @@ public class TransmissionTask {
     private String fileTypes;
 
     @Autowired
-    public TransmissionTask(@Value("${transmission.username}") String username, @Value("${transmission.password}") String password) {
-        this.client = new TransmissionClient(username, password, "http://127.0.0.1:9091/transmission/rpc");
+    public DownloaderTask(IDownloader downloader) {
+        this.downloader = downloader;
     }
 
     @Scheduled(fixedDelay = 5000)
     public void task() throws JsonException, AuthException, NetworkException {
-        List<Torrent> torrents = client.getAll();
-        List<Integer> ids2remove = new LinkedList<>();
-        for (Torrent torrent : torrents) {
-            if (torrent.getDoneDate() > 0)//没有下载成功,结果是0
-            {
-                List<File> allVideos = VideoFileHelper.findAllVideos(new File(torrent.getDownloadDir()), fileTypes.split("\\|"));
-                if (VideoFileHelper.moveFiles(allVideos, fileDestination)) {
-                    logger.info(torrent.getName() + "下载完成,进行移动");
-                    ids2remove.add((int) torrent.getId());
-                } else logger.warn(torrent.getName() + "移动出现错误");
-            }
+        List<DownloadTask> torrents;
+        try {
+            torrents = downloader.get();
+            torrents.forEach(torrent ->{
+                if(torrent.isFinished()) {
+                    log.info(torrent.getName()+" 完成");
+                    try {
+                        //TODO 移动文件到Nginx目录下
+                        downloader.remove(torrent.getId());
+                    } catch (DownloaderException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (DownloaderException e) {
+            e.printStackTrace();
         }
-        if (ids2remove.size() > 0 && client.remove(ids2remove)) logger.info("完成任务已删除");
     }
 }

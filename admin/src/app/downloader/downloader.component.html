@@ -18,14 +18,16 @@
     </tr>
     </thead>
     <tbody>
+    <template let-downloadTask ngFor [ngForOf]="downloadTasks">
     <tr>
       <td><i class="material-icons">done</i></td>
-      <td>task.name</td>
-      <td>100%</td>
-      <td>task.speed/s</td>
-      <td>task.downloadedLength</td>
-      <td>task.status</td>
+      <td>{{downloadTask.name}}</td>
+      <td>{{downloadTask.downloadedLength/downloadTask.totalLength}}</td>
+      <td>{{downloadTask.speed}}/s</td>
+      <td>{{downloadTask.downloadedLength}}</td>
+      <td>{{downloadTask.status}}</td>
     </tr>
+    </template>
     </tbody>
   </table>
 </div>

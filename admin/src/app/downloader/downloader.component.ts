@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-downloader',
@@ -6,39 +6,63 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./downloader.component.css']
 })
 export class DownloaderComponent implements OnInit {
-  ws:WebSocket ;
+  ws: WebSocket;
+  private downloadTasks: DownloadTask[];
 
   ngOnInit() {
-    let url:string = 'ws://localhost:8081/socket';
+    let url: string = 'ws://localhost:8080/socket';
     this.ws = new WebSocket(url);
 
     this.ws.onopen = event => {
       console.log('open');
     };
-    this.ws.onclose = event =>{
+    this.ws.onclose = event => {
       console.log('close');
     };
-    this.ws.onerror = event =>{
+    this.ws.onerror = event => {
       console.log('error');
     };
-    this.ws.onmessage = event =>{
-      console.log(event.data);
-    }
+    this.ws.onmessage = event => {
+      this.downloadTasks = JSON.parse(event.data);
+    };
+
+    setInterval(() => {
+      let command = new AdminCommand();
+      command.method = "get";
+      this.ws.send(JSON.stringify(command));
+    }, 1000 * 5);
   }
 
-  upload_task(){
-    this.ws.send("hello")
+  upload_task() {
+    alert("upload")
   }
 
-  start_task(){
+  start_task() {
     alert("start")
   }
 
-  pause_task(){
+  pause_task() {
     alert("pause")
   }
 
-  delete_task(){
+  delete_task() {
     alert("delete")
   }
+}
+
+//命令的结构
+class AdminCommand {
+  method: string;
+}
+
+//下载任务的结构
+class DownloadTask {
+  id: string;
+  downloadType: string;
+  name: string;
+  totalLength: number;
+  downloadedLength: number;
+  speed: number;
+  status: string;
+  finished: boolean;
 }

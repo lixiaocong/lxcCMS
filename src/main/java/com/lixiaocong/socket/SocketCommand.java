@@ -29,44 +29,21 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package com.lixiaocong.socket;
 
-import com.lixiaocong.downloader.IDownloader;
-import com.lixiaocong.repository.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+public class SocketCommand {
 
-@Configuration
-@EnableWebSocket
-public class SocketConfig implements WebSocketConfigurer {
+    public static final String GET = "get";
 
-    private final IUserRepository userRepository;
-    private final IDownloader downloader;
 
-    @Autowired
-    public SocketConfig(IUserRepository userRepository, IDownloader downloader) {
-        this.userRepository = userRepository;
-        this.downloader = downloader;
+    private String method;
+
+    public String getMethod() {
+        return method;
     }
 
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-         registry.addHandler(getSocketHandler(),"/socket")
-                 .setAllowedOrigins("http://localhost:4200")
-                 .addInterceptors(getSocketInterceptor());
-    }
-
-    @Bean
-    public SocketHandler getSocketHandler(){
-        return new SocketHandler(downloader);
-    }
-
-    @Bean
-    public SocketInterceptor getSocketInterceptor(){
-        return new SocketInterceptor(userRepository);
+    public void setMethod(String method) {
+        this.method = method;
     }
 }

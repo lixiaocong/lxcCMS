@@ -32,23 +32,40 @@
 
 package com.lixiaocong.socket;
 
+import com.lixiaocong.entity.User;
+import com.lixiaocong.repository.IUserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import javax.inject.Inject;
+import java.security.Principal;
 import java.util.Map;
 
 public class SocketInterceptor implements HandshakeInterceptor{
 
     private Log log= LogFactory.getLog(getClass());
 
+    private final IUserRepository userRepository;
+
+    @Autowired
+    public SocketInterceptor(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        log.info("connect");
         return true;
+
+//        String name = request.getPrincipal().getName();
+//        User user = userRepository.findByUsername(name);
+//        return user != null && user.isAdmin();
     }
 
     @Override
