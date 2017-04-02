@@ -3,15 +3,17 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { routes } from './app.router';
 import { AppComponent } from './app.component';
-import { UserComponent } from './user/user.component';
-import { ArticleComponent } from './article/article.component';
-import { CommentComponent } from './comment/comment.component';
-import { DownloaderComponent } from './downloader/downloader.component';
-import { FileComponent } from './file/file.component';
+import { UserComponent } from './pages/user/user.component';
+import { ArticleComponent } from './pages/article/article.component';
+import { CommentComponent } from './pages/comment/comment.component';
+import { DownloaderComponent } from './pages/downloader/downloader.component';
+import { FileComponent } from './pages/file/file.component';
+import { DownloadTaskComponent } from './pages/downloader/download-task/download-task.component';
+import { SideNavbarComponent } from './components/side-navbar/side-navbar.component';
+
+import { routes } from './app.router';
 import { MaterialModule } from '@angular/material';
-import { DownloadTaskComponent } from './downloader/download-task/download-task.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { DownloadTaskComponent } from './downloader/download-task/download-task.
     DownloaderComponent,
     FileComponent,
     DownloadTaskComponent,
+    SideNavbarComponent,
   ],
   imports: [
     BrowserModule,

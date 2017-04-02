@@ -1,18 +1,10 @@
 <md-toolbar>
-  <i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i>
-  {{title}}
+  <i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i> {{title}}
 </md-toolbar>
 
 <md-sidenav-container>
   <md-sidenav id="sidebar" [mode]='sideBarMode' [opened]="isSideBarOpen">
-    <md-list>
-      <md-list-item *ngFor="let item of menu">
-        <a routerLink={{item.link}}>
-          <md-icon>{{item.icon}}</md-icon>
-          {{item.text}}
-        </a>
-      </md-list-item>
-    </md-list>
+    <app-side-navbar></app-side-navbar>
   </md-sidenav>
   <router-outlet></router-outlet>
 </md-sidenav-container>

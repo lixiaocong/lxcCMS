@@ -1,11 +1,11 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { UserComponent } from './user/user.component';
-import { ArticleComponent } from './article/article.component';
-import { CommentComponent } from './comment/comment.component';
-import { DownloaderComponent } from './downloader/downloader.component';
-import { FileComponent } from './file/file.component';
+import { UserComponent } from './pages/user/user.component';
+import { ArticleComponent } from './pages/article/article.component';
+import { CommentComponent } from './pages/comment/comment.component';
+import { DownloaderComponent } from './pages/downloader/downloader.component';
+import { FileComponent } from './pages/file/file.component';
 
 export const router: Routes = [
     { path: '', redirectTo: 'downloader', pathMatch: 'full' },
