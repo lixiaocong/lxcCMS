@@ -11,6 +11,7 @@ import { CommentComponent } from './comment/comment.component';
 import { DownloaderComponent } from './downloader/downloader.component';
 import { FileComponent } from './file/file.component';
 import { MaterialModule } from '@angular/material';
+import { DownloadTaskComponent } from './downloader/download-task/download-task.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { MaterialModule } from '@angular/material';
     CommentComponent,
     DownloaderComponent,
     FileComponent,
+    DownloadTaskComponent,
   ],
   imports: [
     BrowserModule,

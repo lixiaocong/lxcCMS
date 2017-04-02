@@ -34,8 +34,7 @@ package com.lixiaocong.socket;
 
 public class SocketCommand {
 
-    public static final String GET = "get";
-
+    public static final String GET_DOWNLOAD_TASK = "get-download-task";
 
     private String method;
 

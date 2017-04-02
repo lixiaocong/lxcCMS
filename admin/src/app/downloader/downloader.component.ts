@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
+import {DownloadTask, DownloadTaskComponent} from './download-task/download-task.component'
+
 @Component({
   selector: 'app-downloader',
   templateUrl: './downloader.component.html',
@@ -28,7 +30,7 @@ export class DownloaderComponent implements OnInit {
 
     setInterval(() => {
       let command = new AdminCommand();
-      command.method = "get";
+      command.method = AdminCommand.GET_DOWNLOAD_TASK;
       this.ws.send(JSON.stringify(command));
     }, 1000 * 5);
   }
@@ -52,17 +54,6 @@ export class DownloaderComponent implements OnInit {
 
 //命令的结构
 class AdminCommand {
+  static GET_DOWNLOAD_TASK = 'get-download-task';
   method: string;
-}
-
-//下载任务的结构
-class DownloadTask {
-  id: string;
-  downloadType: string;
-  name: string;
-  totalLength: number;
-  downloadedLength: number;
-  speed: number;
-  status: string;
-  finished: boolean;
 }

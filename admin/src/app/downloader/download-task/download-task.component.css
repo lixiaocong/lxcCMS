@@ -1,0 +1,13 @@
+.component{
+    cursor: pointer;
+}
+
+.hoveredComponent{
+    cursor: pointer;
+    background-color: lightblue;
+}
+
+.clickedComponent{
+    cursor: pointer;
+    background-color: cadetblue;
+}

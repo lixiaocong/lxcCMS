@@ -61,7 +61,7 @@ public class SocketHandler extends TextWebSocketHandler{
         log.info(payload);
 
         SocketCommand socketCommand = gson.fromJson(payload, SocketCommand.class);
-        if(socketCommand.getMethod().equals(SocketCommand.GET)) {
+        if(socketCommand.getMethod().equals(SocketCommand.GET_DOWNLOAD_TASK)) {
             List<DownloadTask> downloadTasks = downloader.get();
             session.sendMessage(new TextMessage(gson.toJson(downloadTasks)));
         }

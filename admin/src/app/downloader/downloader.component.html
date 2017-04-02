@@ -6,28 +6,9 @@
     <i class="material-icons" (click)="delete_task()">delete_sweep</i>
   </div>
 
-  <table>
-    <thead>
-    <tr>
-      <th>check</th>
-      <th>名称</th>
-      <th>进度</th>
-      <th>速度</th>
-      <th>Size</th>
-      <th>状态</th>
-    </tr>
-    </thead>
-    <tbody>
+  <div>
     <template let-downloadTask ngFor [ngForOf]="downloadTasks">
-    <tr>
-      <td><i class="material-icons">done</i></td>
-      <td>{{downloadTask.name}}</td>
-      <td>{{downloadTask.downloadedLength/downloadTask.totalLength}}</td>
-      <td>{{downloadTask.speed}}/s</td>
-      <td>{{downloadTask.downloadedLength}}</td>
-      <td>{{downloadTask.status}}</td>
-    </tr>
+        <download-task [downloadTask] = downloadTask></download-task>
     </template>
-    </tbody>
-  </table>
+  </div>
 </div>
