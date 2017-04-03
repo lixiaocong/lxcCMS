@@ -1,38 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { SideNavbarItemComponent, NavbarItem } from '../side-navbar-item/side-navbar-item.component';
 
 @Component({
   selector: 'app-side-navbar',
   template: `
-    <div *ngFor="let item of menu">
-      <div class="sidebar-item">
-        <a routerLink={{item.link}}>
-          <md-icon>{{item.icon}}</md-icon>
-          {{item.text}}
-        </a>
-      </div>
+    <div>
+    <div *ngFor="let navbarItem of navbarItems">
+      <app-side-navbar-item [navbarItem] = navbarItem></app-side-navbar-item> 
+    </div>
     </div>
   `,
-  styleUrls: ['./side-navbar.component.css']
+  styles: [``]
 })
 export class SideNavbarComponent implements OnInit {
-
-  menu: Array<MenuItem>;
-  constructor() { }
+  navbarItems: Array<NavbarItem>;
 
   ngOnInit() {
-    this.menu = [
-      { text: 'user', icon: 'account_box', link: 'user' },
-      { text: 'article', icon: 'book', link: 'article' },
-      { text: 'comment', icon: 'comment', link: 'comment' },
-      { text: 'downloader', icon: 'cloud_download', link: 'downloader' },
-      { text: 'file', icon: 'insert_drive_file', link: 'file' },
+    ;
+    this.navbarItems = [
+      new NavbarItem('article', 'book', 'article'),
+      new NavbarItem('user', 'account_box', 'user'),
+      new NavbarItem('comment', 'comment', 'comment'),
+      new NavbarItem('downloader', 'cloud_download', 'downloader'),
+      new NavbarItem('file', 'insert_drive_file', 'file'),
     ];
   }
-
-}
-
-class MenuItem {
-  link: string;
-  text: string;
-  icon: string;
 }

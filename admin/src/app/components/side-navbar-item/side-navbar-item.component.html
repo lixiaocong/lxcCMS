@@ -1,0 +1,6 @@
+<div [ngClass]="styleClass" (mouseover)="onHover()" (mouseleave)="onLeave()">
+    <a routerLink={{navbarItem.link}}>
+        <md-icon>{{navbarItem.icon}}</md-icon>
+        <span>{{navbarItem.text}}</span>
+    </a>
+</div>

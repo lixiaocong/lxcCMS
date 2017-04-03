@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {DownloadTask, DownloadTaskComponent} from './download-task/download-task.component'
+import { DownloadTask, DownloadTaskComponent } from './download-task/download-task.component'
 
 @Component({
   selector: 'app-downloader',
@@ -16,7 +16,8 @@ export class DownloaderComponent implements OnInit {
     this.ws = new WebSocket(url);
 
     this.ws.onopen = event => {
-      console.log('open');
+      this.get_task();
+      setInterval(this.get_task(), 1000 * 5);
     };
     this.ws.onclose = event => {
       console.log('close');
@@ -27,12 +28,12 @@ export class DownloaderComponent implements OnInit {
     this.ws.onmessage = event => {
       this.downloadTasks = JSON.parse(event.data);
     };
+  }
 
-    setInterval(() => {
-      let command = new AdminCommand();
-      command.method = AdminCommand.GET_DOWNLOAD_TASK;
-      this.ws.send(JSON.stringify(command));
-    }, 1000 * 5);
+  private get_task() {
+    let command = new AdminCommand();
+    command.method = AdminCommand.GET_DOWNLOAD_TASK;
+    this.ws.send(JSON.stringify(command));
   }
 
   upload_task() {
