@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.title = 'Admin Lixiaocong';
     this.sideBarMode = 'push';
-    this.isSideBarOpen = true;
+    this.isSideBarOpen = false;
   }
 
   sideBarClicked() {

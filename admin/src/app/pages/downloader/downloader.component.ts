@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-import { DownloadTask, DownloadTaskComponent } from './download-task/download-task.component'
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { DownloadTask, DownloadTaskComponent } from './download-task/download-task.component';
+import { AddtaskDialogComponent } from './addtask-dialog/addtask-dialog.component';
 
 @Component({
   selector: 'app-downloader',
@@ -10,6 +11,8 @@ import { DownloadTask, DownloadTaskComponent } from './download-task/download-ta
 export class DownloaderComponent implements OnInit {
   ws: WebSocket;
   private downloadTasks: DownloadTask[];
+
+  constructor(public dialog: MdDialog) { }
 
   ngOnInit() {
     let url: string = 'ws://localhost:8080/socket';
@@ -37,7 +40,11 @@ export class DownloaderComponent implements OnInit {
   }
 
   upload_task() {
-    alert("upload")
+    let dialogRef = this.dialog.open(AddtaskDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null)
+        console.log(result);
+    });
   }
 
   start_task() {

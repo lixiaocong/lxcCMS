@@ -14,6 +14,7 @@ import { CommentComponent } from './pages/comment/comment.component';
 import { DownloaderComponent } from './pages/downloader/downloader.component';
 import { DownloadTaskComponent } from './pages/downloader/download-task/download-task.component';
 import { FileComponent } from './pages/file/file.component';
+import { AddtaskDialogComponent } from './pages/downloader/addtask-dialog/addtask-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { FileComponent } from './pages/file/file.component';
     DownloadTaskComponent,
     SideNavbarComponent,
     SideNavbarItemComponent,
+    AddtaskDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +37,7 @@ import { FileComponent } from './pages/file/file.component';
     MaterialModule,
   ],
   providers: [],
+  entryComponents: [AddtaskDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
