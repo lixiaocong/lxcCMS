@@ -32,10 +32,7 @@
 
 package com.lixiaocong.downloader.aria2c;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
@@ -48,12 +45,14 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.aspectj.weaver.tools.cache.SimpleCacheFactory;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
 public class Aria2cDownloader implements IDownloader {
     private final Log log = LogFactory.getLog(getClass().getName());
@@ -254,7 +253,15 @@ public class Aria2cDownloader implements IDownloader {
                 task.setName(name);
             } else {
                 task.setDownloadType(DownloadTask.TYPE_URL);
-                task.setName("todo: get file name");
+                JsonArray files = object.getAsJsonArray("files");
+                if(files.size()==0)
+                    task.setName("error: file empty");
+                else{
+                    JsonElement file = files.get(0);
+                    String path = file.getAsJsonObject().get("path").getAsString();
+                    int index = path.lastIndexOf("/");
+                    task.setName(path.substring(++index));
+                }
             }
             task.setTotalLength(object.get("totalLength").getAsLong());
             task.setDownloadedLength(object.get("completedLength").getAsLong());

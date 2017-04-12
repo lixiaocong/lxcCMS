@@ -1,6 +1,7 @@
 #menuIcon{
   cursor: pointer;
   padding: 5px;
+  padding-right: 10px;
 }
 
 #menuIcon:hover{
