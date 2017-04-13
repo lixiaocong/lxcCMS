@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class Aria2cDownloader implements IDownloader {
@@ -252,9 +253,9 @@ public class Aria2cDownloader implements IDownloader {
             } else {
                 task.setDownloadType(DownloadTask.TYPE_URL);
                 JsonArray files = object.getAsJsonArray("files");
-                if(files.size()==0)
+                if (files.size() == 0)
                     task.setName("error: file empty");
-                else{
+                else {
                     JsonElement file = files.get(0);
                     String path = file.getAsJsonObject().get("path").getAsString();
                     int index = path.lastIndexOf("/");

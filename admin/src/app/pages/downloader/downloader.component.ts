@@ -18,6 +18,7 @@ export class DownloaderComponent implements OnInit {
     ngOnInit() {
         let url: string = 'ws://localhost:8080/socket';
         this.ws = new WebSocket(url);
+        this.downloadTasks = [];
 
         this.ws.onopen = event => {
             this.get_task();
@@ -31,7 +32,18 @@ export class DownloaderComponent implements OnInit {
             console.log('error');
         };
         this.ws.onmessage = event => {
-            this.downloadTasks = JSON.parse(event.data);
+            let tasks: DownloadTask[] = JSON.parse(event.data);
+            tasks.forEach(task => {
+                task.isChoosed = false;
+                for (let i = 0; i < this.downloadTasks.length; i++) {
+                    let oldTask: DownloadTask = this.downloadTasks[i];
+                    if (oldTask.id == task.id) {
+                        task.isChoosed = oldTask.isChoosed;
+                        break;
+                    }
+                }
+            });
+            this.downloadTasks = tasks;
         };
     }
 
@@ -49,7 +61,9 @@ export class DownloaderComponent implements OnInit {
     }
 
     start_task() {
-        alert("start")
+        let command = new StartTaskCommand();
+        this.downloadTasks.filter(task=>task.isChoosed).forEach(task=>command.addId(task.id));
+        this.ws.send(JSON.stringify(command));
     }
 
     pause_task() {
@@ -65,6 +79,7 @@ export class DownloaderComponent implements OnInit {
 class AdminCommand {
     static GET_TASK = 'get-task';
     static ADD_TASK = 'add-task';
+    static START_TASK = 'start-task';
 
     method: string;
 
@@ -84,5 +99,18 @@ class AddTaskCommand extends AdminCommand {
     constructor(addTaskInfo: AddTaskInfo) {
         super(AdminCommand.ADD_TASK);
         this.addTaskInfo = addTaskInfo;
+    }
+}
+
+class StartTaskCommand extends AdminCommand {
+    ids: Array<string>;
+
+    constructor() {
+        super(AdminCommand.START_TASK);
+        this.ids = [];
+    }
+
+    addId(id: string) {
+        this.ids.push(id);
     }
 }

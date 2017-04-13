@@ -44,6 +44,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SocketHandler extends TextWebSocketHandler {
@@ -61,6 +62,7 @@ public class SocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         String payload = message.getPayload();
+        log.info(payload);
         JsonNode jsonNode;
         try {
             jsonNode = mapper.readTree(payload);
@@ -75,6 +77,7 @@ public class SocketHandler extends TextWebSocketHandler {
         switch (method) {
             case SocketCommand.GET_TASK:result = handleGetTask();break;
             case SocketCommand.ADD_TASK:result = handleAddTask(jsonNode);break;
+            case SocketCommand.START_TASK:result = handleStartTask(jsonNode);break;
         }
 
         if (result == null)
@@ -121,6 +124,25 @@ public class SocketHandler extends TextWebSocketHandler {
             //TODO handle exception
             e.printStackTrace();
         } catch (IOException e) {
+            //TODO handle exception
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String handleStartTask(JsonNode jsonNode) {
+        JsonNode ids = jsonNode.path("ids");
+        List<String> idList = new LinkedList<>();
+        ids.forEach(node->idList.add(node.getTextValue()));
+
+        String[] idArray = new String[idList.size()];
+        for(int i=0;i<idList.size();i++)
+            idArray[i]=idList.get(i);
+
+        log.info(idArray);
+        try {
+            downloader.start(idArray);
+        } catch (DownloaderException e) {
             //TODO handle exception
             e.printStackTrace();
         }
