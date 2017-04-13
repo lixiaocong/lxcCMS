@@ -9,12 +9,12 @@
 
 <div [hidden] = "taskType != 'url'">
   <md-input-container>
-    <input mdInput [(value)]="urlValue">
+    <input mdInput [(ngModel)]="urlValue">
   </md-input-container>
 </div>
 <div [hidden] = "taskType != 'metalink'">
   <md-input-container>
-    <input mdInput [(value)]="metalinkValue">
+    <input mdInput [(ngModel)]="metalinkValue">
   </md-input-container>
 </div>
 <div [hidden] = "taskType != 'torrent'">

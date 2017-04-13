@@ -32,38 +32,98 @@
 
 package com.lixiaocong.socket;
 
-import com.google.gson.Gson;
 import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.List;
 
-public class SocketHandler extends TextWebSocketHandler{
+public class SocketHandler extends TextWebSocketHandler {
 
-    private Log log= LogFactory.getLog(getClass());
+    private Log log;
     private IDownloader downloader;
-    private Gson gson;
+    private ObjectMapper mapper;
 
     public SocketHandler(IDownloader downloader) {
+        this.log = LogFactory.getLog(getClass().getName());
         this.downloader = downloader;
-        this.gson = new Gson();
+        this.mapper = new ObjectMapper();
     }
 
-
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
         String payload = message.getPayload();
-        log.info(payload);
-
-        SocketCommand socketCommand = gson.fromJson(payload, SocketCommand.class);
-        if(socketCommand.getMethod().equals(SocketCommand.GET_DOWNLOAD_TASK)) {
-            List<DownloadTask> downloadTasks = downloader.get();
-            session.sendMessage(new TextMessage(gson.toJson(downloadTasks)));
+        JsonNode jsonNode;
+        try {
+            jsonNode = mapper.readTree(payload);
+        } catch (IOException e) {
+            //TODO handle exception
+            e.printStackTrace();
+            return;
         }
+
+        String method = jsonNode.path("method").getValueAsText();
+        String result = null;
+        switch (method) {
+            case SocketCommand.GET_TASK:result = handleGetTask();break;
+            case SocketCommand.ADD_TASK:result = handleAddTask(jsonNode);break;
+        }
+
+        if (result == null)
+            return;
+
+        try {
+            session.sendMessage(new TextMessage(result));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String handleAddTask(JsonNode jsonNode) {
+        JsonNode addTaskInfo = jsonNode.path("addTaskInfo");
+        String taskType = addTaskInfo.path("taskType").getValueAsText();
+        String content = addTaskInfo.path("content").getValueAsText();
+        try {
+            switch (taskType) {
+                case "url":
+                    downloader.addByUrl(content);
+                    break;
+                case "torrent":
+                    downloader.addByMetainfo(content);
+                    break;
+                case "metalink":
+                    downloader.addByMetalink(content);
+                    break;
+                default:
+                    break;
+            }
+        }catch (DownloaderException e){
+            //TODO handle exception
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String handleGetTask() {
+        List<DownloadTask> downloadTasks;
+        try {
+            downloadTasks = downloader.get();
+            return mapper.writeValueAsString(downloadTasks);
+        } catch (DownloaderException e) {
+            //TODO handle exception
+            e.printStackTrace();
+        } catch (IOException e) {
+            //TODO handle exception
+            e.printStackTrace();
+        }
+        return null;
     }
 }

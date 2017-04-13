@@ -33,16 +33,6 @@
 package com.lixiaocong.socket;
 
 public class SocketCommand {
-
-    public static final String GET_DOWNLOAD_TASK = "get-download-task";
-
-    private String method;
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
+    static final String GET_TASK = "get-task";
+    public static final String ADD_TASK = "add-task";
 }

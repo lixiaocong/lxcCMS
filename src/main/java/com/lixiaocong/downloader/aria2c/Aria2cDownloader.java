@@ -45,14 +45,12 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.aspectj.weaver.tools.cache.SimpleCacheFactory;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
 public class Aria2cDownloader implements IDownloader {
     private final Log log = LogFactory.getLog(getClass().getName());
