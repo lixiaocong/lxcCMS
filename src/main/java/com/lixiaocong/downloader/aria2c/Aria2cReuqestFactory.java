@@ -100,4 +100,10 @@ class Aria2cReuqestFactory {
     static Aria2cRequest getPargeRquest(String token) {
         return new Aria2cRequest(token, Aria2cRequestMethod.PURGE_DOWNLOAD_RESULT);
     }
+
+    static Aria2cRequest getRemoveResultReuqest(String token, String gid) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.REMOVE_DOWNLOAD_RESULT);
+        request.getParams().add(gid);
+        return request;
+    }
 }

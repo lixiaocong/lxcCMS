@@ -24,13 +24,16 @@ export class DownloaderComponent implements OnInit {
             this.get_task();
             setInterval(() => this.get_task(), 1000);
         };
+
         this.ws.onclose = event => {
             console.log('close');
             console.log(event.code)
         };
+
         this.ws.onerror = event => {
             console.log('error');
         };
+
         this.ws.onmessage = event => {
             let tasks: DownloadTask[] = JSON.parse(event.data);
             tasks.forEach(task => {
@@ -67,11 +70,15 @@ export class DownloaderComponent implements OnInit {
     }
 
     pause_task() {
-        alert("pause")
+        let command = new PauseTaskCommand();
+        this.downloadTasks.filter(task=>task.isChoosed).forEach(task=>command.addId(task.id));
+        this.ws.send(JSON.stringify(command));
     }
 
     delete_task() {
-        alert("delete")
+        let command = new RemoveTaskCommand();
+        this.downloadTasks.filter(task=>task.isChoosed).forEach(task=>command.addId(task.id));
+        this.ws.send(JSON.stringify(command));
     }
 }
 
@@ -80,6 +87,8 @@ class AdminCommand {
     static GET_TASK = 'get-task';
     static ADD_TASK = 'add-task';
     static START_TASK = 'start-task';
+    static PAUSE_TASK = 'pause-task';
+    static REMOVE_TASK = 'remove-task';
 
     method: string;
 
@@ -107,6 +116,32 @@ class StartTaskCommand extends AdminCommand {
 
     constructor() {
         super(AdminCommand.START_TASK);
+        this.ids = [];
+    }
+
+    addId(id: string) {
+        this.ids.push(id);
+    }
+}
+
+class PauseTaskCommand extends AdminCommand{
+    ids: Array<string>;
+
+    constructor() {
+        super(AdminCommand.PAUSE_TASK);
+        this.ids = [];
+    }
+
+    addId(id: string) {
+        this.ids.push(id);
+    }
+}
+
+class RemoveTaskCommand extends AdminCommand{
+    ids: Array<string>;
+
+    constructor() {
+        super(AdminCommand.REMOVE_TASK);
         this.ids = [];
     }
 

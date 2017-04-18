@@ -44,5 +44,6 @@ class Aria2cRequestMethod {
     static final String UNPAUSE = "aria2.unpause";
     static final String UNPAUSE_ALL = "aria2.unpauseAll";
     static final String REMOVE = "aria2.remove";
+    static final String REMOVE_DOWNLOAD_RESULT = "aria2.removeDownloadResult";
     static final String PURGE_DOWNLOAD_RESULT = "aria2.purgeDownloadResult";
 }

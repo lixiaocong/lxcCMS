@@ -32,8 +32,10 @@
 
 package com.lixiaocong.socket;
 
-public class SocketCommand {
+class SocketCommand {
     static final String GET_TASK = "get-task";
     static final String ADD_TASK = "add-task";
     static final String START_TASK = "start-task";
+    static final String PAUSE_TASK = "pause-task";
+    static final String REMOVE_TASK = "remove-task" ;
 }

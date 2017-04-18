@@ -92,7 +92,18 @@ public class Aria2cDownloader implements IDownloader {
             } finally {
                 httpPost.releaseConnection();
             }
-        } else {
+        }
+        else if(statusCode == 500){
+            try {
+                String result = EntityUtils.toString(response.getEntity());
+                log.warn(request);
+                return result;
+            } catch (IOException e) {
+                log.error(e);
+                throw new DownloaderException("network error with error code " + statusCode);
+            }
+        }
+        else {
             log.error("post to " + httpPost.getURI() + " error:" + statusCode);
             try {
                 log.error(EntityUtils.toString(response.getEntity()));
@@ -138,12 +149,13 @@ public class Aria2cDownloader implements IDownloader {
 
     @Override
     public boolean remove(String id) throws DownloaderException {
+
         Aria2cRequest removeReuqest = Aria2cReuqestFactory.getRemoveReuqest(token, id);
-        String resultJson = post(removeReuqest);
-        JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
-        String result = jsonObject.get("result").getAsString();
-        purge();
-        return result != null;
+        post(removeReuqest);
+
+        Aria2cRequest removeResultReuqest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
+        post(removeResultReuqest);
+        return true;
     }
 
     @Override
@@ -159,7 +171,6 @@ public class Aria2cDownloader implements IDownloader {
                 success = false;
             }
         }
-        purge();
         return success;
     }
 

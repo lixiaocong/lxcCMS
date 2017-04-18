@@ -78,6 +78,8 @@ public class SocketHandler extends TextWebSocketHandler {
             case SocketCommand.GET_TASK:result = handleGetTask();break;
             case SocketCommand.ADD_TASK:result = handleAddTask(jsonNode);break;
             case SocketCommand.START_TASK:result = handleStartTask(jsonNode);break;
+            case SocketCommand.PAUSE_TASK:result = handlePauseTask(jsonNode);break;
+            case SocketCommand.REMOVE_TASK:result = handleRemoveTask(jsonNode);break;
         }
 
         if (result == null)
@@ -88,6 +90,18 @@ public class SocketHandler extends TextWebSocketHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String[] getIds(JsonNode jsonNode){
+        JsonNode ids = jsonNode.path("ids");
+        List<String> idList = new LinkedList<>();
+        ids.forEach(node->idList.add(node.getTextValue()));
+
+        String[] idArray = new String[idList.size()];
+        for(int i=0;i<idList.size();i++)
+            idArray[i]=idList.get(i);
+
+        return idArray;
     }
 
     private String handleAddTask(JsonNode jsonNode) {
@@ -131,17 +145,31 @@ public class SocketHandler extends TextWebSocketHandler {
     }
 
     private String handleStartTask(JsonNode jsonNode) {
-        JsonNode ids = jsonNode.path("ids");
-        List<String> idList = new LinkedList<>();
-        ids.forEach(node->idList.add(node.getTextValue()));
-
-        String[] idArray = new String[idList.size()];
-        for(int i=0;i<idList.size();i++)
-            idArray[i]=idList.get(i);
-
-        log.info(idArray);
+        String[] ids = getIds(jsonNode);
         try {
-            downloader.start(idArray);
+            downloader.start(ids);
+        } catch (DownloaderException e) {
+            //TODO handle exception
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String handlePauseTask(JsonNode jsonNode) {
+        String[] ids = getIds(jsonNode);
+        try {
+            downloader.stop(ids);
+        } catch (DownloaderException e) {
+            //TODO handle exception
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String handleRemoveTask(JsonNode jsonNode) {
+    String[] ids = getIds(jsonNode);
+        try {
+            downloader.remove(ids);
         } catch (DownloaderException e) {
             //TODO handle exception
             e.printStackTrace();
