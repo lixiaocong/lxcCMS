@@ -15,6 +15,8 @@ import { DownloaderComponent } from './pages/downloader/downloader.component';
 import { DownloadTaskComponent } from './pages/downloader/download-task/download-task.component';
 import { FileComponent } from './pages/file/file.component';
 import { AddtaskDialogComponent } from './pages/downloader/addtask-dialog/addtask-dialog.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DashboardCardComponent } from './pages/dashboard/dashboard-card/dashboard-card.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { AddtaskDialogComponent } from './pages/downloader/addtask-dialog/addtas
     SideNavbarComponent,
     SideNavbarItemComponent,
     AddtaskDialogComponent,
+    DashboardComponent,
+    DashboardCardComponent,
   ],
   imports: [
     BrowserModule,

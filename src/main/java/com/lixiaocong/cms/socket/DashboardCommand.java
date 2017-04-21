@@ -1,3 +1,4 @@
+
 /*
   BSD 3-Clause License
 
@@ -30,12 +31,12 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
+
 package com.lixiaocong.cms.socket;
 
-class SocketCommand {
-    static final String GET_TASK = "get-task";
-    static final String ADD_TASK = "add-task";
-    static final String START_TASK = "start-task";
-    static final String PAUSE_TASK = "pause-task";
-    static final String REMOVE_TASK = "remove-task" ;
+public class DashboardCommand {
+    public static final String GET_USER_NUMBER = "get-user-number";
+    public static final String GET_ARTICLE_NUMBER = "get-article-number";
+    public static final String GET_COMMENT_NUMBER = "get-comment-number";
 }

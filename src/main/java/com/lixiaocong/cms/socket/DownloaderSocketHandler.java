@@ -47,13 +47,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SocketHandler extends TextWebSocketHandler {
+public class DownloaderSocketHandler extends TextWebSocketHandler {
 
     private Log log;
     private IDownloader downloader;
     private ObjectMapper mapper;
 
-    public SocketHandler(IDownloader downloader) {
+    public DownloaderSocketHandler(IDownloader downloader) {
         this.log = LogFactory.getLog(getClass().getName());
         this.downloader = downloader;
         this.mapper = new ObjectMapper();
@@ -75,11 +75,11 @@ public class SocketHandler extends TextWebSocketHandler {
         String method = jsonNode.path("method").getValueAsText();
         String result = null;
         switch (method) {
-            case SocketCommand.GET_TASK:result = handleGetTask();break;
-            case SocketCommand.ADD_TASK:result = handleAddTask(jsonNode);break;
-            case SocketCommand.START_TASK:result = handleStartTask(jsonNode);break;
-            case SocketCommand.PAUSE_TASK:result = handlePauseTask(jsonNode);break;
-            case SocketCommand.REMOVE_TASK:result = handleRemoveTask(jsonNode);break;
+            case DownloaderSocketCommand.GET_TASK:result = handleGetTask();break;
+            case DownloaderSocketCommand.ADD_TASK:result = handleAddTask(jsonNode);break;
+            case DownloaderSocketCommand.START_TASK:result = handleStartTask(jsonNode);break;
+            case DownloaderSocketCommand.PAUSE_TASK:result = handlePauseTask(jsonNode);break;
+            case DownloaderSocketCommand.REMOVE_TASK:result = handleRemoveTask(jsonNode);break;
         }
 
         if (result == null)

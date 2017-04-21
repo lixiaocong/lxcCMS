@@ -16,8 +16,8 @@ export class SideNavbarComponent implements OnInit {
   navbarItems: Array<NavbarItem>;
 
   ngOnInit() {
-    ;
     this.navbarItems = [
+      new NavbarItem('dashboard', 'dashboard', 'dashboard'),
       new NavbarItem('article', 'book', 'article'),
       new NavbarItem('user', 'account_box', 'user'),
       new NavbarItem('comment', 'comment', 'comment'),

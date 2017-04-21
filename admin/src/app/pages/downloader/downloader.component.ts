@@ -16,7 +16,7 @@ export class DownloaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        let url: string = 'ws://localhost:8080/socket';
+        let url: string = 'ws://localhost:8080/downloader-socket';
         this.ws = new WebSocket(url);
         this.downloadTasks = [];
 
@@ -83,7 +83,7 @@ export class DownloaderComponent implements OnInit {
 }
 
 //命令的结构
-class AdminCommand {
+class DownloaderCommand {
     static GET_TASK = 'get-task';
     static ADD_TASK = 'add-task';
     static START_TASK = 'start-task';
@@ -97,25 +97,25 @@ class AdminCommand {
     }
 }
 
-class GetTaskCommand extends AdminCommand {
+class GetTaskCommand extends DownloaderCommand {
     constructor() {
-        super(AdminCommand.GET_TASK);
+        super(DownloaderCommand.GET_TASK);
     }
 }
-class AddTaskCommand extends AdminCommand {
+class AddTaskCommand extends DownloaderCommand {
     addTaskInfo: AddTaskInfo;
 
     constructor(addTaskInfo: AddTaskInfo) {
-        super(AdminCommand.ADD_TASK);
+        super(DownloaderCommand.ADD_TASK);
         this.addTaskInfo = addTaskInfo;
     }
 }
 
-class StartTaskCommand extends AdminCommand {
+class StartTaskCommand extends DownloaderCommand {
     ids: Array<string>;
 
     constructor() {
-        super(AdminCommand.START_TASK);
+        super(DownloaderCommand.START_TASK);
         this.ids = [];
     }
 
@@ -124,11 +124,11 @@ class StartTaskCommand extends AdminCommand {
     }
 }
 
-class PauseTaskCommand extends AdminCommand{
+class PauseTaskCommand extends DownloaderCommand{
     ids: Array<string>;
 
     constructor() {
-        super(AdminCommand.PAUSE_TASK);
+        super(DownloaderCommand.PAUSE_TASK);
         this.ids = [];
     }
 
@@ -137,11 +137,11 @@ class PauseTaskCommand extends AdminCommand{
     }
 }
 
-class RemoveTaskCommand extends AdminCommand{
+class RemoveTaskCommand extends DownloaderCommand{
     ids: Array<string>;
 
     constructor() {
-        super(AdminCommand.REMOVE_TASK);
+        super(DownloaderCommand.REMOVE_TASK);
         this.ids = [];
     }
 

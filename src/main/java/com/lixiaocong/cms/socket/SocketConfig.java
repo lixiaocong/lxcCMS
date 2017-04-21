@@ -31,6 +31,8 @@
  */
 package com.lixiaocong.cms.socket;
 
+import com.lixiaocong.cms.repository.IArticleRepository;
+import com.lixiaocong.cms.repository.ICommentRepository;
 import com.lixiaocong.downloader.IDownloader;
 import com.lixiaocong.cms.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,28 +49,23 @@ public class SocketConfig implements WebSocketConfigurer {
 
     private final IUserRepository userRepository;
     private final IDownloader downloader;
+    private final IArticleRepository articleRepository;
+    private final ICommentRepository commentRepository;
 
     @Autowired
-    public SocketConfig(IUserRepository userRepository, IDownloader downloader) {
+    public SocketConfig(IUserRepository userRepository, IDownloader downloader, IArticleRepository articleRepository, ICommentRepository commentRepository) {
         this.userRepository = userRepository;
         this.downloader = downloader;
+        this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-         registry.addHandler(getSocketHandler(),"/socket")
+         registry.addHandler(new DownloaderSocketHandler(downloader),"/downloader-socket")
+                 .addHandler(new DashboardSocketHandler(userRepository, articleRepository, commentRepository),"/dashboard-socket")
                  .setAllowedOrigins("http://localhost:4200")
-                 .addInterceptors(getSocketInterceptor());
-    }
-
-    @Bean
-    public SocketHandler getSocketHandler(){
-        return new SocketHandler(downloader);
-    }
-
-    @Bean
-    public SocketInterceptor getSocketInterceptor(){
-        return new SocketInterceptor(userRepository);
+                 .addInterceptors(new SocketInterceptor(userRepository));
     }
 
     @Bean
