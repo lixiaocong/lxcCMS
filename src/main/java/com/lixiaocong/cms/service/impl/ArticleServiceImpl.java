@@ -30,40 +30,63 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong;
+package com.lixiaocong.cms.service.impl;
 
 import com.lixiaocong.cms.entity.Article;
+import com.lixiaocong.cms.entity.User;
 import com.lixiaocong.cms.repository.IArticleRepository;
 import com.lixiaocong.cms.repository.IUserRepository;
 import com.lixiaocong.cms.service.IArticleService;
-import com.lixiaocong.cms.service.ICommentService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class SpringTest {
-    @Autowired
-    private IUserRepository userRepository;
+import javax.transaction.Transactional;
 
-    @Autowired
-    private ICommentService commentService;
-
-    @Autowired
-    private IArticleService articleService;
+@Service
+@Transactional
+public class ArticleServiceImpl implements IArticleService {
+    private final IArticleRepository articleRepository;
+    private final IUserRepository userRepository;
 
     @Autowired
-    private IArticleRepository articleRepository;
+    public ArticleServiceImpl(IArticleRepository articleRepository, IUserRepository userRepository) {
+        this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
+    }
 
-    @Test
-    public void test() {
-        Page<Article> articles = articleRepository.findByUser_Id(1, new PageRequest(0, 2));
-        for (Article article : articles)
-            System.out.println(article.getTitle());
+    @Override
+    public Article create(long userId, String title, String content) {
+        User user = userRepository.findOne(userId);
+        return articleRepository.save(new Article(title, content, user));
+    }
+
+    @Override
+    public void delete(long id) {
+        articleRepository.delete(id);
+    }
+
+    @Override
+    public void update(Article article) {
+        articleRepository.save(article);
+    }
+
+    @Override
+    public Page<Article> get(int page, int size) {
+        PageRequest request = new PageRequest(page, size, Sort.Direction.DESC, "lastUpdateTime");
+        return articleRepository.findAll(request);
+    }
+
+    @Override
+    public Page<Article> getByUser(int page, int size, long userId) {
+        return articleRepository.findByUser_Id(userId, new PageRequest(page, size, Sort.Direction.DESC, "lastUpdateTime"));
+    }
+
+    @Override
+    public Article get(long id) {
+        return articleRepository.findOne(id);
     }
 }
+

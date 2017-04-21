@@ -30,10 +30,66 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.entity;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+/**
+ * 所有Entity类的基类
+ * 提供ID，创建和更新的时间戳
+ * <p/>
+ * ID为数据库指定
+ * 时间戳会在创建和更新之前自动调用相关函数，自动维护
+ */
+@MappedSuperclass
+public class AbstractEntity implements Serializable {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column
+    private long id;
+
+    @Column(nullable = false)
+    private Timestamp lastUpdateTime;
+
+    @Column(nullable = false)
+    private Timestamp createTime;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Timestamp getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Timestamp lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        lastUpdateTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    @PrePersist
+    public void prePersist() {
+        createTime = new Timestamp(System.currentTimeMillis());
+        lastUpdateTime = createTime;
     }
 }

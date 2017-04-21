@@ -30,10 +30,14 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.model
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
-}
+import org.hibernate.validator.constraints.Length
+
+data class ArticleForm(
+        @Length(min = 1, max = 255)
+        var title: String = "默认标题",
+
+        @Length(min = 1)
+        var content: String = "默认内容"
+)

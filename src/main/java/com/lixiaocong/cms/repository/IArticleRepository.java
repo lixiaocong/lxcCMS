@@ -30,10 +30,13 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.repository;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
+import com.lixiaocong.cms.entity.Article;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IArticleRepository extends JpaRepository<Article, Long> {
+    Page<Article> findByUser_Id(long userId, Pageable pageable);
 }

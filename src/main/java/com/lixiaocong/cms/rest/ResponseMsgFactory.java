@@ -30,10 +30,28 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.rest;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import java.util.HashMap;
+import java.util.Map;
+
+public class ResponseMsgFactory {
+    public static Map<String, Object> createSuccessResponse() {
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("result", "success");
+        return ret;
+    }
+
+    public static Map<String, Object> createSuccessResponse(String name, Object value) {
+        Map<String, Object> ret = createSuccessResponse();
+        ret.put(name, value);
+        return ret;
+    }
+
+    public static Map<String, Object> createFailedResponse(String msg) {
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("result", "failed");
+        ret.put("message", msg);
+        return ret;
     }
 }

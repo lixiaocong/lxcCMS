@@ -30,10 +30,30 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.security;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import com.lixiaocong.cms.service.IArticleService;
+import com.lixiaocong.cms.service.ICommentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+
+@Configuration
+@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
+public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
+    private final IArticleService articleService;
+    private final ICommentService commentService;
+
+    @Autowired
+    public MethodSecurityConfig(IArticleService articleService, ICommentService commentService) {
+        this.articleService = articleService;
+        this.commentService = commentService;
+    }
+
+    @Override
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        return new SecurityExpressionHandler(articleService, commentService);
     }
 }

@@ -30,10 +30,20 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
+package com.lixiaocong.cms.downloader.aria2c;
+
+class Aria2cRequestMethod {
+    static final String ADD_TORRENT = "aria2.addTorrent";
+    static final String ADD_URI = "aria2.addUri";
+    static final String TELL_ACTIVE = "aria2.tellActive";
+    static final String TELL_WAITING = "aria2.tellWaiting";
+    static final String TELL_STOPPED= "aria2.tellStopped";
+    static final String PAUSE = "aria2.pause";
+    static final String PAUSE_ALL = "aria2.pauseAll";
+    static final String UNPAUSE = "aria2.unpause";
+    static final String UNPAUSE_ALL = "aria2.unpauseAll";
+    static final String REMOVE = "aria2.remove";
+    static final String REMOVE_DOWNLOAD_RESULT = "aria2.removeDownloadResult";
+    static final String PURGE_DOWNLOAD_RESULT = "aria2.purgeDownloadResult";
 }

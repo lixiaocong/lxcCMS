@@ -30,10 +30,11 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.model
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
-}
+import org.hibernate.validator.constraints.Length
+
+data class CommentForm(
+        @Length(min = 1)
+        var content: String = "默认评论"
+)

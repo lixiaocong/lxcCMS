@@ -30,10 +30,39 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.util.weather;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+public class Weather {
+    private int errNum;
+    private String errMsg;
+    private WeatherData retData;
+
+    public int getErrNum() {
+        return errNum;
+    }
+
+    public void setErrNum(int errNum) {
+        this.errNum = errNum;
+    }
+
+    public String getErrMsg() {
+        return errMsg;
+    }
+
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
+    }
+
+    public WeatherData getRetData() {
+        return retData;
+    }
+
+    public void setRetData(WeatherData retData) {
+        this.retData = retData;
+    }
+
+    @Override
+    public String toString() {
+        return "Weather{" + "errNum=" + errNum + ", errMsg='" + errMsg + '\'' + ", retData=" + retData + '}';
     }
 }

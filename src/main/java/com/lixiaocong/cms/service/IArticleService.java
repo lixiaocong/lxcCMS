@@ -30,10 +30,21 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.service;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
+import com.lixiaocong.cms.entity.Article;
+import org.springframework.data.domain.Page;
+
+public interface IArticleService {
+    Article create(long userId, String title, String content);
+
+    void delete(long id);
+
+    void update(Article article);
+
+    Article get(long id);
+
+    Page<Article> get(int page, int size);
+
+    Page<Article> getByUser(int page, int size, long userId);
 }

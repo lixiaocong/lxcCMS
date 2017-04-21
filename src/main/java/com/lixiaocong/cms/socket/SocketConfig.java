@@ -29,41 +29,53 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.lixiaocong.cms.socket;
 
-package com.lixiaocong;
-
-import com.lixiaocong.cms.entity.Article;
-import com.lixiaocong.cms.repository.IArticleRepository;
+import com.lixiaocong.downloader.IDownloader;
 import com.lixiaocong.cms.repository.IUserRepository;
-import com.lixiaocong.cms.service.IArticleService;
-import com.lixiaocong.cms.service.ICommentService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class SpringTest {
-    @Autowired
-    private IUserRepository userRepository;
+@Configuration
+@EnableWebSocket
+public class SocketConfig implements WebSocketConfigurer {
 
-    @Autowired
-    private ICommentService commentService;
-
-    @Autowired
-    private IArticleService articleService;
+    private final IUserRepository userRepository;
+    private final IDownloader downloader;
 
     @Autowired
-    private IArticleRepository articleRepository;
+    public SocketConfig(IUserRepository userRepository, IDownloader downloader) {
+        this.userRepository = userRepository;
+        this.downloader = downloader;
+    }
 
-    @Test
-    public void test() {
-        Page<Article> articles = articleRepository.findByUser_Id(1, new PageRequest(0, 2));
-        for (Article article : articles)
-            System.out.println(article.getTitle());
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+         registry.addHandler(getSocketHandler(),"/socket")
+                 .setAllowedOrigins("http://localhost:4200")
+                 .addInterceptors(getSocketInterceptor());
+    }
+
+    @Bean
+    public SocketHandler getSocketHandler(){
+        return new SocketHandler(downloader);
+    }
+
+    @Bean
+    public SocketInterceptor getSocketInterceptor(){
+        return new SocketInterceptor(userRepository);
+    }
+
+    @Bean
+    public ServletServerContainerFactoryBean createWebSocketContainer() {
+        ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
+        container.setMaxTextMessageBufferSize(1024000);
+        container.setMaxBinaryMessageBufferSize(1024000);
+        return container;
     }
 }

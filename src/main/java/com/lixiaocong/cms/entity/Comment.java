@@ -30,10 +30,60 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.entity;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class Comment extends AbstractEntity {
+    @Lob
+    @Column(nullable = false)
+    private String content;
+
+    @ManyToOne(optional = false)
+    private Article article;
+
+    @ManyToOne(optional = false)
+    private User user;
+
+    public Comment() {
+    }
+
+    public Comment(String content, Article article, User user) {
+        this.content = content;
+        this.article = article;
+        this.user = user;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" + "content='" + content + '\'' + ", article=" + article + ", user=" + user + "} " + super.toString();
     }
 }

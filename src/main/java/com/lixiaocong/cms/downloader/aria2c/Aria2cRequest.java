@@ -30,10 +30,53 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+package com.lixiaocong.cms.downloader.aria2c;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
+public class Aria2cRequest {
+    private final String jsonrpc;
+
+    private String id;
+    private String method;
+    private List<Object> params;
+
+    Aria2cRequest(String token, String method) {
+        this.id = UUID.randomUUID().toString();
+        this.method = method;
+        this.params = new LinkedList<>() ;
+        this.params.add("token:"+token);
+        jsonrpc = "2.0";
+    }
+
+    public String getJsonrpc() {
+        return jsonrpc;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    List<Object> getParams() {
+        return params;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setParams(List<Object> params) {
+        this.params = params;
     }
 }

@@ -30,10 +30,11 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.model
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
-}
+import org.hibernate.validator.constraints.Length
+
+data class UserUpdateForm(
+        @Length(min = 6, max = 255)
+        var password: String = "123456"
+)

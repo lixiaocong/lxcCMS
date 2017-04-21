@@ -32,8 +32,6 @@
 
 package com.lixiaocong.downloader;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
+public interface DownloaderConfigurer {
+    IDownloader getDownloader();
 }

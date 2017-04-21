@@ -30,10 +30,12 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.socket;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
+class SocketCommand {
+    static final String GET_TASK = "get-task";
+    static final String ADD_TASK = "add-task";
+    static final String START_TASK = "start-task";
+    static final String PAUSE_TASK = "pause-task";
+    static final String REMOVE_TASK = "remove-task" ;
 }

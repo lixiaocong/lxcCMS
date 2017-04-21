@@ -30,10 +30,41 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.socket;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import com.lixiaocong.cms.repository.IUserRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.server.HandshakeInterceptor;
+
+import java.util.Map;
+
+public class SocketInterceptor implements HandshakeInterceptor{
+
+    private Log log= LogFactory.getLog(getClass().getName());
+
+    private final IUserRepository userRepository;
+
+    @Autowired
+    public SocketInterceptor(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        return true;
+
+//        String name = request.getPrincipal().getName();
+//        User user = userRepository.findByUsername(name);
+//        return user != null && user.isAdmin();
+    }
+
+    @Override
+    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+
     }
 }

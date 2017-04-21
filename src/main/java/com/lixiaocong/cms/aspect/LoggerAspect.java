@@ -30,10 +30,33 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.aspect;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class LoggerAspect {
+    private Log logger = LogFactory.getLog(getClass());
+
+    @Before("execution(* com.lixiaocong.cms.controller..*(..)) || execution(* com.lixiaocong.cms.service..*(..)) || execution(* com.lixiaocong.cms.repository..*(..))")
+    public void befor(JoinPoint point) {
+        Object[] signatureArgs = point.getArgs();
+        if (signatureArgs.length == 0) {
+            logger.info(point.getSignature() + " called");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Object signatureArg : signatureArgs) {
+            sb.append(signatureArg).append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        logger.info(point.getSignature() + " called with args:" + sb.toString());
     }
 }

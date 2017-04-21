@@ -30,10 +30,39 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.controller;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import com.lixiaocong.cms.entity.User;
+import com.lixiaocong.cms.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
+
+import javax.annotation.security.RolesAllowed;
+import java.security.Principal;
+
+@Controller
+public class DispatchController {
+    private final IUserService userService;
+
+    @Autowired
+    public DispatchController(IUserService userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping("/")
+    public View main() {
+        return new RedirectView("/blog");
+    }
+
+    @RolesAllowed("ROLE_USER")
+    @RequestMapping("/admin")
+    public ModelAndView admin(Principal princial) {
+        User user = userService.getByUsername(princial.getName());
+        if (user.isAdmin()) return new ModelAndView("admin/superUser");
+        return new ModelAndView("admin/normalUser");
     }
 }

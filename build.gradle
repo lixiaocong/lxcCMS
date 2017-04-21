@@ -36,7 +36,6 @@ dependencies {
     compile "org.springframework.social:spring-social-web"
     compile "org.springframework.social:spring-social-config"
     compile "org.springframework.social:spring-social-security"
-    compile "org.springframework.social:spring-social-facebook"
     compile "net.gplatform:spring-social-qq:1.0.2"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.5"

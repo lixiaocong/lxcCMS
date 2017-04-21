@@ -30,40 +30,39 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong;
+package com.lixiaocong.cms.security;
 
-import com.lixiaocong.cms.entity.Article;
-import com.lixiaocong.cms.repository.IArticleRepository;
-import com.lixiaocong.cms.repository.IUserRepository;
 import com.lixiaocong.cms.service.IArticleService;
 import com.lixiaocong.cms.service.ICommentService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
+import org.springframework.security.core.Authentication;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class SpringTest {
-    @Autowired
-    private IUserRepository userRepository;
+class SecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
+    private final AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
-    @Autowired
-    private ICommentService commentService;
-
-    @Autowired
     private IArticleService articleService;
 
-    @Autowired
-    private IArticleRepository articleRepository;
+    private ICommentService commentService;
 
-    @Test
-    public void test() {
-        Page<Article> articles = articleRepository.findByUser_Id(1, new PageRequest(0, 2));
-        for (Article article : articles)
-            System.out.println(article.getTitle());
+    SecurityExpressionHandler(IArticleService articleService, ICommentService commentService) {
+        super();
+        this.articleService = articleService;
+        this.commentService = commentService;
+    }
+
+    @Override
+    protected MethodSecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication, MethodInvocation invocation) {
+        //new my own expression
+        final SecurityExpression root = new SecurityExpression(authentication, articleService, commentService);
+        root.setThis(invocation.getThis());
+        root.setPermissionEvaluator(getPermissionEvaluator());
+        root.setTrustResolver(this.trustResolver);
+        root.setRoleHierarchy(getRoleHierarchy());
+
+        return root;
     }
 }

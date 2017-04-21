@@ -30,10 +30,56 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.service.impl;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import com.lixiaocong.cms.entity.User;
+import com.lixiaocong.cms.repository.IUserRepository;
+import com.lixiaocong.cms.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
+public class UserServiceImpl implements IUserService {
+    private final IUserRepository userRepository;
+
+    @Autowired
+    public UserServiceImpl(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public User create(String username, String password) {
+        return userRepository.save(new User(username, password));
+    }
+
+    @Override
+    public void delete(long id) {
+        userRepository.delete(id);
+    }
+
+    @Override
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public Page<User> get(int page, int size) {
+        return userRepository.findAll(new PageRequest(page, size, Sort.Direction.ASC, "createTime"));
+    }
+
+    @Override
+    public User get(long id) {
+        return userRepository.findOne(id);
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

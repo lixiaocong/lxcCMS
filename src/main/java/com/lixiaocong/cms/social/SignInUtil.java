@@ -30,10 +30,29 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.social;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.web.SignInAdapter;
+import org.springframework.web.context.request.NativeWebRequest;
+
+public class SignInUtil implements SignInAdapter {
+    private UserDetailsService userDetailsService;
+
+    public SignInUtil(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
+        UserDetails user = userDetailsService.loadUserByUsername(localUserId);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return "/";
     }
 }

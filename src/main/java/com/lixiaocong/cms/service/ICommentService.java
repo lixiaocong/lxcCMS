@@ -30,10 +30,26 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.service;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
+import com.lixiaocong.cms.entity.Comment;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+
+public interface ICommentService {
+    void create(long articleId, long userId, String content);
+
+    void delete(long id);
+
+    void update(Comment comment);
+
+    Comment get(long id);
+
+    Page<Comment> get(int page, int size);
+
+    Page<Comment> getByUser(int page, int size, long userId);
+
+    List<Comment> getByArticle(long articleId);
 }
+

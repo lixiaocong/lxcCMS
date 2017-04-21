@@ -30,10 +30,30 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.exception;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import com.lixiaocong.cms.rest.ResponseMsgFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
+
+@ControllerAdvice
+public class ExceptionControllerAdvice {
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ControllerParamException.class)
+    public ModelAndView handleIOException() {
+        return new ModelAndView("/error/500");
+    }
+
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RestParamException.class)
+    public Map<String, Object> handleRestParamException() {
+        return ResponseMsgFactory.createFailedResponse("参数错误");
     }
 }

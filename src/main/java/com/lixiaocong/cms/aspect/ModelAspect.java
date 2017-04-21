@@ -30,10 +30,21 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.aspect;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
+
+@Aspect
+@Component
+public class ModelAspect {
+    @AfterReturning(value = "execution(org.springframework.web.servlet.ModelAndView com.lixiaocong.cms.controller..*(..))", returning = "result")
+    public void before(ModelAndView result) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) result.addObject("username", ((UserDetails) principal).getUsername());
     }
 }

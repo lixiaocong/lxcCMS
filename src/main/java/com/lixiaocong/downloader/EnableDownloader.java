@@ -32,8 +32,14 @@
 
 package com.lixiaocong.downloader;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
-    }
+import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.*;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Import(DownloaderConfiguration.class)
+public @interface EnableDownloader {
 }

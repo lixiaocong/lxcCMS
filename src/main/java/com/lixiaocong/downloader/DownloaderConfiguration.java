@@ -32,8 +32,32 @@
 
 package com.lixiaocong.downloader;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
+
+import java.util.List;
+
+@Configuration
+public class DownloaderConfiguration {
+    private List<DownloaderConfigurer> downloaderConfigurers;
+
+    public DownloaderConfiguration(List<DownloaderConfigurer> downloaderConfigurers) {
+        this.downloaderConfigurers = downloaderConfigurers;
+    }
+
+    @Bean
+    public IDownloader downloader(){
+        IDownloader downloader = null;
+        for (DownloaderConfigurer downloaderConfigurer : downloaderConfigurers) {
+            IDownloader downloaderCandidate = downloaderConfigurer.getDownloader();
+            if(downloaderCandidate != null) {
+                downloader = downloaderCandidate;
+                break;
+            }
+        }
+
+        Assert.notNull(downloader, "One configuration class must implement getDownloader from DownloaderConfigurer.");
+        return downloader;
     }
 }

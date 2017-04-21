@@ -30,10 +30,40 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.downloader;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import com.lixiaocong.downloader.DownloaderConfigurer;
+import com.lixiaocong.downloader.EnableDownloader;
+import com.lixiaocong.downloader.IDownloader;
+import com.lixiaocong.cms.downloader.aria2c.Aria2cDownloader;
+import com.lixiaocong.cms.downloader.transmission.TransmissionDownloaderAdapter;
+import com.lixiaocong.transmission4j.TransmissionClient;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableDownloader
+public class DownloaderConfig implements DownloaderConfigurer {
+
+    @Value("${aria2c.token:#{null}}")
+    private String token;
+    @Value("${transmission.username:#{null}}")
+    private String username;
+    @Value("${transmission.password:#{null}}")
+    private String password;
+
+    private Log log= LogFactory.getLog(getClass().getName());
+
+    @Override
+    public IDownloader getDownloader(){
+        if(token!=null) {
+
+            log.info("aria2c client created");
+            return new Aria2cDownloader(token);
+        }
+        TransmissionClient client = new TransmissionClient(username, password, "http://127.0.0.1:9091/transmission/rpc");
+        return new TransmissionDownloaderAdapter(client);
     }
 }

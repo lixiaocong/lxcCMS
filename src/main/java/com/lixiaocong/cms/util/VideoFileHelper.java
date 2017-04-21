@@ -30,10 +30,52 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.downloader;
+package com.lixiaocong.cms.util;
 
-public class DownloaderException extends Exception{
-    public DownloaderException(String s) {
-        super(s);
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * 封装常用文件操作
+ */
+public class VideoFileHelper {
+    public static Log logger = LogFactory.getLog("helper");
+
+    public static List<File> findAllVideos(File file, String[] types) {
+        List<File> ret = new LinkedList<>();
+
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null) for (File subFile : files) {
+                List<File> subFiles = findAllVideos(subFile, types);
+                ret.addAll(subFiles);
+            }
+        } else {
+            String name = file.getName();
+            for (String type : types)
+                if (name.endsWith(type)) {
+                    ret.add(file);
+                    break;
+                }
+        }
+        return ret;
+    }
+
+    public static boolean moveFiles(List<File> files, String destPath) {
+        File dir = new File(destPath);
+        if (!dir.isDirectory()) return false;
+
+        boolean ret = true;
+        for (File file : files) {
+            if (!file.renameTo(new File(destPath + file.getName()))) {
+                ret = false;
+                logger.error("move " + file.getName() + " error");
+            }
+        }
+        return ret;
     }
 }
