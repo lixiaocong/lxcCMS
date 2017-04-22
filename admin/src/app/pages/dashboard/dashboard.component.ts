@@ -65,7 +65,7 @@ class DashboardCommand{
 
 class DashboardResult{
     method:string;
-    data:number;
+    data:any;
 }
 
 

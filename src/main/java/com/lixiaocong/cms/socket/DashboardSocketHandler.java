@@ -96,9 +96,9 @@ public class DashboardSocketHandler extends TextWebSocketHandler{
 
     private String handleGetCommentNumber() {
         long count = commentRepository.count();
-        DashboardResult dashboardResult = new DashboardResult(DashboardCommand.GET_COMMENT_NUMBER,count);
+        SocketResult socketResult = new SocketResult(DashboardCommand.GET_COMMENT_NUMBER,count);
         try {
-            return mapper.writeValueAsString(dashboardResult);
+            return mapper.writeValueAsString(socketResult);
         } catch (IOException e) {
             //TODO handle exception
             e.printStackTrace();
@@ -108,9 +108,9 @@ public class DashboardSocketHandler extends TextWebSocketHandler{
 
     private String handleGetArticleNumber() {
         long count = articleRepository.count();
-        DashboardResult dashboardResult = new DashboardResult(DashboardCommand.GET_ARTICLE_NUMBER,count);
+        SocketResult socketResult = new SocketResult(DashboardCommand.GET_ARTICLE_NUMBER,count);
         try {
-            return mapper.writeValueAsString(dashboardResult);
+            return mapper.writeValueAsString(socketResult);
         } catch (IOException e) {
             //TODO handle exception
             e.printStackTrace();
@@ -120,9 +120,9 @@ public class DashboardSocketHandler extends TextWebSocketHandler{
 
     private String handleGetUserNumber() {
         long count = userRepository.count();
-        DashboardResult dashboardResult = new DashboardResult(DashboardCommand.GET_USER_NUMBER,count);
+        SocketResult socketResult = new SocketResult(DashboardCommand.GET_USER_NUMBER,count);
         try {
-            return mapper.writeValueAsString(dashboardResult);
+            return mapper.writeValueAsString(socketResult);
         } catch (IOException e) {
             //TODO handle exception
             e.printStackTrace();

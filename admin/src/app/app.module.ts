@@ -17,6 +17,7 @@ import { FileComponent } from './pages/file/file.component';
 import { AddtaskDialogComponent } from './pages/downloader/addtask-dialog/addtask-dialog.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DashboardCardComponent } from './pages/dashboard/dashboard-card/dashboard-card.component';
+import { UserItemComponent } from './pages/user/user-item/user-item.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { DashboardCardComponent } from './pages/dashboard/dashboard-card/dashboa
     AddtaskDialogComponent,
     DashboardComponent,
     DashboardCardComponent,
+    UserItemComponent,
   ],
   imports: [
     BrowserModule,

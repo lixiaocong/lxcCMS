@@ -64,6 +64,7 @@ public class SocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
          registry.addHandler(new DownloaderSocketHandler(downloader),"/downloader-socket")
                  .addHandler(new DashboardSocketHandler(userRepository, articleRepository, commentRepository),"/dashboard-socket")
+                 .addHandler(new UserHandler(userRepository),"/user-socket")
                  .setAllowedOrigins("http://localhost:4200")
                  .addInterceptors(new SocketInterceptor(userRepository));
     }
