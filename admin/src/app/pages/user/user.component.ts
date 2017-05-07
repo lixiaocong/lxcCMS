@@ -9,35 +9,16 @@ import {UserService} from "./user.service";
     providers: [UserService]
 })
 export class UserComponent implements OnInit {
+
     users: User[];
 
     constructor(private userService: UserService) {
     }
 
-    ngOnInit() {
-        this.users = [];
-        this.userService.connect();
-        this.userService.messages.subscribe((message: any) => {
-            console.log(message);
+    ngOnInit(): void {
+        this.userService.getUsers().subscribe((users: User[]) => {
+            this.users = users;
         });
-
-        this.userService.send("hello");
-    }
-}
-
-class UserCommand {
-    static GET_USERS: string = 'get-users';
-
-    method: string;
-
-    constructor(method: string) {
-        this.method = method;
     }
 
-
-}
-
-class UserResult {
-    method: string;
-    data: any;
 }

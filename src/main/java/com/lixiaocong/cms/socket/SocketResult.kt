@@ -32,7 +32,4 @@
 
 package com.lixiaocong.cms.socket
 
-import org.codehaus.jackson.map.ObjectMapper
-import org.springframework.web.socket.TextMessage
-
 class SocketResult(var method: String, var data: Any)

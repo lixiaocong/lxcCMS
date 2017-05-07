@@ -54,7 +54,7 @@ import java.security.Principal;
 import java.util.Map;
 
 @RestController
-@RolesAllowed("ROLE_USER")
+//@RolesAllowed("ROLE_USER")
 @RequestMapping("/user")
 public class UserController {
     private final IUserService userService;
@@ -100,7 +100,7 @@ public class UserController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-    @RolesAllowed("ROLE_ADMIN")
+//    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.GET)
     public Map<String, Object> get(@RequestParam(value = "page", required = false, defaultValue = "1") int page, @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         return ResponseMsgFactory.createSuccessResponse("users", userService.get(page - 1, size));
