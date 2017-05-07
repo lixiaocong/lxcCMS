@@ -31,10 +31,8 @@
  */
 package com.lixiaocong.cms.socket;
 
-import com.lixiaocong.cms.repository.IArticleRepository;
-import com.lixiaocong.cms.repository.ICommentRepository;
-import com.lixiaocong.downloader.IDownloader;
 import com.lixiaocong.cms.repository.IUserRepository;
+import com.lixiaocong.downloader.IDownloader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,22 +47,16 @@ public class SocketConfig implements WebSocketConfigurer {
 
     private final IUserRepository userRepository;
     private final IDownloader downloader;
-    private final IArticleRepository articleRepository;
-    private final ICommentRepository commentRepository;
 
     @Autowired
-    public SocketConfig(IUserRepository userRepository, IDownloader downloader, IArticleRepository articleRepository, ICommentRepository commentRepository) {
+    public SocketConfig(IUserRepository userRepository, IDownloader downloader) {
         this.userRepository = userRepository;
         this.downloader = downloader;
-        this.articleRepository = articleRepository;
-        this.commentRepository = commentRepository;
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-         registry.addHandler(new DownloaderSocketHandler(downloader),"/downloader-socket")
-                 .addHandler(new DashboardSocketHandler(userRepository, articleRepository, commentRepository),"/dashboard-socket")
-                 .addHandler(new UserHandler(userRepository),"/user-socket")
+         registry.addHandler(downloaderSocketHandler(),"/downloader-socket")
                  .setAllowedOrigins("http://localhost:4200")
                  .addInterceptors(new SocketInterceptor(userRepository));
     }
@@ -75,5 +67,10 @@ public class SocketConfig implements WebSocketConfigurer {
         container.setMaxTextMessageBufferSize(1024000);
         container.setMaxBinaryMessageBufferSize(1024000);
         return container;
+    }
+
+    @Bean
+    public DownloaderSocketHandler downloaderSocketHandler(){
+        return new DownloaderSocketHandler(downloader);
     }
 }

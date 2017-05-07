@@ -43,7 +43,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.facebook.api.Facebook;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,8 +74,6 @@ public class UserController {
         Map<String, Object> ret = ResponseMsgFactory.createSuccessResponse("user", user);
         ConnectionRepository connectionRepository = connectionRepositoryProvider.get();
 
-        Connection<Facebook> facebookConnection = connectionRepository.findPrimaryConnection(Facebook.class);
-        ret.put("facebook", facebookConnection != null);
         Connection<QQ> qqConnection = connectionRepository.findPrimaryConnection(QQ.class);
         ret.put("qq", qqConnection != null);
 

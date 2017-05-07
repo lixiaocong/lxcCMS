@@ -39,24 +39,41 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class DownloaderSocketHandler extends TextWebSocketHandler {
 
     private Log log;
     private IDownloader downloader;
     private ObjectMapper mapper;
+    private Set<WebSocketSession> webSocketSessions;
 
     DownloaderSocketHandler(IDownloader downloader) {
         this.log = LogFactory.getLog(getClass().getName());
         this.downloader = downloader;
         this.mapper = new ObjectMapper();
+        this.webSocketSessions = new HashSet<>();
+    }
+
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) {
+        log.info("open socket " + session.getId());
+        this.webSocketSessions.add(session);
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status){
+        log.info("closed socket " + session.getId());
+        this.webSocketSessions.remove(session);
     }
 
     @Override
@@ -75,11 +92,18 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
         String method = jsonNode.path("method").getValueAsText();
         String result = null;
         switch (method) {
-            case DownloaderSocketCommand.GET_TASK:result = handleGetTask();break;
-            case DownloaderSocketCommand.ADD_TASK:result = handleAddTask(jsonNode);break;
-            case DownloaderSocketCommand.START_TASK:result = handleStartTask(jsonNode);break;
-            case DownloaderSocketCommand.PAUSE_TASK:result = handlePauseTask(jsonNode);break;
-            case DownloaderSocketCommand.REMOVE_TASK:result = handleRemoveTask(jsonNode);break;
+            case DownloaderSocketCommand.ADD_TASK:
+                result = handleAddTask(jsonNode);
+                break;
+            case DownloaderSocketCommand.START_TASK:
+                result = handleStartTask(jsonNode);
+                break;
+            case DownloaderSocketCommand.PAUSE_TASK:
+                result = handlePauseTask(jsonNode);
+                break;
+            case DownloaderSocketCommand.REMOVE_TASK:
+                result = handleRemoveTask(jsonNode);
+                break;
         }
 
         if (result == null)
@@ -92,14 +116,25 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    private String[] getIds(JsonNode jsonNode){
+    public void broadcast(List<DownloadTask> torrents){
+        this.webSocketSessions.forEach(webSocketSession -> {
+            try {
+                String data = mapper.writeValueAsString(torrents);
+                webSocketSession.sendMessage(new TextMessage(data));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private String[] getIds(JsonNode jsonNode) {
         JsonNode ids = jsonNode.path("ids");
         List<String> idList = new LinkedList<>();
-        ids.forEach(node->idList.add(node.getTextValue()));
+        ids.forEach(node -> idList.add(node.getTextValue()));
 
         String[] idArray = new String[idList.size()];
-        for(int i=0;i<idList.size();i++)
-            idArray[i]=idList.get(i);
+        for (int i = 0; i < idList.size(); i++)
+            idArray[i] = idList.get(i);
 
         return idArray;
     }
@@ -122,22 +157,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
                 default:
                     break;
             }
-        }catch (DownloaderException e){
-            //TODO handle exception
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String handleGetTask() {
-        List<DownloadTask> downloadTasks;
-        try {
-            downloadTasks = downloader.get();
-            return mapper.writeValueAsString(downloadTasks);
         } catch (DownloaderException e) {
-            //TODO handle exception
-            e.printStackTrace();
-        } catch (IOException e) {
             //TODO handle exception
             e.printStackTrace();
         }
@@ -167,7 +187,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     }
 
     private String handleRemoveTask(JsonNode jsonNode) {
-    String[] ids = getIds(jsonNode);
+        String[] ids = getIds(jsonNode);
         try {
             downloader.remove(ids);
         } catch (DownloaderException e) {

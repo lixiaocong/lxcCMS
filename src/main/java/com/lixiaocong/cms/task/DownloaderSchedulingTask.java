@@ -32,6 +32,7 @@
 
 package com.lixiaocong.cms.task;
 
+import com.lixiaocong.cms.socket.DownloaderSocketHandler;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
@@ -48,10 +49,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class DownloaderTask {
+public class DownloaderSchedulingTask {
     private Log log = LogFactory.getLog(getClass());
-
     private IDownloader downloader;
+    private DownloaderSocketHandler downloaderSocketHandler;
 
     @Value("${nginx.root}")
     private String fileDestination;
@@ -59,13 +60,14 @@ public class DownloaderTask {
     private String fileTypes;
 
     @Autowired
-    public DownloaderTask(IDownloader downloader) {
+    public DownloaderSchedulingTask(IDownloader downloader, DownloaderSocketHandler downloaderSocketHandler) {
         this.downloader = downloader;
+        this.downloaderSocketHandler = downloaderSocketHandler;
     }
 
     @Scheduled(fixedDelay = 5000)
     public void task() throws JsonException, AuthException, NetworkException {
-        List<DownloadTask> torrents;
+        List<DownloadTask> torrents = null;
         try {
             torrents = downloader.get();
             torrents.forEach(torrent ->{
@@ -82,5 +84,6 @@ public class DownloaderTask {
         } catch (DownloaderException e) {
             e.printStackTrace();
         }
+        this.downloaderSocketHandler.broadcast(torrents);
     }
 }

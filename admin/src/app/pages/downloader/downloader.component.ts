@@ -20,11 +20,6 @@ export class DownloaderComponent implements OnInit {
         this.ws = new WebSocket(url);
         this.downloadTasks = [];
 
-        this.ws.onopen = event => {
-            this.get_task();
-            setInterval(() => this.get_task(), 1000);
-        };
-
         this.ws.onclose = event => {
             console.log('close');
             console.log(event.code)
@@ -50,10 +45,6 @@ export class DownloaderComponent implements OnInit {
         };
     }
 
-    private get_task() {
-        this.ws.send(JSON.stringify(new GetTaskCommand()));
-    }
-
     upload_task() {
         let dialogRef = this.dialog.open(AddtaskDialogComponent);
         dialogRef.afterClosed().subscribe(result => {
@@ -65,19 +56,19 @@ export class DownloaderComponent implements OnInit {
 
     start_task() {
         let command = new StartTaskCommand();
-        this.downloadTasks.filter(task=>task.isChoosed).forEach(task=>command.addId(task.id));
+        this.downloadTasks.filter(task => task.isChoosed).forEach(task => command.addId(task.id));
         this.ws.send(JSON.stringify(command));
     }
 
     pause_task() {
         let command = new PauseTaskCommand();
-        this.downloadTasks.filter(task=>task.isChoosed).forEach(task=>command.addId(task.id));
+        this.downloadTasks.filter(task => task.isChoosed).forEach(task => command.addId(task.id));
         this.ws.send(JSON.stringify(command));
     }
 
     delete_task() {
         let command = new RemoveTaskCommand();
-        this.downloadTasks.filter(task=>task.isChoosed).forEach(task=>command.addId(task.id));
+        this.downloadTasks.filter(task => task.isChoosed).forEach(task => command.addId(task.id));
         this.ws.send(JSON.stringify(command));
     }
 }
@@ -97,11 +88,6 @@ class DownloaderCommand {
     }
 }
 
-class GetTaskCommand extends DownloaderCommand {
-    constructor() {
-        super(DownloaderCommand.GET_TASK);
-    }
-}
 class AddTaskCommand extends DownloaderCommand {
     addTaskInfo: AddTaskInfo;
 
@@ -124,7 +110,7 @@ class StartTaskCommand extends DownloaderCommand {
     }
 }
 
-class PauseTaskCommand extends DownloaderCommand{
+class PauseTaskCommand extends DownloaderCommand {
     ids: Array<string>;
 
     constructor() {
@@ -137,7 +123,7 @@ class PauseTaskCommand extends DownloaderCommand{
     }
 }
 
-class RemoveTaskCommand extends DownloaderCommand{
+class RemoveTaskCommand extends DownloaderCommand {
     ids: Array<string>;
 
     constructor() {
