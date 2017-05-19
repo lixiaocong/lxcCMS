@@ -1,13 +1,10 @@
 {
   "name": "admin",
-  "version": "0.0.0",
-  "license": "MIT",
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
     "init": "npm install"
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "2.4.0",
     "@angular/compiler": "2.4.0",

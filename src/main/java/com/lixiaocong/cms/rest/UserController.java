@@ -80,7 +80,7 @@ public class UserController {
         return ret;
     }
 
-    @RolesAllowed("ROLE_ADMIN")
+//    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable long id) {
         userService.delete(id);

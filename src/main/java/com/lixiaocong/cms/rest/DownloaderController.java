@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RolesAllowed("ROLE_ADMIN")
+//@RolesAllowed("ROLE_ADMIN")
 @RequestMapping("/downloader")
 public class DownloaderController {
     private Log log = LogFactory.getLog(getClass().getName());
