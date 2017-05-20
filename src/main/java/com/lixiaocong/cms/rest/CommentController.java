@@ -50,13 +50,13 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
-//@RolesAllowed("ROLE_USER")
+@RolesAllowed("ROLE_USER")
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
     private final ICommentService commentService;
     private final IUserService userService;
-    private Log logger = LogFactory.getLog(getClass());
+    private Log log = LogFactory.getLog(getClass().getName());
 
     @Autowired
     public CommentController(ICommentService commentService, IUserService userService) {
@@ -73,14 +73,14 @@ public class CommentController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or isCommentOwner(#id)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or isCommentOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable long id) {
         commentService.delete(id);
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or isCommentOwner(#id)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or isCommentOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Map<String, Object> put(@PathVariable long id, @RequestBody @Valid CommentForm comment, BindingResult result) throws RestParamException {
         if (result.hasErrors()) throw new RestParamException();
@@ -94,10 +94,7 @@ public class CommentController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Map<String, Object> get(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int size, Principal principal) {
-        //TODO 删除代码
-        User user = new User("admin","");
-        user.setAdmin(true);
-        //User user = userService.getByUsername(principal.getName());
+        User user = userService.getByUsername(principal.getName());
         if (user.isAdmin())
             return ResponseMsgFactory.createSuccessResponse("comments", commentService.get(page - 1, size));
         else

@@ -74,7 +74,7 @@ public class FileController {
         this.codeService = codeService;
     }
 
-//    @RolesAllowed("ROLE_USER")
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String post(MultipartFile imageFile) {
         try {
@@ -87,7 +87,7 @@ public class FileController {
         return imageServer + "error.jpg";
     }
 
-//    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.GET)
     public Map<String, Object> video() {
         File file = new File(downloadFilePath);
@@ -103,7 +103,7 @@ public class FileController {
         return ret;
     }
 
-//    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@RequestParam String fileName) {
         File file = new File(downloadFilePath + fileName);

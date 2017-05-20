@@ -40,7 +40,7 @@ import java.util.Collection;
 public class DaoBasedUserDetails extends User {
     private long id;
 
-    DaoBasedUserDetails(long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public DaoBasedUserDetails(long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;
     }

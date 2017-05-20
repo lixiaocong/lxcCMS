@@ -43,24 +43,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
-//@RolesAllowed("ROLE_USER")
+@RolesAllowed("ROLE_USER")
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
     private final IArticleService articleService;
     private final IUserService userService;
-    private Log log= LogFactory.getLog(getClass());
+    private Log log = LogFactory.getLog(getClass().getName());
 
     @Autowired
     public ArticleController(IArticleService articleService, IUserService userService) {
@@ -77,7 +75,7 @@ public class ArticleController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or isArticleOwner(#id)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or isArticleOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable long id) {
         Article article = articleService.get(id);
@@ -86,7 +84,7 @@ public class ArticleController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or isArticleOwner(#id)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or isArticleOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Map<String, Object> put(@PathVariable long id, @RequestBody @Valid ArticleForm article, BindingResult result) throws RestParamException {
         if (result.hasErrors()) throw new RestParamException();
@@ -100,12 +98,7 @@ public class ArticleController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Map<String, Object> get(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int size, Principal principal) {
-
-        //TODO 删除代码
-        User user = new User("admin","");
-        user.setAdmin(true);
-        //User user = userService.getByUsername(principal.getName());
-
+        User user = userService.getByUsername(principal.getName());
         if (user.isAdmin())
             return ResponseMsgFactory.createSuccessResponse("articles", articleService.get(page - 1, size));
         else

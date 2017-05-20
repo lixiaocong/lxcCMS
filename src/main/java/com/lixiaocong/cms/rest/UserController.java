@@ -53,13 +53,13 @@ import java.security.Principal;
 import java.util.Map;
 
 @RestController
-//@RolesAllowed("ROLE_USER")
+@RolesAllowed("ROLE_USER")
 @RequestMapping("/user")
 public class UserController {
     private final IUserService userService;
     private final BCryptPasswordEncoder encoder;
     private final Provider<ConnectionRepository> connectionRepositoryProvider;
-    private Log logger = LogFactory.getLog(getClass());
+    private Log log = LogFactory.getLog(getClass().getName());
 
     @Autowired
     public UserController(IUserService userService, Provider<ConnectionRepository> connectionRepositoryProvider) {
@@ -80,7 +80,7 @@ public class UserController {
         return ret;
     }
 
-//    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable long id) {
         userService.delete(id);
@@ -97,7 +97,7 @@ public class UserController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-//    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.GET)
     public Map<String, Object> get(@RequestParam(value = "page", required = false, defaultValue = "1") int page, @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         return ResponseMsgFactory.createSuccessResponse("users", userService.get(page - 1, size));

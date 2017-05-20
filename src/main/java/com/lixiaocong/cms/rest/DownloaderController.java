@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@RolesAllowed("ROLE_ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 @RequestMapping("/downloader")
 public class DownloaderController {
     private Log log = LogFactory.getLog(getClass().getName());
@@ -74,8 +74,8 @@ public class DownloaderController {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public Map<String, Object> delete(String id) throws DownloaderException {
-        if(downloader.remove(id))
-        return ResponseMsgFactory.createSuccessResponse();
+        if (downloader.remove(id))
+            return ResponseMsgFactory.createSuccessResponse();
         return ResponseMsgFactory.createFailedResponse("error");
     }
 
