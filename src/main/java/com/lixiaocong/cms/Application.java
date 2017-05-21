@@ -39,7 +39,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@ServletComponentScan
 @SpringBootApplication
 @EnableScheduling
 public class Application extends SpringBootServletInitializer {

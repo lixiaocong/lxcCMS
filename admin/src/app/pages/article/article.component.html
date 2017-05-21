@@ -6,6 +6,11 @@
     <ngl-datatable-column heading="USER" key="user">
         <template nglDatatableCell let-value><ngl-badge>{{value.username}}</ngl-badge></template>
     </ngl-datatable-column>
+        <ngl-datatable-column heading="Opeations" key="id">
+            <template nglDatatableCell let-value>
+                <button type="button" nglButton="neutral" (click)="onDelete(value)">delete</button>
+            </template>
+        </ngl-datatable-column>
 
     <!-- Loading overlay -->
     <template nglLoadingOverlay>

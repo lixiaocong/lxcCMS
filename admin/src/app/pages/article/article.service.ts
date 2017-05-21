@@ -24,4 +24,9 @@ export class ArticleService {
     getArticleNumber():Observable<number>{
         return this.getArticles().map(articles=>articles.totalElements)
     }
+
+    deleteArticle(id: number):Observable<any> {
+        return this.http.delete(this.articleUrl+"/"+id)
+            .map(PageDataHandler.extractData);
+    }
 }

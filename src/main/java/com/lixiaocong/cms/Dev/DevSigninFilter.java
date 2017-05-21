@@ -1,6 +1,9 @@
 package com.lixiaocong.cms.Dev;
 
 import com.lixiaocong.cms.security.DaoBasedUserDetails;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,11 +15,12 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+@Configuration
+@Profile("dev")
+@ServletComponentScan(basePackageClasses = DevSigninFilter.class)
 public class DevSigninFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

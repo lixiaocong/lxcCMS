@@ -40,4 +40,14 @@ export class ArticleComponent implements OnInit {
             this.total = articles.totalElements;
         })
     }
+
+    onDelete(id:number){
+        console.log(id);
+        this.articleService.deleteArticle(id).subscribe(response=>{
+            if(response.result == 'success')
+                this.onPageChange(this.page);
+            else
+                console.log("error");
+        });
+    }
 }
