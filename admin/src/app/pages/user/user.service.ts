@@ -19,7 +19,7 @@ export class UserService {
             .map(data=>data.users.totalElements)
     }
 
-    getUsers(page:number = 1, size:number = 10):Observable<User[]>{
+    getUsers(page:number = 1, size:number = 10):Observable<any>{
         return this.http.get(this.userUrl)
             .map(PageDataHandler.extractData)
             .filter(PageDataHandler.successResponseFilter)

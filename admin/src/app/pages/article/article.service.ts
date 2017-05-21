@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, Response} from "@angular/http";
+import {Http, URLSearchParams} from "@angular/http";
 import {Observable} from "rxjs";
 import {PageDataHandler} from "../../utils/PageDataHandler";
 
@@ -11,10 +11,17 @@ export class ArticleService {
     constructor(private http:Http) {
     }
 
-    getArticleNumber():Observable<number>{
-        return this.http.get(this.articleUrl)
+    getArticles(page:number = 1, size:number = 10):Observable<any>{
+        let params = new URLSearchParams();
+        params.set("page",page.toString());
+        params.set("size",size.toString());
+        return this.http.get(this.articleUrl,{search:params})
             .map(PageDataHandler.extractData)
             .filter(PageDataHandler.successResponseFilter)
-            .map(data=>data.articles.totalElements)
+            .map(data=>data.articles)
+    }
+
+    getArticleNumber():Observable<number>{
+        return this.getArticles().map(articles=>articles.totalElements)
     }
 }

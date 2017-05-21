@@ -1,17 +1,10 @@
-<button type="button" nglButton="neutral" (click)="hideName = !hideName" class="slds-m-bottom--large">Toggle "Name" column</button>
-<button type="button" nglButton="neutral" (click)="loading = !loading" class="slds-m-bottom--large">Toggle Loading</button>
-<button type="button" nglButton="neutral" (click)="toggleData()" class="slds-m-bottom--large">Clear/Set data</button>
-
-<table ngl-datatable [data]="data" trackByKey="rank" [loading]="loading" [(sort)]="sort" (sortChange)="onSort($event)"
-       (onRowClick)="onRowClick($event)" class="slds-max-medium-table--stacked-horizontal">
-    <ngl-datatable-column heading="Rank" key="rank" sortable></ngl-datatable-column>
-    <ngl-datatable-column heading="Name" key="name" *ngIf="!hideName" cellClass="slds-truncate" sortable></ngl-datatable-column>
-    <ngl-datatable-column heading="Surname" key="surname" cellClass="slds-truncate" sortable>
-        <template nglDatatableCell let-row="row"><b>{{row.surname}}</b></template>
-    </ngl-datatable-column>
-    <ngl-datatable-column heading="Points" key="points">
-        <template nglDatatableHeading><strong>Points</strong></template>
-        <template nglDatatableCell let-value><ngl-badge>{{value | number}}</ngl-badge></template>
+<div class="article">
+    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)"
+       (onRowClick)="onRowClick($event)">
+    <ngl-datatable-column heading="ID" key="id" sortable></ngl-datatable-column>
+    <ngl-datatable-column heading="TITLE" key="title"></ngl-datatable-column>
+    <ngl-datatable-column heading="USER" key="user">
+        <template nglDatatableCell let-value><ngl-badge>{{value.username}}</ngl-badge></template>
     </ngl-datatable-column>
 
     <!-- Loading overlay -->
@@ -22,3 +15,6 @@
     <!-- No rows overlay -->
     <template nglNoRowsOverlay>No data available in table!</template>
 </table>
+
+<ngl-pagination [(page)]="page" [total]="total" limit="10" (pageChange)="onPageChange($event)" #pagination></ngl-pagination>
+</div>
