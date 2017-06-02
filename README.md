@@ -1,28 +1,106 @@
-# lixiaocong的内容管理系统
+# lixiaocong's personal CMS (***For version 1, see the master branch***)
 
-## 博客部分
-+ 用户的注册登录
-+ 文章增删改查
+This is a personal Content Management System.
 
-## 管理部分
-+ 对Transmission任务的添加,删除,下载
+The system consists of 3 parts:
++ Blog
+    - Register an account
+    - Login with Facebook and QQ
+    - Post, update and delete blogs
+    - Comment on blogs
++ Admin
+    - Manage users, blogs, comments
+    - Upload torrent file and download the file to your server and get an unique URL after finished
++ WeChat
+    - Users can get latest blogs on their WeChat
 
-## 微信公众号
-+ 可以设置公众号token，公众号可以获取最新文章
+The purpose of this project is to learn Spring including:
+- Spring framework
+- Spring Security
+- Spring Social
+- Spring Data
+- Spring Boot
+- Spring MVC
 
-## 技术
-+ 逻辑层：spring
-+ 数据层：hibernate + jpa + mysql
-+ 表示层：jsp + angular
+Basic knowledge like HTML, CSS, JavaScript can be learnt and other front end techniques such as Bootstrap, FreeMarker, jQuery can also be learnt
+With the help of this project, you can also learn how to use Nginx/Apache web server, MySQL and maybe Docker if you want.
 
-## 服务器需要安装的程序：（建议使用docker）
-+ mysql5.7，创建blog表
-+ transmission-daemon，设置用户名密码
-+ aria2c,设置token
+## Getting Started
 
-## 计划
-+ (增加aria2c支持)
-+ (计划升级为angular2 + websocket)
-+ (计划增加google的ui风格)
-+ (准备删除Facebook）
-+ (添加邮件支持）
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+To run this project on your machine, you need to install MySQL(5.7+), Transmission, Nginx/Apache. Installing theme using Docker is recommended. Install Docker on your machine. If you don’t know how to do it , check out **[this website]( https://www.docker.com/)**
+
+### Installing
+After that, open your terminal on Linux/Mac or command window on Windows
+```
+docker run --name nginx -d -p <your local port>:80 -v <your local folder>:/usr/share/nginx/html nginx:stable
+docker run --name transmission -d -p <your local port>:9091 -v <your local folder>:/var/lib/transmission-daemon dperson/transmission
+docker run --name mysql -d -p <your local port>:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7
+```
+The username and password of Transmission are both **admin**
+
+The username and password of MySQL are both **root**
+
+## Deployment
+
+Clone the project to your machine using git
+```
+cd <any folder on your machine>
+git clone git@github.com:lixiaocong/lxcCMS.git
+```
+
+Change the src/main/resources/application.properties and src/main/resources/qqconnectconfig.properties. Templates can be downloaded [here]( http://www.lixiaocong.com:9401/application.properties) and [here]( http://www.lixiaocong.com:9401/qqconnectconfig.properties)
+
+Cd to the downloaded folder, run the command
+```
+./gradlew bootRun
+```
+or you can run
+```
+./gradlew war
+```
+than move the war file to Tomcat webapps folder
+
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to me.
+
+## Author
+
+**li xiaocong**
+
+## License
+
+BSD 3-Clause License
+
+Copyright (c) 2016, lixiaocong(lxccs@iCloud.com)
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
