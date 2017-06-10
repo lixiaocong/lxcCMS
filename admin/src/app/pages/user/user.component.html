@@ -1,3 +1,23 @@
-<template let-user ngFor [ngForOf]="users">
-    <app-user-item [user]=user></app-user-item>
-</template>
+<div class="user">
+    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)"
+           (onRowClick)="onRowClick($event)">
+        <ngl-datatable-column heading="ID" key="id" sortable></ngl-datatable-column>
+        <ngl-datatable-column heading="NAME" key="username"></ngl-datatable-column>
+        <ngl-datatable-column heading="Opeations" key="id">
+            <template nglDatatableCell let-value>
+                <button type="button" nglButton="neutral" (click)="onDelete(value)">delete</button>
+            </template>
+        </ngl-datatable-column>
+
+        <!-- Loading overlay -->
+        <template nglLoadingOverlay>
+            <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">Loading...</div>
+        </template>
+
+        <!-- No rows overlay -->
+        <template nglNoRowsOverlay>No data available in table!</template>
+    </table>
+
+    <ngl-pagination [(page)]="page" [total]="total" limit="10" (pageChange)="onPageChange($event)"
+                    #pagination></ngl-pagination>
+</div>

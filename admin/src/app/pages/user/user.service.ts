@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {User} from "./user-item/user-item.component";
 import {PageDataHandler} from "../../utils/PageDataHandler";
+import {Http, URLSearchParams} from "@angular/http";
 
 @Injectable()
 export class UserService {
@@ -13,16 +12,21 @@ export class UserService {
     }
 
     getUserNumber():Observable<number>{
-        return this.http.get(this.userUrl)
-            .map(PageDataHandler.extractData)
-            .filter(PageDataHandler.successResponseFilter)
-            .map(data=>data.users.totalElements)
+        return this.getUsers().map(users=>users.totalElements);
+    }
+
+    deleteUser(id:number){
+        return this.http.delete(this.userUrl+"/"+id)
+            .map(PageDataHandler.extractData);
     }
 
     getUsers(page:number = 1, size:number = 10):Observable<any>{
-        return this.http.get(this.userUrl)
+        let params = new URLSearchParams();
+        params.set("page",page.toString());
+        params.set("size",size.toString());
+        return this.http.get(this.userUrl,{search:params})
             .map(PageDataHandler.extractData)
             .filter(PageDataHandler.successResponseFilter)
-            .map(data=>data.users.content)
+            .map(data=>data.users)
     }
 }

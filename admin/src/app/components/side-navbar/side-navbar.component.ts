@@ -18,8 +18,8 @@ export class SideNavbarComponent implements OnInit {
   ngOnInit() {
     this.navbarItems = [
       new NavbarItem('dashboard', 'dashboard', 'dashboard'),
-      new NavbarItem('article', 'book', 'article'),
       new NavbarItem('user', 'account_box', 'user'),
+      new NavbarItem('article', 'book', 'article'),
       new NavbarItem('comment', 'comment', 'comment'),
       new NavbarItem('downloader', 'cloud_download', 'downloader'),
       new NavbarItem('file', 'insert_drive_file', 'file'),

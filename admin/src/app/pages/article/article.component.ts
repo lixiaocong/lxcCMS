@@ -20,7 +20,7 @@ export class ArticleComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.onPageChange(1);
+        this.onPageChange();
     }
 
     onSort($event: INglDatatableSort) {
@@ -33,7 +33,9 @@ export class ArticleComponent implements OnInit {
     onRowClick($event: INglDatatableRowClick) {
     }
 
-    onPageChange(pageNumber:number){
+    onPageChange(pageNumber:number = 1){
+        if(pageNumber<1)
+            return;
         this.articleService.getArticles(pageNumber,10).subscribe(articles => {
             this.data = articles.content;
             this.page = articles.number+1;
@@ -42,7 +44,6 @@ export class ArticleComponent implements OnInit {
     }
 
     onDelete(id:number){
-        console.log(id);
         this.articleService.deleteArticle(id).subscribe(response=>{
             if(response.result == 'success')
                 this.onPageChange(this.page);
