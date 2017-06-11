@@ -38,11 +38,12 @@ After that, open your terminal on Linux/Mac or command window on Windows
 ```
 docker run --name nginx -d -p <your local port>:80 -v <your local folder>:/usr/share/nginx/html nginx:stable
 docker run --name transmission -d -p <your local port>:9091 -v <your local folder>:/var/lib/transmission-daemon dperson/transmission
-docker run --name mysql -d -p <your local port>:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7
+docker run --name mysql -d -p <your local port>:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7 docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ```
 The username and password of Transmission are both **admin**
 
 The username and password of MySQL are both **root**
+Execute db.sql to init your database
 
 ## Deployment
 

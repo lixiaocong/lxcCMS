@@ -84,7 +84,7 @@ public class Aria2cDownloader implements IDownloader {
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode == SC_OK) {
             try {
-                return EntityUtils.toString(response.getEntity());
+                return EntityUtils.toString(response.getEntity(),"UTF-8");
             } catch (IOException e) {
                 log.error(e);
                 throw new DownloaderException("network error when read post response");
