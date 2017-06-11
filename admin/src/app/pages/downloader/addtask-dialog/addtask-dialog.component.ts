@@ -63,5 +63,4 @@ export class AddTaskInfo {
     this.taskType = taskType;
     this.content = content;
   }
-
 }

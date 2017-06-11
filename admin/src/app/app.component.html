@@ -3,7 +3,7 @@
 </md-toolbar>
 
 <md-sidenav-container>
-  <md-sidenav id="sidebar" [mode]='sideBarMode' [opened]="isSideBarOpen">
+  <md-sidenav id="sidebar" [mode]='sideBarMode' [opened]="isSideBarOpen" (click)="sideBarClicked()">
     <app-side-navbar></app-side-navbar>
   </md-sidenav>
   <router-outlet></router-outlet>

@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.title = 'Admin Lixiaocong';
-    this.sideBarMode = 'push';
+    this.sideBarMode = 'over';
     this.isSideBarOpen = false;
   }
 
