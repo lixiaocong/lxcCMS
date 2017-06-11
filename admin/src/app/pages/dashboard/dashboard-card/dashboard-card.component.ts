@@ -1,26 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from "@angular/core";
 
 @Component({
-  selector: 'app-dashboard-card',
-  templateUrl: './dashboard-card.component.html',
-  styleUrls: ['./dashboard-card.component.css']
+    selector: 'app-dashboard-card',
+    templateUrl: './dashboard-card.component.html',
+    styleUrls: ['./dashboard-card.component.css']
 })
 export class DashboardCardComponent implements OnInit {
-  @Input() dashboardCard:DashboardItem;
+    @Input() dashboardCard: DashboardItem;
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }
 
-export class DashboardItem{
-  title: string;
-  content: string;
+export class DashboardItem {
+    title: string;
+    content: string;
 
-  constructor(title:string,content:string){
-    this.title = title;
-    this.content = content;
-  }
+    constructor(title: string, content: string) {
+        this.title = title;
+        this.content = content;
+    }
 }

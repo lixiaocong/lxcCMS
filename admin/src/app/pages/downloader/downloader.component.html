@@ -1,14 +1,14 @@
 <div id="downloader">
-  <div id="menu">
-    <i class="material-icons" (click)="upload_task()">file_upload</i>
-    <i class="material-icons" (click)="start_task()">play_arrow</i>
-    <i class="material-icons" (click)="pause_task()">pause</i>
-    <i class="material-icons" (click)="delete_task()">delete_sweep</i>
-  </div>
+    <div id="menu">
+        <i class="material-icons" (click)="upload_task()">file_upload</i>
+        <i class="material-icons" (click)="start_task()">play_arrow</i>
+        <i class="material-icons" (click)="pause_task()">pause</i>
+        <i class="material-icons" (click)="delete_task()">delete_sweep</i>
+    </div>
 
-  <div>
-    <template let-downloadTask ngFor [ngForOf]="downloadTasks">
-        <download-task [downloadTask] = downloadTask></download-task>
-    </template>
-  </div>
+    <div>
+        <template let-downloadTask ngFor [ngForOf]="downloadTasks">
+            <download-task [downloadTask]=downloadTask></download-task>
+        </template>
+    </div>
 </div>

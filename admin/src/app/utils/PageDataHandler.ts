@@ -1,11 +1,11 @@
-
 import {Response} from "@angular/http";
-export class PageDataHandler{
+export class PageDataHandler {
 
-    static extractData(res:Response){
+    static extractData(res: Response) {
         return res.json();
     }
-    static successResponseFilter(data){
+
+    static successResponseFilter(data) {
         return data.result == 'success';
     }
 }

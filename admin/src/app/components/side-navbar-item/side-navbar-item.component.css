@@ -1,12 +1,12 @@
-.sidebar-item{
+.sidebar-item {
 
 }
 
-.sidebar-item-hover{
-    background-color: rgba(0,0,0,.2);
+.sidebar-item-hover {
+    background-color: rgba(0, 0, 0, .2);
 }
 
-a{
+a {
     display: block;
     text-decoration: none;
     height: 40px;
@@ -15,15 +15,18 @@ a{
     font-size: 21px;
 }
 
-a md-icon{
+a md-icon {
     float: left;
 }
 
-a span{
+a span {
     padding-left: 6px;
 }
 
-*{color: black;}
+* {
+    color: black;
+}
+
 *:focus {
     outline: none;
     border: 0;

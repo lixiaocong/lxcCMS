@@ -19,6 +19,7 @@ import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {DashboardCardComponent} from "./pages/dashboard/dashboard-card/dashboard-card.component";
 import {UserItemComponent} from "./pages/user/user-item/user-item.component";
 import {NglModule} from "ng-lightning/ng-lightning";
+import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 
 @NgModule({
     declarations: [
@@ -44,7 +45,7 @@ import {NglModule} from "ng-lightning/ng-lightning";
         MaterialModule,
         NglModule.forRoot(),
     ],
-    providers: [],
+    providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
     entryComponents: [AddtaskDialogComponent],
     bootstrap: [AppComponent]
 })

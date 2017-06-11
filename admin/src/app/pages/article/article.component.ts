@@ -11,8 +11,8 @@ import {ArticleService} from "./article.service";
 export class ArticleComponent implements OnInit {
     private data;
 
-    private page:number;
-    private total:number;
+    private page: number;
+    private total: number;
 
     sort: INglDatatableSort = {key: 'id', order: 'asc'};
 
@@ -33,19 +33,19 @@ export class ArticleComponent implements OnInit {
     onRowClick($event: INglDatatableRowClick) {
     }
 
-    onPageChange(pageNumber:number = 1){
-        if(pageNumber<1)
+    onPageChange(pageNumber: number = 1) {
+        if (pageNumber < 1)
             return;
-        this.articleService.getArticles(pageNumber,10).subscribe(articles => {
+        this.articleService.getArticles(pageNumber, 10).subscribe(articles => {
             this.data = articles.content;
-            this.page = articles.number+1;
+            this.page = articles.number + 1;
             this.total = articles.totalElements;
         })
     }
 
-    onDelete(id:number){
-        this.articleService.deleteArticle(id).subscribe(response=>{
-            if(response.result == 'success')
+    onDelete(id: number) {
+        this.articleService.deleteArticle(id).subscribe(response => {
+            if (response.result == 'success')
                 this.onPageChange(this.page);
             else
                 console.log("error");

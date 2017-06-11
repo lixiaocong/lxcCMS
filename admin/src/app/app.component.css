@@ -1,17 +1,17 @@
-#menuIcon{
-  cursor: pointer;
-  padding: 5px;
-  padding-right: 10px;
+#menuIcon {
+    cursor: pointer;
+    padding: 5px;
+    padding-right: 10px;
 }
 
-#menuIcon:hover{
-  color: gray;
+#menuIcon:hover {
+    color: gray;
 }
 
-#sidebar{
-  width: 200px;
+#sidebar {
+    width: 200px;
 }
 
-md-sidenav-container{
-  min-height: 100%;
+md-sidenav-container {
+    min-height: 100%;
 }

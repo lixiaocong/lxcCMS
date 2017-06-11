@@ -1,17 +1,17 @@
-div{
+div {
     padding: 5px;
 }
 
-.component{
+.component {
     cursor: pointer;
 }
 
-.hoveredComponent{
+.hoveredComponent {
     cursor: pointer;
     background-color: lightblue;
 }
 
-.clickedComponent{
+.clickedComponent {
     cursor: pointer;
     background-color: cadetblue;
 }

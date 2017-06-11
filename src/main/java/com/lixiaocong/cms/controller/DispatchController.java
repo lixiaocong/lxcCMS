@@ -42,6 +42,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Controller
@@ -59,10 +60,11 @@ public class DispatchController {
     }
 
     @RolesAllowed("ROLE_USER")
-    @RequestMapping("/admin")
-    public ModelAndView admin(Principal princial) {
-        User user = userService.getByUsername(princial.getName());
-        if (user.isAdmin()) return new ModelAndView("admin/superUser");
-        return new ModelAndView("admin/normalUser");
+    @RequestMapping(value = "/admin")
+    public RedirectView admin(Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        if(user.isAdmin())
+            return new RedirectView("/admin/index.html");
+        return new RedirectView("/blog");
     }
 }

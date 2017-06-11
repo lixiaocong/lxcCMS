@@ -2,7 +2,7 @@
   "name": "admin",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --bh /admin/ --evn prod",
     "init": "npm install"
   },
   "dependencies": {

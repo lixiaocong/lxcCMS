@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {FileService} from "./file.service";
 
 @Component({
@@ -20,15 +20,15 @@ export class FileComponent implements OnInit {
     }
 
     onDelete(fileName: string) {
-        this.fileService.deleteFile(fileName).subscribe(response=>{
-            if(response.result == 'success')
+        this.fileService.deleteFile(fileName).subscribe(response => {
+            if (response.result == 'success')
                 this.update();
             else
                 console.log("error");
         });
     }
 
-    private update(){
+    private update() {
         this.fileService.getFiles().subscribe(data => {
             this.videos = data.videos;
             this.url = data.serverUrl;
