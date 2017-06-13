@@ -33,6 +33,7 @@
 package com.lixiaocong.cms.task;
 
 import com.lixiaocong.cms.socket.DownloaderSocketHandler;
+import com.lixiaocong.cms.util.VideoFileHelper;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
@@ -46,6 +47,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 
 @Component
@@ -72,13 +74,8 @@ public class DownloaderSchedulingTask {
             torrents = downloader.get();
             torrents.forEach(torrent ->{
                 if(torrent.isFinished()) {
-                    log.info(torrent.getName()+" 完成");
-                    try {
-                        //TODO 移动文件到Nginx目录下
-                        downloader.remove(torrent.getId());
-                    } catch (DownloaderException e) {
-                        e.printStackTrace();
-                    }
+                    List<File> allVideos = VideoFileHelper.findAllVideos(new File(torrent.getPath()), fileTypes.split("\\|"));
+                    VideoFileHelper.moveFiles(allVideos, fileDestination);
                 }
             });
         } catch (DownloaderException e) {

@@ -30,26 +30,20 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.downloader;
+package com.lixiaocong.downloader
 
-import com.lixiaocong.cms.downloader.aria2c.Aria2cDownloader;
-import com.lixiaocong.downloader.DownloaderConfigurer;
-import com.lixiaocong.downloader.EnableDownloader;
-import com.lixiaocong.downloader.IDownloader;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@EnableDownloader
-public class DownloaderConfig implements DownloaderConfigurer {
-
-    @Value("${aria2c.token:#{null}}")
-    private String token;
-    @Value("${aria2c.path:#{null}}")
-    private String path;
-
-    @Override
-    public IDownloader getDownloader(){
-        return new Aria2cDownloader(token,path);
+class DownloadTask(
+        var id: String,
+        var downloadType: String,
+        var name: String,
+        var totalLength: Long,
+        var downloadedLength: Long,
+        var speed: Long,
+        var path: String,
+        var status: String,
+        var isFinished: Boolean) {
+    companion object DownloadType {
+        val TYPE_TORRENT = "torrent"
+        val TYPE_URL = "url"
     }
 }

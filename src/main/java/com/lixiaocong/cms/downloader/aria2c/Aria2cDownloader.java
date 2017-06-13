@@ -56,17 +56,20 @@ public class Aria2cDownloader implements IDownloader {
     private final Log log = LogFactory.getLog(getClass().getName());
     private final String uri;
     private final String token;
+    private final String path;
 
     private HttpClient httpClient;
     private JsonParser jsonParser;
     private Gson gson;
 
-    public Aria2cDownloader(String token) {
+    public Aria2cDownloader(String token, String path) {
+        this.uri = "http://127.0.0.1:6800/jsonrpc";
         this.token = token;
+        this.path = path;
+
         this.httpClient = HttpClients.custom().build();
         this.jsonParser = new JsonParser();
         this.gson = new Gson();
-        this.uri = "http://127.0.0.1:6800/jsonrpc";
     }
 
     private String post(Aria2cRequest request) throws DownloaderException {
@@ -236,33 +239,34 @@ public class Aria2cDownloader implements IDownloader {
         JsonObject jsonObject = (JsonObject) jsonParser.parse(tellJson);
         JsonArray jsonArray = jsonObject.getAsJsonArray("result");
         jsonArray.forEach(element -> {
-            DownloadTask task = new DownloadTask();
             JsonObject object = element.getAsJsonObject();
-            task.setId(object.get("gid").getAsString());
+            String id = object.get("gid").getAsString();
+            String type;
+            String name;
             JsonObject bitTorrent = object.getAsJsonObject("bittorrent");
             if (bitTorrent != null) {
-                task.setDownloadType(DownloadTask.TYPE_TORRENT);
                 JsonObject info = bitTorrent.get("info").getAsJsonObject();
-                String name = info.get("name").getAsString();
-                task.setName(name);
+                name = info.get("name").getAsString();
+                type = DownloadTask.DownloadType.getTYPE_TORRENT();
             } else {
-                task.setDownloadType(DownloadTask.TYPE_URL);
                 JsonArray files = object.getAsJsonArray("files");
                 if (files.size() == 0)
-                    task.setName("error: file empty");
+                    name = "error: file empty";
                 else {
                     JsonElement file = files.get(0);
-                    String path = file.getAsJsonObject().get("path").getAsString();
-                    int index = path.lastIndexOf("/");
-                    task.setName(path.substring(++index));
+                    String filepath = file.getAsJsonObject().get("path").getAsString();
+                    int index = filepath.lastIndexOf("/");
+                    name = filepath.substring(++index);
                 }
+                type = DownloadTask.DownloadType.getTYPE_URL();
             }
-            task.setTotalLength(object.get("totalLength").getAsLong());
-            task.setDownloadedLength(object.get("completedLength").getAsLong());
-            task.setSpeed(object.get("downloadSpeed").getAsLong());
+
+            long totalLength = object.get("totalLength").getAsLong();
+            long downloadedLength = object.get("completedLength").getAsLong();
+            long speed = object.get("downloadSpeed").getAsLong();
             String status = object.get("status").getAsString();
-            task.setStatus(status);
-            task.setFinished(task.getDownloadedLength() == task.getTotalLength());
+            boolean isFinished = downloadedLength == totalLength;
+            DownloadTask task = new DownloadTask(id,type,name,totalLength,downloadedLength,speed,path,status,isFinished);
             ret.add(task);
         });
         return ret;

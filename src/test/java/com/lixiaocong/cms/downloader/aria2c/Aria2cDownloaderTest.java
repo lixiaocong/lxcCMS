@@ -45,7 +45,7 @@ import java.util.List;
 
 public class Aria2cDownloaderTest {
     private Log log = LogFactory.getLog(getClass().getName());
-    private Aria2cDownloader downloader = new Aria2cDownloader("123456");
+    private Aria2cDownloader downloader = new Aria2cDownloader("123456", "D:/nginx/html/");
     private final String gid = "20af5d0ffd685567";
 
     @Test
