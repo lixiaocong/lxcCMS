@@ -18,7 +18,7 @@
         </md-input-container>
     </div>
     <div [hidden]="taskType != 'torrent'">
-        <input type="file" (change)='onFileChange($event)' accept=".torrent">
+        <input type="file" (change)='onFileChange($event)' accept="application/x-bittorrent">
     </div>
     <button md-raised-button (click)='addTask()'>add task</button>
     <button md-raised-button (click)='cancel()'>cancel</button>
