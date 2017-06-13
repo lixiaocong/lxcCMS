@@ -46,7 +46,7 @@ import java.util.List;
 public class Aria2cDownloaderTest {
     private Log log = LogFactory.getLog(getClass().getName());
     private Aria2cDownloader downloader = new Aria2cDownloader("123456");
-    private final String gid = "1c63b42a3e275e98";
+    private final String gid = "20af5d0ffd685567";
 
     @Test
     public void addByMetainfo() throws Exception {

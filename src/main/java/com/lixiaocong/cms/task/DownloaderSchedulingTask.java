@@ -65,7 +65,7 @@ public class DownloaderSchedulingTask {
         this.downloaderSocketHandler = downloaderSocketHandler;
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 500)
     public void task() throws JsonException, AuthException, NetworkException {
         List<DownloadTask> torrents = null;
         try {

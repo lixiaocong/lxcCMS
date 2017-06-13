@@ -106,4 +106,10 @@ class Aria2cReuqestFactory {
         request.getParams().add(gid);
         return request;
     }
+
+    static Aria2cRequest getTellStatusRequest(String token, String gid) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_STATUS);
+        request.getParams().add(gid);
+        return request;
+    }
 }

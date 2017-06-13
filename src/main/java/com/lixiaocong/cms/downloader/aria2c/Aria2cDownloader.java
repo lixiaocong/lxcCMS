@@ -59,57 +59,36 @@ public class Aria2cDownloader implements IDownloader {
 
     private HttpClient httpClient;
     private JsonParser jsonParser;
+    private Gson gson;
 
     public Aria2cDownloader(String token) {
         this.token = token;
         this.httpClient = HttpClients.custom().build();
         this.jsonParser = new JsonParser();
+        this.gson = new Gson();
         this.uri = "http://127.0.0.1:6800/jsonrpc";
     }
 
     private String post(Aria2cRequest request) throws DownloaderException {
-        Gson gson = new Gson();
         String json = gson.toJson(request);
         StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         HttpPost httpPost = new HttpPost(uri);
         httpPost.setEntity(entity);
+        String responseEntity;
         HttpResponse response;
         try {
             response = httpClient.execute(httpPost);
+            responseEntity = EntityUtils.toString(response.getEntity(), "UTF-8");
         } catch (IOException e) {
             log.error(e);
-            throw new DownloaderException("network error when post request");
+            throw new DownloaderException("network error");
         }
 
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode == SC_OK) {
-            try {
-                return EntityUtils.toString(response.getEntity(),"UTF-8");
-            } catch (IOException e) {
-                log.error(e);
-                throw new DownloaderException("network error when read post response");
-            } finally {
-                httpPost.releaseConnection();
-            }
-        }
-        else if(statusCode == 500){
-            try {
-                String result = EntityUtils.toString(response.getEntity());
-                log.warn(request);
-                return result;
-            } catch (IOException e) {
-                log.error(e);
-                throw new DownloaderException("network error with error code " + statusCode);
-            }
-        }
-        else {
-            log.error("post to " + httpPost.getURI() + " error:" + statusCode);
-            try {
-                log.error(EntityUtils.toString(response.getEntity()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            throw new DownloaderException("network error with error code " + statusCode);
+        if (response.getStatusLine().getStatusCode()== SC_OK)
+            return responseEntity;
+        else{
+             Aria2cErrorResponse aria2CErrorResponse = gson.fromJson(responseEntity, Aria2cErrorResponse.class);
+             throw new DownloaderException(aria2CErrorResponse.getMessage());
         }
     }
 
@@ -146,15 +125,21 @@ public class Aria2cDownloader implements IDownloader {
         return success;
     }
 
+    //TODO delete files at the same time
     @Override
     public boolean remove(String id) throws DownloaderException {
-
-        Aria2cRequest removeReuqest = Aria2cReuqestFactory.getRemoveReuqest(token, id);
-        post(removeReuqest);
-
-        Aria2cRequest removeResultReuqest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
-        post(removeResultReuqest);
-        return true;
+        Aria2cStatusResult status = getStatus(id);
+        if(status.getStatus().equals("complete") || status.getStatus().equals("removed"))
+        {
+            Aria2cRequest removeResultRequest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
+            post(removeResultRequest);
+            return true;
+        }
+        else{
+            Aria2cRequest removeRequest = Aria2cReuqestFactory.getRemoveReuqest(token, id);
+            post(removeRequest);
+            return remove(id);
+        }
     }
 
     @Override
@@ -290,5 +275,13 @@ public class Aria2cDownloader implements IDownloader {
         } catch (DownloaderException e) {
             log.error(e);
         }
+    }
+
+    private Aria2cStatusResult getStatus(String gid) throws DownloaderException {
+        Aria2cRequest tellStatusRequest = Aria2cReuqestFactory.getTellStatusRequest(token, gid);
+        String resultJson = post(tellStatusRequest);
+        System.out.println(resultJson);
+        Aria2cStatus aria2cStatus = gson.fromJson(resultJson, Aria2cStatus.class);
+        return aria2cStatus.getResult();
     }
 }
