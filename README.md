@@ -31,16 +31,17 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-To run this project on your machine, you need to install MySQL(5.7+), Transmission, Nginx/Apache. Installing theme using Docker is recommended. Install Docker on your machine. If you don’t know how to do it , check out **[this website]( https://www.docker.com/)**
+To run this project on your machine, you need to install Tomcat8.
+You also need to install MySQL(5.7+), aria2c, Nginx/Apache. Installing theme using Docker is recommended. Install Docker on your machine. If you don’t know how to do it , check out **[this website]( https://www.docker.com/)**
 
 ### Installing
 After that, open your terminal on Linux/Mac or command window on Windows
 ```
 docker run --name nginx -d -p <your local port>:80 -v <your local folder>:/usr/share/nginx/html nginx:stable
-docker run --name transmission -d -p <your local port>:9091 -v <your local folder>:/var/lib/transmission-daemon dperson/transmission
+docker run --name aria2 -d -p 6800:6800 -v <data-path>:/home/aria2 -v <config-path>:/etc/aria2 -e TOKEN=123456 vimagick/aria2
 docker run --name mysql -d -p <your local port>:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7 docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ```
-The username and password of Transmission are both **admin**
+The token for aria2c is **123456** and the config file can be found in current folder as **aria2.conf**
 
 The username and password of MySQL are both **root**
 Execute db.sql to init your database
@@ -53,18 +54,9 @@ cd <any folder on your machine>
 git clone git@github.com:lixiaocong/lxcCMS.git
 ```
 
-Change the src/main/resources/application.properties and src/main/resources/qqconnectconfig.properties. Templates can be downloaded [here]( http://www.lixiaocong.com:9401/application.properties) and [here]( http://www.lixiaocong.com:9401/qqconnectconfig.properties)
+Change the application.properties and qqconnectconfig.properties, then copy them to ./src/main/resources. Templates can be found in current folder.
 
-Cd to the downloaded folder, run the command
-```
-./gradlew bootRun
-```
-or you can run
-```
-./gradlew war
-```
-than move the war file to Tomcat webapps folder
-
+Run the build.sh
 
 ## Contributing
 

@@ -60,18 +60,20 @@ import java.util.UUID;
 public class FileController {
     private final ImageCodeService codeService;
     private Log logger = LogFactory.getLog(getClass());
-    @Value("${image.folder}")
-    private String imageFolder;
-    @Value("${image.server}")
-    private String imageServer;
+
     @Value("${nginx.root}")
-    private String downloadFilePath;
+    private String serverRoot;
     @Value("${nginx.url}")
     private String serverUrl;
+
+    private String imageFolder;
+    private String imageServer;
 
     @Autowired
     public FileController(ImageCodeService codeService) {
         this.codeService = codeService;
+        this.imageFolder = this.serverRoot+"image/";
+        this.imageServer = this.serverUrl+"image/";
     }
 
     @RolesAllowed("ROLE_USER")
@@ -90,7 +92,7 @@ public class FileController {
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.GET)
     public Map<String, Object> video() {
-        File file = new File(downloadFilePath);
+        File file = new File(serverRoot);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
         List<String> fileList = new LinkedList<>();
         File[] files = file.listFiles();
@@ -106,7 +108,7 @@ public class FileController {
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@RequestParam String fileName) {
-        File file = new File(downloadFilePath + fileName);
+        File file = new File(serverRoot + fileName);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("文件不存在");
         else if (!file.isFile()) return ResponseMsgFactory.createFailedResponse("不是文件");
         else if (!file.delete()) return ResponseMsgFactory.createFailedResponse("删除不成功");

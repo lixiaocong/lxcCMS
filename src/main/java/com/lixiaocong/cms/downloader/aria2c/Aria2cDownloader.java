@@ -62,8 +62,8 @@ public class Aria2cDownloader implements IDownloader {
     private JsonParser jsonParser;
     private Gson gson;
 
-    public Aria2cDownloader(String token, String path) {
-        this.uri = "http://127.0.0.1:6800/jsonrpc";
+    public Aria2cDownloader(String token, String path , String url) {
+        this.uri = url;
         this.token = token;
         this.path = path;
 

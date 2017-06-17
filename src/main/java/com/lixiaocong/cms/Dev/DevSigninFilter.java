@@ -48,9 +48,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-@Configuration
-@Profile("dev")
-@ServletComponentScan(basePackageClasses = DevSigninFilter.class)
 public class DevSigninFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}

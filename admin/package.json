@@ -1,9 +1,7 @@
 {
   "name": "admin",
   "scripts": {
-    "start": "ng serve",
-    "build": "ng build --bh /admin/ --evn prod",
-    "init": "npm install"
+    "start": "ng serve"
   },
   "dependencies": {
     "@angular/common": "2.4.0",
