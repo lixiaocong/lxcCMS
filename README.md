@@ -31,7 +31,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-To run this project on your machine, you need to install Tomcat8.
+To run this project on your machine, you need to install nodejs7, angular cli, Tomcat8.
+
 You also need to install MySQL(5.7+), aria2c, Nginx/Apache. Installing theme using Docker is recommended. Install Docker on your machine. If you don’t know how to do it , check out **[this website]( https://www.docker.com/)**
 
 ### Installing
@@ -56,6 +57,7 @@ git clone git@github.com:lixiaocong/lxcCMS.git
 
 Change the application.properties and qqconnectconfig.properties, then copy them to ./src/main/resources. Templates can be found in current folder.
 
+Change the tomcat_dir and npm veriables in build.sh.
 Run the build.sh
 
 ## Contributing

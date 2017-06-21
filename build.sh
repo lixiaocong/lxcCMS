@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
-tomcat_dir='/Users/lixiaocong/Documents/tomcat/webapps'
-npm='cnpm'
+tomcat_dir='/home/lixiaocong'
+npm='npm'
 
-echo 'start build angular admin'
-cd admin
+echo 'changing folder'
+current_path=$(cd `dirname $0`; pwd)
+
+echo 'building admin'
+cd ${current_path}/admin
 ${npm} install
+${npm} install -g @angular/cli
 ng build --bh /admin/ --e prod
 cd ..
 
-echo 'start build war'
+echo 'building war'
 ./gradlew war
 
 echo 'move war to tomcat webapp'
