@@ -15,7 +15,7 @@ The system consists of 3 parts:
     - Users can get latest blogs on their WeChat
 
 The purpose of this project is to learn Spring including:
-- Spring framework
+- Spring Framework
 - Spring Security
 - Spring Social
 - Spring Data
