@@ -36,7 +36,8 @@ To run this project on your machine, you need to install nodejs7, angular cli, T
 You also need to install MySQL(5.7+), aria2c, Nginx/Apache. Installing theme using Docker is recommended. Install Docker on your machine. If you don’t know how to do it , check out **[this website]( https://www.docker.com/)**
 
 ### Installing
-After that, open your terminal on Linux/Mac or command window on Windows
+
+Open your terminal on Linux/Mac or command window on Windows
 ```
 docker run --name nginx -d -p <your local port>:80 -v <your local folder>:/usr/share/nginx/html nginx:stable
 docker run --name aria2 -d -p 6800:6800 -v <data-path>:/home/aria2 -v <config-path>:/etc/aria2 -e TOKEN=123456 vimagick/aria2
@@ -50,16 +51,27 @@ Execute db.sql to init your database
 ## Deployment
 
 Clone the project to your machine using git
-```
+```bash
 cd <any folder on your machine>
 git clone git@github.com:lixiaocong/lxcCMS.git
+cd lxcCMS
 ```
 
+Then compile the Angular admin app
+```bash
+cd admin
+npm install
+npm install -g @angular/cli
+ng build --bh /admin/ --prod --aot
+```
 Change the application.properties and qqconnectconfig.properties, then copy them to ./src/main/resources. Templates can be found in current folder.
+Compile the Java project
+```bash
+./gradlew war
+mv ./build/libs/lxcCMS.war ${tomcat_dir}/ROOT.war
+```
 
-Change the tomcat_dir and npm veriables in build.sh.
-Run the build.sh
-
+Your can also use the [hook](https://github.com/lixiaocong/hook)
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to me.

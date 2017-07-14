@@ -4,4 +4,5 @@ export const environment = {
     commentUrl: "/comment",
     userUrl: "/user",
     fileUrl: "/file/video",
+    downloaderUrl: 'ws://www.lixiaocong.com:8080/downloader-socket',
 };

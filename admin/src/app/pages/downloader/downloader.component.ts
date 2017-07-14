@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {MdDialog} from "@angular/material";
 import {DownloadTask} from "./download-task/download-task.component";
 import {AddtaskDialogComponent, AddTaskInfo} from "./addtask-dialog/addtask-dialog.component";
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'app-downloader',
@@ -16,7 +17,7 @@ export class DownloaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        let url: string = 'ws://localhost:8080/downloader-socket';
+        let url: string = environment.downloaderUrl;
         this.ws = new WebSocket(url);
         this.downloadTasks = [];
 

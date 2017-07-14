@@ -9,5 +9,5 @@ export const environment = {
     commentUrl: "http://localhost:8080/comment",
     userUrl: "http://localhost:8080/user",
     fileUrl: "http://localhost:8080/file/video",
-
+    downloaderUrl: 'ws://localhost:8080/downloader-socket',
 };
