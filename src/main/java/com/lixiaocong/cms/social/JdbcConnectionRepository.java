@@ -49,23 +49,22 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class MyJdbcConnection implements ConnectionRepository {
+public class JdbcConnectionRepository implements ConnectionRepository {
 
     private final ServiceProviderConnectionMapper connectionMapper = new ServiceProviderConnectionMapper();
     private String userId;
     private JdbcTemplate jdbcTemplate;
     private ConnectionFactoryLocator connectionFactoryLocator;
     private TextEncryptor textEncryptor;
-    private String tablePrefix;
 
-    public MyJdbcConnection(String userId, JdbcTemplate jdbcTemplate, ConnectionFactoryLocator connectionFactoryLocator, TextEncryptor textEncryptor, String tablePrefix) {
+    public JdbcConnectionRepository(String userId, JdbcTemplate jdbcTemplate, ConnectionFactoryLocator connectionFactoryLocator, TextEncryptor textEncryptor) {
         this.userId = userId;
         this.jdbcTemplate = jdbcTemplate;
         this.connectionFactoryLocator = connectionFactoryLocator;
         this.textEncryptor = textEncryptor;
-        this.tablePrefix = tablePrefix;
     }
 
+    @Override
     public MultiValueMap<String, Connection<?>> findAllConnections() {
         List<Connection<?>> resultList = jdbcTemplate.query(selectFromUserConnection() + " where userId = ? order by providerId, rank", connectionMapper, userId);
         MultiValueMap<String, Connection<?>> connections = new LinkedMultiValueMap<String, Connection<?>>();
@@ -83,16 +82,19 @@ public class MyJdbcConnection implements ConnectionRepository {
         return connections;
     }
 
+    @Override
     public List<Connection<?>> findConnections(String providerId) {
         return jdbcTemplate.query(selectFromUserConnection() + " where userId = ? and providerId = ? order by rank", connectionMapper, userId, providerId);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <A> List<Connection<A>> findConnections(Class<A> apiType) {
         List<?> connections = findConnections(getProviderId(apiType));
         return (List<Connection<A>>) connections;
     }
 
+    @Override
     public MultiValueMap<String, Connection<?>> findConnectionsToUsers(MultiValueMap<String, String> providerUsers) {
         if (providerUsers == null || providerUsers.isEmpty()) {
             throw new IllegalArgumentException("Unable to execute find: no providerUsers provided");
@@ -130,6 +132,7 @@ public class MyJdbcConnection implements ConnectionRepository {
         return connectionsForUsers;
     }
 
+    @Override
     public Connection<?> getConnection(ConnectionKey connectionKey) {
         try {
             return jdbcTemplate.queryForObject(selectFromUserConnection() + " where userId = ? and providerId = ? and providerUserId = ?", connectionMapper, userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
@@ -138,12 +141,14 @@ public class MyJdbcConnection implements ConnectionRepository {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <A> Connection<A> getConnection(Class<A> apiType, String providerUserId) {
         String providerId = getProviderId(apiType);
         return (Connection<A>) getConnection(new ConnectionKey(providerId, providerUserId));
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <A> Connection<A> getPrimaryConnection(Class<A> apiType) {
         String providerId = getProviderId(apiType);
@@ -164,8 +169,8 @@ public class MyJdbcConnection implements ConnectionRepository {
     public void addConnection(Connection<?> connection) {
         try {
             ConnectionData data = connection.createData();
-            int rank = jdbcTemplate.queryForObject("select coalesce(max(rank) + 1, 1) as rank from " + tablePrefix + "UserConnection where userId = ? and providerId = ?", new Object[]{userId, data.getProviderId()}, Integer.class);
-            jdbcTemplate.update("insert into " + tablePrefix + "UserConnection (userId, providerId, providerUserId, rank, displayName, profileUrl, imageUrl, accessToken, secret, refreshToken, expireTime) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", userId, data.getProviderId(), data.getProviderUserId(), rank, data.getDisplayName(), data.getProfileUrl(), data.getImageUrl(), encrypt(data.getAccessToken()), encrypt(data.getSecret()), encrypt(data.getRefreshToken()), data.getExpireTime());
+            int rank = jdbcTemplate.queryForObject("select coalesce(max(rank) + 1, 1) as rank from UserConnection where userId = ? and providerId = ?", new Object[]{userId, data.getProviderId()}, Integer.class);
+            jdbcTemplate.update("insert into UserConnection (userId, providerId, providerUserId, rank, displayName, profileUrl, imageUrl, accessToken, secret, refreshToken, expireTime) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", userId, data.getProviderId(), data.getProviderUserId(), rank, data.getDisplayName(), data.getProfileUrl(), data.getImageUrl(), encrypt(data.getAccessToken()), encrypt(data.getSecret()), encrypt(data.getRefreshToken()), data.getExpireTime());
         } catch (DuplicateKeyException e) {
             throw new DuplicateConnectionException(connection.getKey());
         }
@@ -174,23 +179,23 @@ public class MyJdbcConnection implements ConnectionRepository {
     @Transactional
     public void updateConnection(Connection<?> connection) {
         ConnectionData data = connection.createData();
-        jdbcTemplate.update("update " + tablePrefix + "UserConnection set displayName = ?, profileUrl = ?, imageUrl = ?, accessToken = ?, secret = ?, refreshToken = ?, expireTime = ? where userId = ? and providerId = ? and providerUserId = ?", data.getDisplayName(), data.getProfileUrl(), data.getImageUrl(), encrypt(data.getAccessToken()), encrypt(data.getSecret()), encrypt(data.getRefreshToken()), data.getExpireTime(), userId, data.getProviderId(), data.getProviderUserId());
+        jdbcTemplate.update("update UserConnection set displayName = ?, profileUrl = ?, imageUrl = ?, accessToken = ?, secret = ?, refreshToken = ?, expireTime = ? where userId = ? and providerId = ? and providerUserId = ?", data.getDisplayName(), data.getProfileUrl(), data.getImageUrl(), encrypt(data.getAccessToken()), encrypt(data.getSecret()), encrypt(data.getRefreshToken()), data.getExpireTime(), userId, data.getProviderId(), data.getProviderUserId());
     }
 
     @Transactional
     public void removeConnections(String providerId) {
-        jdbcTemplate.update("delete from " + tablePrefix + "UserConnection where userId = ? and providerId = ?", userId, providerId);
+        jdbcTemplate.update("delete from UserConnection where userId = ? and providerId = ?", userId, providerId);
     }
 
     // internal helpers
 
     @Transactional
     public void removeConnection(ConnectionKey connectionKey) {
-        jdbcTemplate.update("delete from " + tablePrefix + "UserConnection where userId = ? and providerId = ? and providerUserId = ?", userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
+        jdbcTemplate.update("delete from UserConnection where userId = ? and providerId = ? and providerUserId = ?", userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
     }
 
     private String selectFromUserConnection() {
-        return "select userId, providerId, providerUserId, displayName, profileUrl, imageUrl, accessToken, secret, refreshToken, expireTime from " + tablePrefix + "UserConnection";
+        return "select userId, providerId, providerUserId, displayName, profileUrl, imageUrl, accessToken, secret, refreshToken, expireTime from UserConnection";
     }
 
     private Connection<?> findPrimaryConnection(String providerId) {

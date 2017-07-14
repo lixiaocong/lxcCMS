@@ -30,27 +30,47 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms;
+package com.lixiaocong.cms.entity;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
+import java.math.BigInteger;
 
-@SpringBootApplication
-//@EnableScheduling
-public class Application extends SpringBootServletInitializer {
-    /**
-     * 打包war文件放在tomcat下运行必须实现这个接口
-     */
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Application.class);
-    }
+@Entity
+public class UserConnectionEntity implements Serializable{
+    @Id
+    @Column
+    private String userId;
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+    @Column
+    private String providerId;
+
+    @Column
+    private String providerUserId;
+
+    @Column
+    private int rank;
+
+    @Column
+    private String displayName;
+
+    @Column
+    private String profileUrl;
+
+    @Column
+    private String imageUrl;
+
+    @Column
+    private String accessToken;
+
+    @Column
+    private String secret;
+
+    @Column
+    private String refreshToken;
+
+    @Column
+    private BigInteger expireTime;
 }

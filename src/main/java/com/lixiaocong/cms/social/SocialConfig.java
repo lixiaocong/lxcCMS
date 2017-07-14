@@ -47,6 +47,7 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
+import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
@@ -56,22 +57,28 @@ import javax.sql.DataSource;
 @EnableSocial
 public class SocialConfig extends SocialConfigurerAdapter {
     private final DataSource dataSource;
-    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public SocialConfig(DataSource dataSource, UserDetailsService userDetailsService) {
+    public SocialConfig(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.userDetailsService = userDetailsService;
     }
 
     @Bean
-    public SignInAdapter signInAdapter() {
+    public SignInAdapter signInAdapter(UserDetailsService userDetailsService) {
         return new SignInUtil(userDetailsService);
     }
 
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository) {
         return new ConnectController(connectionFactoryLocator, connectionRepository);
+    }
+
+    @Bean
+    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter, Environment environment)
+    {
+        ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
+        controller.setApplicationUrl(environment.getProperty("server.url"));
+        return controller;
     }
 
     @Override
@@ -86,6 +93,6 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-        return new MyJdbcUsersConnection(dataSource, connectionFactoryLocator, Encryptors.noOpText());
+        return new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
     }
 }

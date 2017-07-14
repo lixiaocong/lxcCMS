@@ -37,9 +37,6 @@ import com.lixiaocong.cms.util.VideoFileHelper;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
-import com.lixiaocong.transmission4j.exception.AuthException;
-import com.lixiaocong.transmission4j.exception.JsonException;
-import com.lixiaocong.transmission4j.exception.NetworkException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +44,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.message.AuthException;
 import java.io.File;
 import java.util.List;
 
@@ -68,7 +66,7 @@ public class DownloaderSchedulingTask {
     }
 
     @Scheduled(fixedDelay = 500)
-    public void task() throws JsonException, AuthException, NetworkException {
+    public void task() {
         List<DownloadTask> torrents = null;
         try {
             torrents = downloader.get();

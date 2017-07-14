@@ -30,27 +30,10 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms;
+package com.lixiaocong.cms.repository;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import com.lixiaocong.cms.entity.UserConnectionEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@SpringBootApplication
-//@EnableScheduling
-public class Application extends SpringBootServletInitializer {
-    /**
-     * 打包war文件放在tomcat下运行必须实现这个接口
-     */
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Application.class);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+public interface IUserConnectionRepository extends JpaRepository<UserConnectionEntity,String> {
 }

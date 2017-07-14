@@ -35,6 +35,8 @@ To run this project on your machine, you need to install nodejs7, angular cli, T
 
 You also need to install MySQL(5.7+), aria2c, Nginx/Apache. Installing theme using Docker is recommended. Install Docker on your machine. If you don’t know how to do it , check out **[this website]( https://www.docker.com/)**
 
+You can replace aria2c with Transmission, checkout my [code](https://github.com/lixiaocong/transmission4j)
+
 ### Installing
 
 Open your terminal on Linux/Mac or command window on Windows

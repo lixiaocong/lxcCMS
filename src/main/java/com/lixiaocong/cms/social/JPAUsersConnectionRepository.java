@@ -30,27 +30,35 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms;
+package com.lixiaocong.cms.social;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import com.lixiaocong.cms.repository.IUserConnectionRepository;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.connect.UsersConnectionRepository;
 
-@SpringBootApplication
-//@EnableScheduling
-public class Application extends SpringBootServletInitializer {
-    /**
-     * 打包war文件放在tomcat下运行必须实现这个接口
-     */
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Application.class);
+import java.util.List;
+import java.util.Set;
+
+public class JPAUsersConnectionRepository implements UsersConnectionRepository {
+    private IUserConnectionRepository userConnectionEntity;
+
+    public JPAUsersConnectionRepository(IUserConnectionRepository userConnectionEntity) {
+        this.userConnectionEntity = userConnectionEntity;
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    @Override
+    public List<String> findUserIdsWithConnection(Connection<?> connection) {
+        return null;
+    }
+
+    @Override
+    public Set<String> findUserIdsConnectedTo(String providerId, Set<String> providerUserIds) {
+        return null;
+    }
+
+    @Override
+    public ConnectionRepository createConnectionRepository(String userId) {
+        return null;
     }
 }
