@@ -48,7 +48,7 @@ The token for aria2c is **123456** and the config file can be found in current f
 ## Deployment
 
 Clone the project to your machine using git
-```bash
+```
 cd <any folder on your machine>
 git clone git@github.com:lixiaocong/lxcCMS.git
 cd lxcCMS
@@ -66,7 +66,7 @@ ng build --bh /admin/ --prod --aot
 Create application.properties and qqconnectconfig.properties in /src/mian/resources/. An example can be found in wiki page on my GitHub.
 
 Compile the Java project
-```bash
+```
 ./gradlew war
 mv ./build/libs/lxcCMS.war ${tomcat_dir}/ROOT.war
 ```
