@@ -1,0 +1,20 @@
+<div class="file">
+    <table ngl-datatable [data]="videos">
+        <ngl-datatable-column heading="file">
+            <template nglDatatableCell let-row="row">{{url}}{{row}}</template>
+        </ngl-datatable-column>
+
+        <ngl-datatable-column heading="Opeations">
+            <template nglDatatableCell let-row="row">
+                <button type="button" nglButton="neutral" (click)="onDelete(row)">delete</button>
+            </template>
+        </ngl-datatable-column>
+        <!-- Loading overlay -->
+        <template nglLoadingOverlay>
+            <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">Loading...</div>
+        </template>
+
+        <!-- No rows overlay -->
+        <template nglNoRowsOverlay>No data available in table!</template>
+    </table>
+</div>

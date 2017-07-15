@@ -1,49 +1,49 @@
 buildscript {
     repositories {
-        mavenCentral()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     }
     dependencies {
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE')
-        classpath('org.springframework:springloaded:1.2.0.RELEASE')
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE"
+        classpath "org.springframework:springloaded:1.2.0.RELEASE"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.2-5"
     }
 }
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 apply plugin: 'idea'
+apply plugin: 'war'
 apply plugin: 'spring-boot'
 
-jar {
-    baseName = 'lxcCMS'
-    version = '1.0'
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
-    maven { url "https://jitpack.io" }
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'https://jitpack.io' }
 }
 
-
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-aop')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-freemarker')
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile 'org.springframework.boot:spring-boot-starter-aop'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-starter-freemarker'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-websocket'
+    compile('org.springframework.boot:spring-boot-devtools')
 
-    compile('org.springframework.social:spring-social-core')
-    compile('org.springframework.social:spring-social-web')
-    compile('org.springframework.social:spring-social-config')
-    compile('org.springframework.social:spring-social-security')
-    compile('org.springframework.social:spring-social-facebook')
-    compile('net.gplatform:spring-social-qq:1.0.2')
+    compile 'org.springframework.social:spring-social-core'
+    compile 'org.springframework.social:spring-social-web'
+    compile 'org.springframework.social:spring-social-config'
+    compile 'org.springframework.social:spring-social-security'
+    compile 'net.gplatform:spring-social-qq:1.0.2'
 
-    runtime('mysql:mysql-connector-java')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.5'
 
-    compile('commons-codec:commons-codec:1.10')
-    compile('net.htmlparser.jericho:jericho-html:3.4')
-    compile('com.github.lixiaocong:transmission4j:0.2')
-    compile('com.github.binarywang:weixin-java-mp:2.0.0')
+    compile 'net.htmlparser.jericho:jericho-html:3.4'
+    compile 'com.github.binarywang:weixin-java-mp:2.0.0'
 
-    compile("org.springframework.boot:spring-boot-devtools")
+    compile 'com.h2database:h2:1.4.196'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

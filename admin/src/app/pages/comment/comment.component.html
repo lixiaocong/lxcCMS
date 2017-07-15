@@ -1,0 +1,31 @@
+<div class="comment">
+    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)"
+           (onRowClick)="onRowClick($event)">
+        <ngl-datatable-column heading="ID" key="id" sortable></ngl-datatable-column>
+        <ngl-datatable-column heading="COMMENT" key="content"></ngl-datatable-column>
+        <ngl-datatable-column heading="ARTICLE" key="article">
+            <template nglDatatableCell let-value>{{value.title}}</template>
+        </ngl-datatable-column>
+        <ngl-datatable-column heading="USER" key="user">
+            <template nglDatatableCell let-value>
+                <ngl-badge>{{value.username}}</ngl-badge>
+            </template>
+        </ngl-datatable-column>
+        <ngl-datatable-column heading="Opeations" key="id">
+            <template nglDatatableCell let-value>
+                <button type="button" nglButton="neutral" (click)="onDelete(value)">delete</button>
+            </template>
+        </ngl-datatable-column>
+
+        <!-- Loading overlay -->
+        <template nglLoadingOverlay>
+            <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">Loading...</div>
+        </template>
+
+        <!-- No rows overlay -->
+        <template nglNoRowsOverlay>No data available in table!</template>
+    </table>
+
+    <ngl-pagination [(page)]="page" [total]="total" limit="10" (pageChange)="onPageChange($event)"
+                    #pagination></ngl-pagination>
+</div>

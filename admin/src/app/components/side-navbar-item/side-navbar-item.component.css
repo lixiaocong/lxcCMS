@@ -1,0 +1,33 @@
+.sidebar-item {
+
+}
+
+.sidebar-item-hover {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+a {
+    display: block;
+    text-decoration: none;
+    height: 40px;
+    padding: 6px;
+    padding-left: 21px;
+    font-size: 21px;
+}
+
+a md-icon {
+    float: left;
+}
+
+a span {
+    padding-left: 6px;
+}
+
+* {
+    color: black;
+}
+
+*:focus {
+    outline: none;
+    border: 0;
+}

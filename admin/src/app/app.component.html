@@ -1,0 +1,10 @@
+<md-toolbar>
+    <i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i> {{title}}
+</md-toolbar>
+
+<md-sidenav-container>
+    <md-sidenav id="sidebar" [mode]='sideBarMode' [opened]="isSideBarOpen" (click)="sideBarClicked()">
+        <app-side-navbar></app-side-navbar>
+    </md-sidenav>
+    <router-outlet></router-outlet>
+</md-sidenav-container>

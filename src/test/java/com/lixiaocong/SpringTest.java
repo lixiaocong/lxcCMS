@@ -32,11 +32,11 @@
 
 package com.lixiaocong;
 
-import com.lixiaocong.entity.Article;
-import com.lixiaocong.repository.IArticleRepository;
-import com.lixiaocong.repository.IUserRepository;
-import com.lixiaocong.service.IArticleService;
-import com.lixiaocong.service.ICommentService;
+import com.lixiaocong.cms.entity.Article;
+import com.lixiaocong.cms.repository.IArticleRepository;
+import com.lixiaocong.cms.repository.IUserRepository;
+import com.lixiaocong.cms.service.IArticleService;
+import com.lixiaocong.cms.service.ICommentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

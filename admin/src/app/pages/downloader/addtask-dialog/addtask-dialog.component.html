@@ -1,0 +1,25 @@
+<div>
+    <md-radio-group [(ngModel)]='taskType'>
+        <md-radio-button value="url">http协议</md-radio-button>
+        <md-radio-button value="metalink">metalink</md-radio-button>
+        <md-radio-button value="torrent">种子文件</md-radio-button>
+    </md-radio-group>
+</div>
+<div>
+
+    <div [hidden]="taskType != 'url'">
+        <md-input-container>
+            <input mdInput [(ngModel)]="urlValue">
+        </md-input-container>
+    </div>
+    <div [hidden]="taskType != 'metalink'">
+        <md-input-container>
+            <input mdInput [(ngModel)]="metalinkValue">
+        </md-input-container>
+    </div>
+    <div [hidden]="taskType != 'torrent'">
+        <input type="file" (change)='onFileChange($event)' accept="application/x-bittorrent">
+    </div>
+    <button md-raised-button (click)='addTask()'>add task</button>
+    <button md-raised-button (click)='cancel()'>cancel</button>
+</div>
