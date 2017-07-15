@@ -46,6 +46,7 @@ import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.connect.web.SignInAdapter;
@@ -56,6 +57,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableSocial
 public class SocialConfig extends SocialConfigurerAdapter {
+    //data source used to store user connection information
     private final DataSource dataSource;
 
     @Autowired
@@ -69,8 +71,10 @@ public class SocialConfig extends SocialConfigurerAdapter {
     }
 
     @Bean
-    public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository) {
-        return new ConnectController(connectionFactoryLocator, connectionRepository);
+    public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository, Environment environment) {
+        ConnectController controller= new ConnectController(connectionFactoryLocator, connectionRepository);
+        controller.setApplicationUrl(environment.getProperty("server.url"));
+        return controller;
     }
 
     @Bean

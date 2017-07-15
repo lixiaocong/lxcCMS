@@ -43,10 +43,11 @@ import org.springframework.web.context.request.NativeWebRequest;
 public class SignInUtil implements SignInAdapter {
     private UserDetailsService userDetailsService;
 
-    public SignInUtil(UserDetailsService userDetailsService) {
+    SignInUtil(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
+    //TODO return the previous request url
     @Override
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
         UserDetails user = userDetailsService.loadUserByUsername(localUserId);

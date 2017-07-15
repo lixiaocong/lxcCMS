@@ -70,7 +70,8 @@ public class SignController {
         this.userDetailsService = userDetailsService;
     }
 
-    @RequestMapping("/signin")
+    //sign in post is handled by spring security
+    @RequestMapping(value = "signin", method = RequestMethod.GET)
     public String signin() {
         return "sign/signin";
     }
