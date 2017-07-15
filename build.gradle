@@ -43,6 +43,7 @@ dependencies {
     compile 'net.htmlparser.jericho:jericho-html:3.4'
     compile 'com.github.binarywang:weixin-java-mp:2.0.0'
 
-    runtime 'mysql:mysql-connector-java'
+    compile 'com.h2database:h2:1.4.196'
+
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
