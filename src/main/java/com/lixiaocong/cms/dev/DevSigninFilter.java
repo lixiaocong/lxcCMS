@@ -30,43 +30,49 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.Dev;
+
+package com.lixiaocong.cms.dev;
 
 import com.lixiaocong.cms.entity.User;
 import com.lixiaocong.cms.repository.IUserRepository;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import com.lixiaocong.cms.security.DaoBasedUserDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.*;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
-//TODO if don't set order, there will be an error, to be fixed
-@Profile("dev")
-@Order(1)
-@Configuration
-public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter{
+public class DevSigninFilter implements Filter {
+    private final IUserRepository userRepository;
 
-    private Log log = LogFactory.getLog(getClass());
-
-    private IUserRepository userRepository;
-
-    @Autowired
-    public DevWebSecurityConfig(IUserRepository userRepository) {
+    public DevSigninFilter(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/signin").defaultSuccessUrl("/blog").and().logout().logoutUrl("/logout").logoutSuccessUrl("/blog").and().rememberMe().rememberMeParameter("remember-me").and().csrf().disable();
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
-        User admin = new User("admin", "123456");
-        admin.setAdmin(true);
-        userRepository.save(admin);
-        http.addFilterAfter(new DevSigninFilter(userRepository), SecurityContextPersistenceFilter.class);
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        User admin = userRepository.findByUsername("admin");
+        UserDetails user = new DaoBasedUserDetails(admin.getId(),admin.getUsername(),admin.getPassword(), authorities);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        chain.doFilter(request,response);
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }
