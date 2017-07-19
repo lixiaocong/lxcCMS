@@ -75,7 +75,7 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public Page<Article> get(int page, int size) {
-        PageRequest request = new PageRequest(page, size, Sort.Direction.ASC, "lastUpdateTime");
+        PageRequest request = new PageRequest(page, size, Sort.Direction.DESC, "lastUpdateTime");
         return articleRepository.findAll(request);
     }
 

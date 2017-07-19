@@ -65,17 +65,19 @@ public class DownloaderSchedulingTask {
         this.downloaderSocketHandler = downloaderSocketHandler;
     }
 
-    @Scheduled(fixedDelay = 500)
+    @Scheduled(fixedDelay = 2000)
     public void task() {
         List<DownloadTask> torrents = null;
         try {
             torrents = downloader.get();
+            /*
             torrents.forEach(torrent ->{
                 if(torrent.isFinished()) {
                     List<File> allVideos = VideoFileHelper.findAllVideos(new File(torrent.getPath()), fileTypes.split("\\|"));
                     VideoFileHelper.moveFiles(allVideos, fileDestination);
                 }
             });
+            */
         } catch (DownloaderException e) {
             e.printStackTrace();
         }

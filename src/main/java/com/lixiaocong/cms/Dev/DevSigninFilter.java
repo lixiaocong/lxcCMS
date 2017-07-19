@@ -33,10 +33,9 @@
 
 package com.lixiaocong.cms.Dev;
 
+import com.lixiaocong.cms.entity.User;
+import com.lixiaocong.cms.repository.IUserRepository;
 import com.lixiaocong.cms.security.DaoBasedUserDetails;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -49,6 +48,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DevSigninFilter implements Filter {
+    private final IUserRepository userRepository;
+
+    public DevSigninFilter(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
@@ -59,7 +64,8 @@ public class DevSigninFilter implements Filter {
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        UserDetails user = new DaoBasedUserDetails(1,"admin","123456", authorities);
+        User admin = userRepository.findByUsername("admin");
+        UserDetails user = new DaoBasedUserDetails(admin.getId(),admin.getUsername(),admin.getPassword(), authorities);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request,response);

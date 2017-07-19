@@ -32,6 +32,11 @@
 
 package com.lixiaocong.cms.Dev;
 
+import com.lixiaocong.cms.entity.User;
+import com.lixiaocong.cms.repository.IUserRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
@@ -45,8 +50,23 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 @Order(1)
 @Configuration
 public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter{
+
+    private Log log = LogFactory.getLog(getClass());
+
+    private IUserRepository userRepository;
+
+    @Autowired
+    public DevWebSecurityConfig(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.addFilterAfter(new DevSigninFilter(), SecurityContextPersistenceFilter.class);
+        http.authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/signin").defaultSuccessUrl("/blog").and().logout().logoutUrl("/logout").logoutSuccessUrl("/blog").and().rememberMe().rememberMeParameter("remember-me").and().csrf().disable();
+
+        User admin = new User("admin", "123456");
+        admin.setAdmin(true);
+        userRepository.save(admin);
+        http.addFilterAfter(new DevSigninFilter(userRepository), SecurityContextPersistenceFilter.class);
     }
 }
