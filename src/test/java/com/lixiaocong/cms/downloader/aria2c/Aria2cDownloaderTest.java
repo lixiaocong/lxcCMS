@@ -32,7 +32,9 @@
 
 package com.lixiaocong.cms.downloader.aria2c;
 
+import com.lixiaocong.cms.util.VideoFileHelper;
 import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.DownloaderException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -45,8 +47,20 @@ import java.util.List;
 
 public class Aria2cDownloaderTest {
     private Log log = LogFactory.getLog(getClass().getName());
-    private Aria2cDownloader downloader = new Aria2cDownloader("123456", "D:/nginx/html/","localhost:6800/rpc");
+    private Aria2cDownloader downloader = new Aria2cDownloader("123456", "~/Documents/aria2","http://localhost:6800/jsonrpc");
     private final String gid = "20af5d0ffd685567";
+
+    @Test
+    public void moveTest() throws DownloaderException {
+        List<DownloadTask> downloadTasks = downloader.get();
+        String fileTypes = ".png|.rmvb";
+        downloadTasks.forEach(downloadTask -> {
+            if(downloadTask.isFinished()){
+                List<File> allVideos = VideoFileHelper.findAllVideos(new File(downloadTask.getPath()), fileTypes.split("\\|"));
+                VideoFileHelper.moveFiles(allVideos, "/Users/lixiaocong/Movies");
+            }
+        });
+    }
 
     @Test
     public void addByMetainfo() throws Exception {

@@ -23,7 +23,6 @@ export class DownloaderComponent implements OnInit {
 
         this.ws.onclose = event => {
             console.log('close');
-            console.log(event.code)
         };
 
         this.ws.onerror = event => {
