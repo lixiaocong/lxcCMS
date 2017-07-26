@@ -14,8 +14,8 @@ export class DownloadTaskComponent implements OnInit {
     progressMode: string;
     progressValue: number;
 
-    speed: string;
-    total: string;
+    downloadSpeed: string;
+    totalLength: string;
 
     constructor() {
     }
@@ -28,9 +28,9 @@ export class DownloadTaskComponent implements OnInit {
 
         this.progressColor = 'primary';
         this.progressMode = 'determinate';
-        this.speed = DownloadTaskComponent.formatBytes(this.downloadTask.speed);
-        this.total = DownloadTaskComponent.formatBytes(this.downloadTask.totalLength);
-        this.progressValue = this.downloadTask.downloadedLength / this.downloadTask.totalLength * 100;
+        this.downloadSpeed = DownloadTaskComponent.formatBytes(this.downloadTask.downloadSpeed);
+        this.totalLength = DownloadTaskComponent.formatBytes(this.downloadTask.totalLength);
+        this.progressValue = this.downloadTask.downloadLength / this.downloadTask.totalLength * 100;
     }
 
     onHover() {
@@ -63,15 +63,25 @@ export class DownloadTaskComponent implements OnInit {
 }
 
 //下载任务的结构
+class DownloadFile {
+    name: string;
+    path: string;
+    totalLength: number;
+    downloadLength: number;
+}
+
 export class DownloadTask {
     isChoosed: boolean;
 
     id: string;
-    downloadType: string;
+    status: string;
+    type: string;
     name: string;
     totalLength: number;
-    downloadedLength: number;
-    speed: number;
-    status: string;
-    finished: boolean;
+    downloadLength: number;
+    downloadSpeed: number;
+    uploadLength: number;
+    uploadSpeed: number;
+    dir :string;
+    files : DownloadFile[];
 }

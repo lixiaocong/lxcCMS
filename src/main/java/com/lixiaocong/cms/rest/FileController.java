@@ -61,38 +61,37 @@ public class FileController {
     private final ImageCodeService codeService;
     private Log logger = LogFactory.getLog(getClass());
 
-    @Value("${nginx.root}")
-    private String serverRoot;
-    @Value("${nginx.url}")
-    private String serverUrl;
-
-    private String imageFolder;
-    private String imageServer;
+    private String fileServerRoot;
+    private String fileServerUrl;
 
     @Autowired
-    public FileController(ImageCodeService codeService) {
+    public FileController(ImageCodeService codeService, @Value("${file.server.root}") String fileServerRoot,@Value("${file.server.url}") String fileServerUrl) {
         this.codeService = codeService;
-        this.imageFolder = this.serverRoot+"image/";
-        this.imageServer = this.serverUrl+"image/";
+        this.fileServerRoot = fileServerRoot;
+        if(!this.fileServerRoot.endsWith("/"))
+            this.fileServerRoot += "/";
+        this.fileServerUrl = fileServerUrl;
+        if(!this.fileServerUrl.endsWith("/"))
+            this.fileServerUrl += "/";
     }
 
     @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String post(MultipartFile imageFile) {
         try {
-            File newFile = new File(imageFolder + UUID.randomUUID() + imageFile.getOriginalFilename());
+            File newFile = new File(fileServerRoot+"/image/"+ UUID.randomUUID() + imageFile.getOriginalFilename());
             imageFile.transferTo(newFile);
-            return imageServer + newFile.getName();
+            return fileServerUrl+"/image/" + newFile.getName();
         } catch (Exception e) {
             logger.error(e);
         }
-        return imageServer + "error.jpg";
+        return fileServerUrl+"/image/" + "error.jpg";
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.GET)
     public Map<String, Object> video() {
-        File file = new File(serverRoot);
+        File file = new File(fileServerRoot);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
         List<String> fileList = new LinkedList<>();
         File[] files = file.listFiles();
@@ -101,14 +100,14 @@ public class FileController {
             if (video.isFile()) fileList.add(video.getName());
         }
         Map<String, Object> ret = ResponseMsgFactory.createSuccessResponse("videos", fileList);
-        ret.put("serverUrl", serverUrl);
+        ret.put("serverUrl", fileServerUrl);
         return ret;
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@RequestParam String fileName) {
-        File file = new File(serverRoot + fileName);
+        File file = new File(fileServerRoot + fileName);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("文件不存在");
         else if (!file.isFile()) return ResponseMsgFactory.createFailedResponse("不是文件");
         else if (!file.delete()) return ResponseMsgFactory.createFailedResponse("删除不成功");

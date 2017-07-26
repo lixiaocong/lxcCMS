@@ -1,5 +1,5 @@
 <div [ngClass]="styleClass" (mouseover)="onHover()" (mouseleave)="onLeave()" (click)='onClick()'>
     {{downloadTask.name}}
     <md-progress-bar [color]="color" [mode]="mode" [value]="progressValue" [bufferValue]=1></md-progress-bar>
-    {{speed}}/s size:{{total}} {{downloadTask.status}}
+    {{downloadSpeed}}/s size:{{totalLength}} {{downloadTask.status}}
 </div>

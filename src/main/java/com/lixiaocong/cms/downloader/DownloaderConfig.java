@@ -36,6 +36,7 @@ import com.lixiaocong.cms.downloader.aria2c.Aria2cDownloader;
 import com.lixiaocong.downloader.DownloaderConfigurer;
 import com.lixiaocong.downloader.EnableDownloader;
 import com.lixiaocong.downloader.IDownloader;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -51,6 +52,7 @@ public class DownloaderConfig implements DownloaderConfigurer {
     @Value("${aria2c.url}")
     private String url;
 
+    @NotNull
     @Override
     public IDownloader getDownloader() {
         return new Aria2cDownloader(this.token,this.path,this.url);

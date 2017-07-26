@@ -28,22 +28,12 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-To run this project on your machine, you need to install NodeJS and Tomcat8.
+To run this project on your machine, you need to install NodeJS Tomcat8 and Aria2.
 
 I'm using H2 as my database, you can change to MySQL and other JDBC database.
 Execute db.sql to init your database
 
 The downloader is aria2c, you can also change to other downloader such as Transmission,checkout my [code](https://github.com/lixiaocong/transmission4j)
-
-### Installing
-
-Installing software using Docker is recommended. Install Docker on your machine. If you don’t know how to do it , check out **[this website]( https://www.docker.com/)**
-
-Open your terminal on Linux/Mac or command window on Windows
-```
-docker run --name aria2 -d -p 6800:6800 -v <data-path>:/home/aria2 -v <config-path>:/etc/aria2 -e TOKEN=123456 vimagick/aria2
-```
-The token for aria2c is **123456** and the config file can be found in current folder as **aria2.conf**
 
 ## Deployment
 

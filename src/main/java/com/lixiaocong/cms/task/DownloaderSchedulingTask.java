@@ -33,10 +33,7 @@
 package com.lixiaocong.cms.task;
 
 import com.lixiaocong.cms.socket.DownloaderSocketHandler;
-import com.lixiaocong.cms.util.VideoFileHelper;
-import com.lixiaocong.downloader.DownloadTask;
-import com.lixiaocong.downloader.DownloaderException;
-import com.lixiaocong.downloader.IDownloader;
+import com.lixiaocong.downloader.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,43 +41,71 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.security.auth.message.AuthException;
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class DownloaderSchedulingTask {
     private Log log = LogFactory.getLog(getClass());
+    private Set<String> typeSet;
     private IDownloader downloader;
     private DownloaderSocketHandler downloaderSocketHandler;
-
-    @Value("${nginx.root}")
     private String fileDestination;
-    @Value("${videoType}")
-    private String fileTypes;
 
     @Autowired
-    public DownloaderSchedulingTask(IDownloader downloader, DownloaderSocketHandler downloaderSocketHandler) {
+    public DownloaderSchedulingTask(IDownloader downloader, @Value("${file.server.root}") String fileDestination, @Value("${file.types}") String fileTypes, DownloaderSocketHandler downloaderSocketHandler) {
         this.downloader = downloader;
         this.downloaderSocketHandler = downloaderSocketHandler;
+        this.fileDestination = fileDestination;
+        if(!this.fileDestination.endsWith("/"))
+            this.fileDestination += "/";
+
+        this.typeSet = new HashSet<>();
+        String[] types = fileTypes.split("\\|");
+        this.typeSet.addAll(Arrays.asList(types));
     }
 
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 1000)
     public void task() {
         List<DownloadTask> torrents = null;
         try {
             torrents = downloader.get();
-            /*
-            torrents.forEach(torrent ->{
-                if(torrent.isFinished()) {
-                    List<File> allVideos = VideoFileHelper.findAllVideos(new File(torrent.getPath()), fileTypes.split("\\|"));
-                    VideoFileHelper.moveFiles(allVideos, fileDestination);
-                }
-            });
-            */
+            handleCompleteFiles(torrents);
         } catch (DownloaderException e) {
             e.printStackTrace();
         }
         this.downloaderSocketHandler.broadcast(torrents);
+    }
+
+    public void handleCompleteFiles(List<DownloadTask> tasks) {
+        tasks.forEach(task -> {
+            if (task.getStatus() == DownloadStatus.SEEDING || task.getStatus() == DownloadStatus.COMPLETED) {
+                List<DownloadFile> files = task.getFiles();
+                files.stream()
+                        .filter(this::typeFilter)
+                        .forEach(this::moveFile);
+                try {
+                    downloader.remove(task.getId());
+                } catch (DownloaderException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private boolean typeFilter(DownloadFile downloadFile) {
+        int index = downloadFile.getName().lastIndexOf(".");
+        String type = downloadFile.getName().substring(index+1);
+        return this.typeSet.contains(type);
+    }
+
+    private void moveFile(DownloadFile downloadFile) {
+        File file = new File(downloadFile.getPath());
+        boolean result = file.renameTo(new File(fileDestination + file.getName()));
+        if (!result)
+            log.error("move file " + file.getName() + " error");
     }
 }

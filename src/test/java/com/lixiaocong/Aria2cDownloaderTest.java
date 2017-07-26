@@ -30,13 +30,12 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.downloader.aria2c;
+package com.lixiaocong;
 
-import com.lixiaocong.cms.util.VideoFileHelper;
+import com.lixiaocong.cms.downloader.aria2c.Aria2cDownloader;
+import com.lixiaocong.cms.task.DownloaderSchedulingTask;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 import java.io.File;
@@ -46,20 +45,14 @@ import java.util.Base64;
 import java.util.List;
 
 public class Aria2cDownloaderTest {
-    private Log log = LogFactory.getLog(getClass().getName());
-    private Aria2cDownloader downloader = new Aria2cDownloader("123456", "~/Documents/aria2","http://localhost:6800/jsonrpc");
+    private Aria2cDownloader downloader = new Aria2cDownloader("123456", "/Users/lixiaocong/Documents/aria2c","http://localhost:6800/jsonrpc");
     private final String gid = "20af5d0ffd685567";
 
     @Test
     public void moveTest() throws DownloaderException {
         List<DownloadTask> downloadTasks = downloader.get();
-        String fileTypes = ".png|.rmvb";
-        downloadTasks.forEach(downloadTask -> {
-            if(downloadTask.isFinished()){
-                List<File> allVideos = VideoFileHelper.findAllVideos(new File(downloadTask.getPath()), fileTypes.split("\\|"));
-                VideoFileHelper.moveFiles(allVideos, "/Users/lixiaocong/Movies");
-            }
-        });
+        DownloaderSchedulingTask task = new DownloaderSchedulingTask(downloader,"/Users/lixiaocong/Downloads",".torrent|.iso",null);
+        task.handleCompleteFiles(downloadTasks);
     }
 
     @Test
@@ -135,7 +128,9 @@ public class Aria2cDownloaderTest {
     @Test
     public void get() throws Exception {
         List<DownloadTask> downloadTasks = downloader.get();
-        downloadTasks.forEach(System.out::println);
+        downloadTasks.forEach(task->{
+            System.out.println(task.getName());
+        });
     }
 
     @Test

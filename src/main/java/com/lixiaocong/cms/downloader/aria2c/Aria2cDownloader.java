@@ -33,9 +33,8 @@
 package com.lixiaocong.cms.downloader.aria2c;
 
 import com.google.gson.*;
-import com.lixiaocong.downloader.DownloadTask;
-import com.lixiaocong.downloader.DownloaderException;
-import com.lixiaocong.downloader.IDownloader;
+import com.lixiaocong.downloader.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
@@ -46,6 +45,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,16 +56,18 @@ public class Aria2cDownloader implements IDownloader {
     private final Log log = LogFactory.getLog(getClass().getName());
     private final String uri;
     private final String token;
-    private final String path;
+    private String baseDir;
 
     private HttpClient httpClient;
     private JsonParser jsonParser;
     private Gson gson;
 
-    public Aria2cDownloader(String token, String path , String url) {
+    public Aria2cDownloader(String token, String baseDir, String url) {
         this.uri = url;
         this.token = token;
-        this.path = path;
+        this.baseDir = baseDir;
+        if (!this.baseDir.endsWith("/"))
+            this.baseDir += "/";
 
         this.httpClient = HttpClients.custom().build();
         this.jsonParser = new JsonParser();
@@ -87,17 +89,17 @@ public class Aria2cDownloader implements IDownloader {
             throw new DownloaderException("network error");
         }
 
-        if (response.getStatusLine().getStatusCode()== SC_OK)
+        if (response.getStatusLine().getStatusCode() == SC_OK)
             return responseEntity;
-        else{
-             Aria2cErrorResponse aria2CErrorResponse = gson.fromJson(responseEntity, Aria2cErrorResponse.class);
-             throw new DownloaderException(aria2CErrorResponse.getMessage());
+        else {
+            Aria2cErrorResponse aria2CErrorResponse = gson.fromJson(responseEntity, Aria2cErrorResponse.class);
+            throw new DownloaderException(aria2CErrorResponse.getMessage());
         }
     }
 
     @Override
     public boolean addByMetainfo(String meatinfo) throws DownloaderException {
-        Aria2cRequest addTorrentRequest = Aria2cReuqestFactory.getAddTorrentRequest(token, meatinfo);
+        Aria2cRequest addTorrentRequest = Aria2cReuqestFactory.getAddTorrentRequest(token, meatinfo, baseDir);
         String resultJson = post(addTorrentRequest);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
@@ -111,7 +113,7 @@ public class Aria2cDownloader implements IDownloader {
 
     @Override
     public boolean addByUrl(String url) throws DownloaderException {
-        Aria2cRequest request = Aria2cReuqestFactory.getAddUriRequest(token, url);
+        Aria2cRequest request = Aria2cReuqestFactory.getAddUriRequest(token, url, baseDir);
         String resultJson = post(request);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
@@ -128,20 +130,24 @@ public class Aria2cDownloader implements IDownloader {
         return success;
     }
 
-    //TODO delete files at the same time
     @Override
     public boolean remove(String id) throws DownloaderException {
-        Aria2cStatusResult status = getStatus(id);
-        if(status.getStatus().equals("complete") || status.getStatus().equals("removed"))
-        {
-            Aria2cRequest removeResultRequest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
-            post(removeResultRequest);
-            return true;
-        }
-        else{
+        DownloadTask downloadTask = get(id);
+        if (downloadTask.getStatus() == DownloadStatus.SEEDING
+                || downloadTask.getStatus() == DownloadStatus.DOWNLOADING) {
             Aria2cRequest removeRequest = Aria2cReuqestFactory.getRemoveReuqest(token, id);
             post(removeRequest);
             return remove(id);
+        } else {
+            Aria2cRequest removeResultRequest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
+            post(removeResultRequest);
+            File folder = new File(downloadTask.getDir());
+            try {
+                FileUtils.forceDelete(folder);
+            } catch (IOException e) {
+                log.warn("delete folder " + folder.getAbsolutePath() + " failed");
+            }
+            return true;
         }
     }
 
@@ -218,6 +224,15 @@ public class Aria2cDownloader implements IDownloader {
     }
 
     @Override
+    public DownloadTask get(String gid) throws DownloaderException {
+        Aria2cRequest tellStatusRequest = Aria2cReuqestFactory.getTellStatusRequest(token, gid);
+        String resultJson = post(tellStatusRequest);
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
+        JsonObject result = jsonObject.get("result").getAsJsonObject();
+        return getTaskFromJson(result);
+    }
+
+    @Override
     public List<DownloadTask> get() throws DownloaderException {
         Aria2cRequest tellActiveReuqest = Aria2cReuqestFactory.getTellActiveReuqest(token);
         String activeResultJson = post(tellActiveReuqest);
@@ -239,37 +254,103 @@ public class Aria2cDownloader implements IDownloader {
         JsonObject jsonObject = (JsonObject) jsonParser.parse(tellJson);
         JsonArray jsonArray = jsonObject.getAsJsonArray("result");
         jsonArray.forEach(element -> {
-            JsonObject object = element.getAsJsonObject();
-            String id = object.get("gid").getAsString();
-            String type;
-            String name;
-            JsonObject bitTorrent = object.getAsJsonObject("bittorrent");
-            if (bitTorrent != null) {
-                JsonObject info = bitTorrent.get("info").getAsJsonObject();
-                name = info.get("name").getAsString();
-                type = DownloadTask.DownloadType.getTYPE_TORRENT();
-            } else {
-                JsonArray files = object.getAsJsonArray("files");
-                if (files.size() == 0)
-                    name = "error: file empty";
-                else {
-                    JsonElement file = files.get(0);
-                    String filepath = file.getAsJsonObject().get("path").getAsString();
-                    int index = filepath.lastIndexOf("/");
-                    name = filepath.substring(++index);
-                }
-                type = DownloadTask.DownloadType.getTYPE_URL();
-            }
-
-            long totalLength = object.get("totalLength").getAsLong();
-            long downloadedLength = object.get("completedLength").getAsLong();
-            long speed = object.get("downloadSpeed").getAsLong();
-            String status = object.get("status").getAsString();
-            boolean isFinished = downloadedLength == totalLength;
-            DownloadTask task = new DownloadTask(id,type,name,totalLength,downloadedLength,speed,path,status,isFinished);
-            ret.add(task);
+            JsonObject result = element.getAsJsonObject();
+            ret.add(getTaskFromJson(result));
         });
         return ret;
+    }
+
+    private DownloadTask getTaskFromJson(JsonObject result) {
+        String id = result.get("gid").getAsString();
+        DownloadStatus status = handleStatus(result);
+        DownloadType type = handleType(result);
+        String name = handleName(result);
+        long totalLength = handleTotalLength(result);
+        long downloadedLength = handleDownloadLength(result);
+        long downloadSpeed = result.get("downloadSpeed").getAsLong();
+        long uploadLength = result.get("uploadLength").getAsLong();
+        long uploadSpeed = result.get("uploadSpeed").getAsLong();
+        String dir = result.get("dir").getAsString();
+        List<DownloadFile> files = handleFiles(result);
+
+        return new DownloadTask(id, status, type, name, totalLength, downloadedLength, downloadSpeed, uploadLength, uploadSpeed, dir, files);
+    }
+
+    private List<DownloadFile> handleFiles(JsonObject result) {
+        JsonArray files = result.getAsJsonArray("files");
+        List<DownloadFile> ret = new LinkedList<>();
+        files.forEach(element -> {
+            JsonObject fileJsonObject = element.getAsJsonObject();
+            DownloadFile file = handleFile(fileJsonObject);
+            ret.add(file);
+        });
+        return ret;
+    }
+
+    private DownloadFile handleFile(JsonObject fileJsonObject) {
+        String path = fileJsonObject.get("path").getAsString();
+        int index = path.lastIndexOf("/");
+        String name = path.substring(index + 1);//if there is no /, then use full name
+
+        long totalLength = fileJsonObject.get("length").getAsLong();
+        long downloadLength = fileJsonObject.get("completedLength").getAsLong();
+        return new DownloadFile(name, path, totalLength, downloadLength);
+    }
+
+    private long handleDownloadLength(JsonObject result) {
+        return result.get("completedLength").getAsLong();
+    }
+
+    private long handleTotalLength(JsonObject result) {
+        return result.get("totalLength").getAsLong();
+    }
+
+    private String handleName(JsonObject result) {
+        JsonObject bitTorrent = result.getAsJsonObject("bittorrent");
+        if (bitTorrent != null) {
+            JsonObject info = bitTorrent.get("info").getAsJsonObject();
+            return info.get("name").getAsString();
+        } else {
+            JsonArray files = result.getAsJsonArray("files");
+            if (files.size() == 0)
+                return "error: file empty";
+            else {
+                JsonElement file = files.get(0);
+                String filepath = file.getAsJsonObject().get("path").getAsString();
+                int index = filepath.lastIndexOf("/");
+                return filepath.substring(++index);
+            }
+        }
+    }
+
+    private DownloadType handleType(JsonObject result) {
+        JsonObject bitTorrent = result.getAsJsonObject("bittorrent");
+        if (bitTorrent == null)
+            return DownloadType.TORRENT;
+        return DownloadType.URL;
+    }
+
+    private DownloadStatus handleStatus(JsonObject result) {
+        String status = result.get("status").getAsString();
+        switch (status) {
+            case "active": {
+                long totalLength = handleTotalLength(result);
+                long downloadLength = handleDownloadLength(result);
+                if (totalLength == downloadLength)
+                    return DownloadStatus.SEEDING;
+                return DownloadStatus.DOWNLOADING;
+            }
+            case "waiting":
+                return DownloadStatus.WAITING;
+            case "paused":
+                return DownloadStatus.PAUSED;
+            case "error":
+                return DownloadStatus.ERROR;
+            case "complete":
+                return DownloadStatus.COMPLETED;
+            default:
+                return DownloadStatus.OTHER;
+        }
     }
 
     private void purge() {
@@ -279,13 +360,5 @@ public class Aria2cDownloader implements IDownloader {
         } catch (DownloaderException e) {
             log.error(e);
         }
-    }
-
-    private Aria2cStatusResult getStatus(String gid) throws DownloaderException {
-        Aria2cRequest tellStatusRequest = Aria2cReuqestFactory.getTellStatusRequest(token, gid);
-        String resultJson = post(tellStatusRequest);
-        System.out.println(resultJson);
-        Aria2cStatus aria2cStatus = gson.fromJson(resultJson, Aria2cStatus.class);
-        return aria2cStatus.getResult();
     }
 }

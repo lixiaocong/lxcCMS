@@ -61,5 +61,7 @@ public interface IDownloader {
 
     boolean stop() throws DownloaderException;
 
+    DownloadTask get(String gid) throws DownloaderException;
+
     List<DownloadTask> get() throws DownloaderException;
 }

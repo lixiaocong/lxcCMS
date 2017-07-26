@@ -34,16 +34,28 @@ package com.lixiaocong.downloader
 
 class DownloadTask(
         var id: String,
-        var downloadType: String,
+        var status: DownloadStatus,
+        var type: DownloadType,
         var name: String,
         var totalLength: Long,
-        var downloadedLength: Long,
-        var speed: Long,
-        var path: String,
-        var status: String,
-        var isFinished: Boolean) {
-    companion object DownloadType {
-        val TYPE_TORRENT = "torrent"
-        val TYPE_URL = "url"
-    }
+        var downloadLength: Long,
+        var downloadSpeed: Long,
+        var uploadLength: Long,
+        var uploadSpeed: Long,
+        var dir: String,
+        var files: MutableList<DownloadFile>)
+
+enum class DownloadType {
+    TORRENT,
+    URL
+}
+
+enum class DownloadStatus {
+    DOWNLOADING,
+    SEEDING,
+    WAITING,
+    PAUSED,
+    COMPLETED,
+    ERROR,
+    OTHER
 }
