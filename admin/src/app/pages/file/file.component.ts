@@ -55,7 +55,7 @@ export class FileComponent implements OnInit {
     private replaceSlash(fileName: string) {
         let ret: string = "";
         for (let i = 0; i < fileName.length; i++) {
-            if (fileName.charAt(i) == '$')
+            if (fileName.charAt(i) == '_')
                 ret += '/';
             else
                 ret += fileName.charAt(i);
