@@ -33,6 +33,9 @@
 package com.lixiaocong.cms.rest;
 
 import com.lixiaocong.cms.service.ImageCodeService;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FalseFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +50,11 @@ import javax.annotation.security.RolesAllowed;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/file")
@@ -65,13 +66,13 @@ public class FileController {
     private String fileServerUrl;
 
     @Autowired
-    public FileController(ImageCodeService codeService, @Value("${file.server.root}") String fileServerRoot,@Value("${file.server.url}") String fileServerUrl) {
+    public FileController(ImageCodeService codeService, @Value("${file.server.root}") String fileServerRoot, @Value("${file.server.url}") String fileServerUrl) {
         this.codeService = codeService;
         this.fileServerRoot = fileServerRoot;
-        if(!this.fileServerRoot.endsWith("/"))
+        if (!this.fileServerRoot.endsWith("/"))
             this.fileServerRoot += "/";
         this.fileServerUrl = fileServerUrl;
-        if(!this.fileServerUrl.endsWith("/"))
+        if (!this.fileServerUrl.endsWith("/"))
             this.fileServerUrl += "/";
     }
 
@@ -79,23 +80,22 @@ public class FileController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String post(MultipartFile imageFile) {
         try {
-            File newFile = new File(fileServerRoot+"/image/"+ UUID.randomUUID() + imageFile.getOriginalFilename());
+            File newFile = new File(fileServerRoot + "image/" + UUID.randomUUID() + imageFile.getOriginalFilename());
             imageFile.transferTo(newFile);
-            return fileServerUrl+"/image/" + newFile.getName();
+            return fileServerUrl + "image/" + newFile.getName();
         } catch (Exception e) {
             logger.error(e);
         }
-        return fileServerUrl+"/image/" + "error.jpg";
+        return fileServerUrl + "image/" + "error.jpg";
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.GET)
     public Map<String, Object> video() {
-        File file = new File(fileServerRoot);
-        if (!file.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
+        File folder = new File(fileServerRoot);
+        if (!folder.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
+        Collection<File> files = FileUtils.listFiles(folder, TrueFileFilter.INSTANCE, FalseFileFilter.INSTANCE);
         List<String> fileList = new LinkedList<>();
-        File[] files = file.listFiles();
-        if (files == null) return ResponseMsgFactory.createFailedResponse("files 为空");
         for (File video : files) {
             if (video.isFile()) fileList.add(video.getName());
         }

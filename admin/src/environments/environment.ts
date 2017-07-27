@@ -5,9 +5,9 @@
 
 export const environment = {
     production: false,
-    articleUrl: "http://localhost:8080/article",
-    commentUrl: "http://localhost:8080/comment",
-    userUrl: "http://localhost:8080/user",
-    fileUrl: "http://localhost:8080/file/video",
-    downloaderUrl: 'ws://localhost:8080/downloader-socket',
+    articleUrl: "http://127.0.0.1/article",
+    commentUrl: "http://127.0.0.1/comment",
+    userUrl: "http://127.0.0.1/user",
+    fileUrl: "http://127.0.0.1/file/video",
+    downloaderUrl: 'ws://127.0.0.1/downloader-socket',
 };
