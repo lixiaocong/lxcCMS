@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {FileService} from "./file.service";
 import {UTF8} from "../../utils/UTF8";
 
+
 @Component({
     selector: 'app-file',
     templateUrl: './file.component.html',
@@ -12,7 +13,6 @@ export class FileComponent implements OnInit {
 
     private url;
     private videos;
-
     constructor(private fileService: FileService) {
     }
 
@@ -33,6 +33,7 @@ export class FileComponent implements OnInit {
         this.fileService.getFiles().subscribe(data => {
             this.videos = data.videos.filter(fileName => {
                 try {
+                    fileName = this.replaceSlash(fileName);
                     UTF8.b64DecodeUnicode(fileName);
                     return true;
                 } catch (e) {
@@ -43,7 +44,22 @@ export class FileComponent implements OnInit {
         });
     }
 
-    private decode64(row: string) {
-        return UTF8.b64DecodeUnicode(row);
+    private getName(fileName: string) {
+        fileName = this.replaceSlash(fileName);
+        fileName = UTF8.b64DecodeUnicode(fileName);
+        if(fileName.length>15)
+            return fileName.substring(0,13)+"...";
+        return fileName;
+    }
+
+    private replaceSlash(fileName: string) {
+        let ret: string = "";
+        for (let i = 0; i < fileName.length; i++) {
+            if (fileName.charAt(i) == '$')
+                ret += '/';
+            else
+                ret += fileName.charAt(i);
+        }
+        return ret;
     }
 }

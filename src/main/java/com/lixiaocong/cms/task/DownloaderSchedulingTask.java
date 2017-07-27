@@ -123,6 +123,7 @@ public class DownloaderSchedulingTask {
         File file = new File(downloadFile.getPath());
         String fileName = downloadFile.getName();
         String encodeString = Base64.getEncoder().encodeToString(fileName.getBytes());
+        encodeString = encodeString.replace("/","$");
         File dest = new File(fileDestination+encodeString);
         log.info("move file "+file.getName()+" to "+dest.getAbsolutePath());
         try {
