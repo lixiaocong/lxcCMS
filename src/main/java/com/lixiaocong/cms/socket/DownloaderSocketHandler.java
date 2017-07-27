@@ -66,13 +66,11 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        log.info("open socket " + session.getId());
         this.webSocketSessions.add(session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status){
-        log.info("closed socket " + session.getId());
         this.webSocketSessions.remove(session);
     }
 

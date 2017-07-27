@@ -133,22 +133,20 @@ public class Aria2cDownloader implements IDownloader {
     @Override
     public boolean remove(String id) throws DownloaderException {
         DownloadTask downloadTask = get(id);
-        if (downloadTask.getStatus() == DownloadStatus.SEEDING
-                || downloadTask.getStatus() == DownloadStatus.DOWNLOADING) {
+        if (downloadTask.getStatus() == DownloadStatus.ACTIVE) {
             Aria2cRequest removeRequest = Aria2cReuqestFactory.getRemoveReuqest(token, id);
             post(removeRequest);
-            return remove(id);
-        } else {
-            Aria2cRequest removeResultRequest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
-            post(removeResultRequest);
-            File folder = new File(downloadTask.getDir());
-            try {
-                FileUtils.forceDelete(folder);
-            } catch (IOException e) {
-                log.warn("delete folder " + folder.getAbsolutePath() + " failed");
-            }
-            return true;
         }
+        Aria2cRequest removeResultRequest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
+        post(removeResultRequest);
+        File folder = new File(downloadTask.getDir());
+        try {
+            FileUtils.forceDelete(folder);
+        } catch (IOException e) {
+            log.error("delete folder " + folder.getAbsolutePath() + " failed");
+            log.error(e);
+        }
+        return true;
     }
 
     @Override
@@ -265,8 +263,8 @@ public class Aria2cDownloader implements IDownloader {
         DownloadStatus status = handleStatus(result);
         DownloadType type = handleType(result);
         String name = handleName(result);
-        long totalLength = handleTotalLength(result);
-        long downloadedLength = handleDownloadLength(result);
+        long totalLength = result.get("totalLength").getAsLong();
+        long downloadedLength = result.get("completedLength").getAsLong();
         long downloadSpeed = result.get("downloadSpeed").getAsLong();
         long uploadLength = result.get("uploadLength").getAsLong();
         long uploadSpeed = result.get("uploadSpeed").getAsLong();
@@ -297,14 +295,6 @@ public class Aria2cDownloader implements IDownloader {
         return new DownloadFile(name, path, totalLength, downloadLength);
     }
 
-    private long handleDownloadLength(JsonObject result) {
-        return result.get("completedLength").getAsLong();
-    }
-
-    private long handleTotalLength(JsonObject result) {
-        return result.get("totalLength").getAsLong();
-    }
-
     private String handleName(JsonObject result) {
         JsonObject bitTorrent = result.getAsJsonObject("bittorrent");
         if (bitTorrent != null) {
@@ -333,13 +323,8 @@ public class Aria2cDownloader implements IDownloader {
     private DownloadStatus handleStatus(JsonObject result) {
         String status = result.get("status").getAsString();
         switch (status) {
-            case "active": {
-                long totalLength = handleTotalLength(result);
-                long downloadLength = handleDownloadLength(result);
-                if (totalLength == downloadLength)
-                    return DownloadStatus.SEEDING;
-                return DownloadStatus.DOWNLOADING;
-            }
+            case "active":
+                return DownloadStatus.ACTIVE;
             case "waiting":
                 return DownloadStatus.WAITING;
             case "paused":
@@ -350,15 +335,6 @@ public class Aria2cDownloader implements IDownloader {
                 return DownloadStatus.COMPLETED;
             default:
                 return DownloadStatus.OTHER;
-        }
-    }
-
-    private void purge() {
-        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getPargeRquest(token);
-        try {
-            post(pauseReuqest);
-        } catch (DownloaderException e) {
-            log.error(e);
         }
     }
 }

@@ -34,6 +34,7 @@ package com.lixiaocong.cms.task;
 
 import com.lixiaocong.cms.socket.DownloaderSocketHandler;
 import com.lixiaocong.downloader.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -68,44 +70,66 @@ public class DownloaderSchedulingTask {
         this.typeSet.addAll(Arrays.asList(types));
     }
 
-    @Scheduled(fixedDelay = 1000)
-    public void task() {
+    @Scheduled(fixedRate = 500)
+    public void broadcastTask() {
         List<DownloadTask> torrents = null;
         try {
             torrents = downloader.get();
-            handleCompleteFiles(torrents);
         } catch (DownloaderException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         this.downloaderSocketHandler.broadcast(torrents);
     }
 
+    @Scheduled(fixedDelay = 2000)
+    public void moveFileTask(){
+        try {
+            List<DownloadTask> torrents = downloader.get();
+            handleCompleteFiles(torrents);
+        } catch (DownloaderException e) {
+            log.error(e);
+        }
+    }
+
     public void handleCompleteFiles(List<DownloadTask> tasks) {
         tasks.forEach(task -> {
-            if (task.getStatus() == DownloadStatus.SEEDING || task.getStatus() == DownloadStatus.COMPLETED) {
-                List<DownloadFile> files = task.getFiles();
-                files.stream()
+            if (task.isFinished()) {
+                task.getFiles()
+                        .stream()
                         .filter(this::typeFilter)
                         .forEach(this::moveFile);
                 try {
                     downloader.remove(task.getId());
                 } catch (DownloaderException e) {
-                    e.printStackTrace();
+                    log.error(e);
                 }
             }
         });
     }
 
+    //TODO save information to database
     private boolean typeFilter(DownloadFile downloadFile) {
         int index = downloadFile.getName().lastIndexOf(".");
         String type = downloadFile.getName().substring(index+1);
-        return this.typeSet.contains(type);
+        boolean contains = this.typeSet.contains(type);
+        if(contains){
+            log.info("file "+downloadFile.getName()+" is ready to move");
+            return true;
+        }
+        else{
+            log.info("file "+downloadFile.getName()+" is ignored");
+            return false;
+        }
     }
 
     private void moveFile(DownloadFile downloadFile) {
         File file = new File(downloadFile.getPath());
-        boolean result = file.renameTo(new File(fileDestination + file.getName()));
-        if (!result)
-            log.error("move file " + file.getName() + " error");
+        File dest = new File(fileDestination);
+        log.info("move file "+file.getName()+" to "+dest.getAbsolutePath());
+        try {
+            FileUtils.moveFileToDirectory(file,dest,true);
+        } catch (IOException e) {
+            log.error(e);
+        }
     }
 }

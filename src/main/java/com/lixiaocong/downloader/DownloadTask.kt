@@ -43,7 +43,15 @@ class DownloadTask(
         var uploadLength: Long,
         var uploadSpeed: Long,
         var dir: String,
-        var files: MutableList<DownloadFile>)
+        var files: MutableList<DownloadFile>){
+    fun isFinished(): Boolean {
+        if(status==DownloadStatus.COMPLETED)
+            return true
+        if(status==DownloadStatus.ACTIVE)
+            return downloadLength==totalLength
+        return false
+    }
+}
 
 enum class DownloadType {
     TORRENT,
@@ -51,8 +59,7 @@ enum class DownloadType {
 }
 
 enum class DownloadStatus {
-    DOWNLOADING,
-    SEEDING,
+    ACTIVE,
     WAITING,
     PAUSED,
     COMPLETED,
