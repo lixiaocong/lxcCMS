@@ -44,10 +44,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class DownloaderSchedulingTask {
@@ -124,10 +121,12 @@ public class DownloaderSchedulingTask {
 
     private void moveFile(DownloadFile downloadFile) {
         File file = new File(downloadFile.getPath());
-        File dest = new File(fileDestination);
+        String fileName = downloadFile.getName();
+        String encodeString = Base64.getEncoder().encodeToString(fileName.getBytes());
+        File dest = new File(fileDestination+encodeString);
         log.info("move file "+file.getName()+" to "+dest.getAbsolutePath());
         try {
-            FileUtils.moveFileToDirectory(file,dest,true);
+            FileUtils.moveFile(file,dest);
         } catch (IOException e) {
             log.error(e);
         }

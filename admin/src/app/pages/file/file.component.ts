@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {FileService} from "./file.service";
+import {UTF8} from "../../utils/UTF8";
 
 @Component({
     selector: 'app-file',
@@ -30,8 +31,19 @@ export class FileComponent implements OnInit {
 
     private update() {
         this.fileService.getFiles().subscribe(data => {
-            this.videos = data.videos;
+            this.videos = data.videos.filter(fileName => {
+                try {
+                    UTF8.b64DecodeUnicode(fileName);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            });
             this.url = data.serverUrl;
         });
+    }
+
+    private decode64(row: string) {
+        return UTF8.b64DecodeUnicode(row);
     }
 }
