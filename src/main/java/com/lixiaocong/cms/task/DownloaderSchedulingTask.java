@@ -122,8 +122,13 @@ public class DownloaderSchedulingTask {
     private void moveFile(DownloadFile downloadFile) {
         File file = new File(downloadFile.getPath());
         String fileName = downloadFile.getName();
+        if(fileName.length()>50)//max length of filename is 50
+            fileName = fileName.substring(fileName.length()-50);
+
+        //encode to base64, and replace / to _, = to -, so the filename can be used in linux and http.
         String encodeString = Base64.getEncoder().encodeToString(fileName.getBytes());
-        encodeString = encodeString.replace("/","_");
+        encodeString = encodeString.replace("/","_").replace("=","-");
+
         File dest = new File(fileDestination+encodeString);
         log.info("move file "+file.getName()+" to "+dest.getAbsolutePath());
         try {

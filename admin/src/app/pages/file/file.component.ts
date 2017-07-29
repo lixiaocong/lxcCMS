@@ -33,7 +33,7 @@ export class FileComponent implements OnInit {
         this.fileService.getFiles().subscribe(data => {
             this.videos = data.videos.filter(fileName => {
                 try {
-                    fileName = this.replaceSlash(fileName);
+                    fileName = this.replaceSpecialChar(fileName);
                     UTF8.b64DecodeUnicode(fileName);
                     return true;
                 } catch (e) {
@@ -45,18 +45,18 @@ export class FileComponent implements OnInit {
     }
 
     private getName(fileName: string) {
-        fileName = this.replaceSlash(fileName);
+        fileName = this.replaceSpecialChar(fileName);
         fileName = UTF8.b64DecodeUnicode(fileName);
-        if(fileName.length>15)
-            return fileName.substring(0,13)+"...";
         return fileName;
     }
 
-    private replaceSlash(fileName: string) {
+    private replaceSpecialChar(fileName: string) {
         let ret: string = "";
         for (let i = 0; i < fileName.length; i++) {
             if (fileName.charAt(i) == '_')
                 ret += '/';
+            else if(fileName.charAt(i) == '-')
+                ret += '=';
             else
                 ret += fileName.charAt(i);
         }

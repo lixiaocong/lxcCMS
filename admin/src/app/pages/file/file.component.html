@@ -5,7 +5,7 @@
         </ngl-datatable-column>
 
         <ngl-datatable-column heading="link">
-            <template nglDatatableCell let-row="row"><a href="{{url}}{{row}}">download</a></template>
+            <template nglDatatableCell let-row="row"><a href="{{url}}{{row}}" download="{{getName(row)}}">download</a></template>
         </ngl-datatable-column>
 
         <ngl-datatable-column heading="Opeations">

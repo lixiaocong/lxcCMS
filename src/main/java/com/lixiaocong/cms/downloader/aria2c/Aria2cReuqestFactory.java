@@ -33,6 +33,8 @@
 
 package com.lixiaocong.cms.downloader.aria2c;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,16 +45,20 @@ class Aria2cReuqestFactory {
         Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.ADD_URI);
         List<Object> params = request.getParams();
         params.add(new String[]{uri});
-        params.add(new DirConfig(baseDir+UUID.randomUUID().toString()));//random folder
+        String dir = baseDir + UUID.randomUUID().toString();//random folder
+        new File(dir).mkdir();
+        params.add(new DirConfig(dir));
         return request;
     }
 
-    static Aria2cRequest getAddTorrentRequest(String token, String torrentBase64Content, String baseDir){
-        Aria2cRequest request = new Aria2cRequest(token,Aria2cRequestMethod.ADD_TORRENT);
+    static Aria2cRequest getAddTorrentRequest(String token, String torrentBase64Content, String baseDir) {
+        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.ADD_TORRENT);
         List<Object> params = request.getParams();
         params.add(torrentBase64Content);
         params.add(new String[]{""});
-        params.add(new DirConfig(baseDir+UUID.randomUUID().toString()));//random folder
+        String dir = baseDir + UUID.randomUUID().toString();//random folder
+        new File(dir).mkdir();
+        params.add(new DirConfig(dir));
         return request;
     }
 
@@ -116,6 +122,7 @@ class Aria2cReuqestFactory {
 
     private static class DirConfig {
         private String dir;
+
         DirConfig(String dir) {
             this.dir = dir;
         }
