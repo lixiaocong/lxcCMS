@@ -18,11 +18,11 @@
         <div class="content">
             <div class="item">
                 <h3 class="title"><i class="fa fa-graduation-cap"></i> MSc Computer Science</h3>
-                <h4 class="university">Beihang University<span class="year">(2015-2018)</span></h4>
+                <h4 class="university">北京航空航天大学<span class="year">(2015-2018)</span></h4>
             </div>
             <div class="item">
                 <h3 class="title"><i class="fa fa-graduation-cap"></i> BSc Computer Science</h3>
-                <h4 class="university">Beijing Jiaotong University<span class="year">(2011-2015)</span></h4>
+                <h4 class="university">北京交通大学<span class="year">(2011-2015)</span></h4>
             </div>
         </div>
     </div>

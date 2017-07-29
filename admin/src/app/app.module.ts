@@ -20,6 +20,7 @@ import {DashboardCardComponent} from "./pages/dashboard/dashboard-card/dashboard
 import {UserItemComponent} from "./pages/user/user-item/user-item.component";
 import {NglModule} from "ng-lightning/ng-lightning";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
+import "hammerjs/hammer.js"
 
 @NgModule({
     declarations: [
