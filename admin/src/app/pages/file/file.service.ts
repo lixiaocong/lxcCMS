@@ -3,6 +3,7 @@ import {Http, URLSearchParams} from "@angular/http";
 import {PageDataHandler} from "../../utils/PageDataHandler";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
+import {LXCQueryEncoder} from "../../utils/CharEncoder";
 
 @Injectable()
 export class FileService {
@@ -19,7 +20,7 @@ export class FileService {
     }
 
     deleteFile(fileName: string) {
-        let params = new URLSearchParams();
+        let params = new URLSearchParams('',new LXCQueryEncoder());
         params.set("fileName", fileName);
         return this.http.delete(this.fileUrl, {search: params})
             .map(PageDataHandler.extractData);

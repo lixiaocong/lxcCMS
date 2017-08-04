@@ -25,7 +25,7 @@ export class FileComponent implements OnInit {
             if (response.result == 'success')
                 this.update();
             else
-                console.log("error");
+                console.log(response.message);
         });
     }
 
