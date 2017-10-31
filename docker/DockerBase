@@ -1,0 +1,8 @@
+FROM ubuntu:xenial
+RUN   	apt update \
+	&& apt install -y wget git make openjdk-8-jdk nodejs python-pip python-dev build-essential \	
+	&& wget https://github.com/aria2/aria2/releases/download/release-1.32.0/aria2-1.32.0.tar.gz \
+	&& tar zxvf aria2-1.32.0.tar.gz && cd aria2-1.32.0/ \
+	&& ./configure && make && make install \
+	&& pip install --upgrade pip \
+        && pip install shadowsocks
