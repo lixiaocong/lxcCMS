@@ -4,37 +4,43 @@ services:
     image: tomcat:8.5
     expose:
       - 8080
+    user: ${UID}
 
   nginx:
     image: nginx:1.13
     volumes:
-      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./config/nginx/html:/html
-      - ./storage:/storage
+      - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ${CONFIG_DIR}/nginx/html:/html
+      - ${STORAGE_DIR}:/storage
     links:
       - tomcat
     ports:
       - 80:80
+    user: ${UID}
 
   aria2:
-    image: vimagick/aria2
+    image: hobbsau/aria2 
     volumes:
-      - ./config/aria2:/etc/aria2
-      - ./storage:/downloads
-    environment:
-      - TOKEN=password
-    network_mode: host
+      - ${STORAGE_DIR}:/downloads
+      - ${CONFIG_DIR}/aria2:/home/aria2
+    user: ${UID}
+    ports:
+      - 6800:6800
 
   transmission:
     image: linuxserver/transmission
     volumes:
-      - ./config/transmission:/config
-      - ./storage:/downloads
+      - ${CONFIG_DIR}/transmission/settings.json:/config/settings.json
+      - ${STORAGE_DIR}:/downloads
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
     network_mode: host
 
   shadowsocks:
     image: easypi/shadowsocks-libev
     network_mode: host
     environment:
-      - METHOD=aes-256-cfb
-      - PASSWORD=password
+      - METHOD=${SS_METHOD}
+      - PASSWORD=${SS_PASSWD}
+    user: ${UID}
