@@ -46,7 +46,7 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 
 
 //TODO if don't set order, there will be an error, to be fixed
-@Profile("dev")
+@Profile("develop")
 @Order(1)
 @Configuration
 public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter{

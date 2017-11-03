@@ -33,8 +33,9 @@
 package com.lixiaocong.cms.task;
 
 import com.lixiaocong.cms.socket.DownloaderSocketHandler;
-import com.lixiaocong.downloader.*;
-import org.apache.commons.io.FileUtils;
+import com.lixiaocong.downloader.DownloadTask;
+import com.lixiaocong.downloader.DownloaderException;
+import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,29 +43,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 @Component
 public class DownloaderSchedulingTask {
-    private Log log = LogFactory.getLog(getClass());
-    private Set<String> typeSet;
+
+    private static final Log log = LogFactory.getLog(DownloaderSchedulingTask.class);
+
     private IDownloader downloader;
     private DownloaderSocketHandler downloaderSocketHandler;
-    private String fileDestination;
 
     @Autowired
-    public DownloaderSchedulingTask(IDownloader downloader, @Value("${file.server.root}") String fileDestination, @Value("${file.types}") String fileTypes, DownloaderSocketHandler downloaderSocketHandler) {
+    public DownloaderSchedulingTask(IDownloader downloader, DownloaderSocketHandler downloaderSocketHandler, @Value("${application.url}") String applicationUrl) {
         this.downloader = downloader;
         this.downloaderSocketHandler = downloaderSocketHandler;
-        this.fileDestination = fileDestination;
-        if(!this.fileDestination.endsWith("/"))
-            this.fileDestination += "/";
-
-        this.typeSet = new HashSet<>();
-        String[] types = fileTypes.split("\\|");
-        this.typeSet.addAll(Arrays.asList(types));
+        log.info("application is running on " + applicationUrl);
     }
 
     @Scheduled(fixedRate = 500)
@@ -76,65 +69,5 @@ public class DownloaderSchedulingTask {
             log.error(e);
         }
         this.downloaderSocketHandler.broadcast(torrents);
-    }
-
-    @Scheduled(fixedDelay = 2000)
-    public void moveFileTask(){
-        try {
-            List<DownloadTask> torrents = downloader.get();
-            handleCompleteFiles(torrents);
-        } catch (DownloaderException e) {
-            log.error(e);
-        }
-    }
-
-    public void handleCompleteFiles(List<DownloadTask> tasks) {
-        tasks.forEach(task -> {
-            if (task.isFinished()) {
-                task.getFiles()
-                        .stream()
-                        .filter(this::typeFilter)
-                        .forEach(this::moveFile);
-                try {
-                    downloader.remove(task.getId());
-                } catch (DownloaderException e) {
-                    log.error(e);
-                }
-            }
-        });
-    }
-
-    //TODO save information to database
-    private boolean typeFilter(DownloadFile downloadFile) {
-        int index = downloadFile.getName().lastIndexOf(".");
-        String type = downloadFile.getName().substring(index+1);
-        boolean contains = this.typeSet.contains(type);
-        if(contains){
-            log.info("file "+downloadFile.getName()+" is ready to move");
-            return true;
-        }
-        else{
-            log.info("file "+downloadFile.getName()+" is ignored");
-            return false;
-        }
-    }
-
-    private void moveFile(DownloadFile downloadFile) {
-        File file = new File(downloadFile.getPath());
-        String fileName = downloadFile.getName();
-        if(fileName.length()>50)//max length of filename is 50
-            fileName = fileName.substring(fileName.length()-50);
-
-        //encode to base64, and replace / to _, = to -, so the filename can be used in linux and http.
-        String encodeString = Base64.getEncoder().encodeToString(fileName.getBytes());
-        encodeString = encodeString.replace("/","_").replace("=","-");
-
-        File dest = new File(fileDestination+encodeString);
-        log.info("move file "+file.getName()+" to "+dest.getAbsolutePath());
-        try {
-            FileUtils.moveFile(file,dest);
-        } catch (IOException e) {
-            log.error(e);
-        }
     }
 }

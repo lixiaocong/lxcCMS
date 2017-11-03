@@ -70,6 +70,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
         return new SignInUtil(userDetailsService);
     }
 
+    /*
+     * application url is used to generate OAuth call back address
+     */
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository, Environment environment) {
         ConnectController controller= new ConnectController(connectionFactoryLocator, connectionRepository);

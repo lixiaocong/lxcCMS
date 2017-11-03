@@ -44,17 +44,16 @@ import org.springframework.context.annotation.Configuration;
 @EnableDownloader
 public class DownloaderConfig implements DownloaderConfigurer {
 
-    //TODO use name "token", "path" the value will be null... don't know why
-    @Value("${aria2c.password}")
-    private String token;
-    @Value("${aria2c.savepath}")
-    private String path;
-    @Value("${aria2c.url}")
+    @Value("${aria2.password}")
+    private String password;
+    @Value("${aria2.url}")
     private String url;
+    @Value("${file.dir}")
+    private String fileDir;
 
     @NotNull
     @Override
     public IDownloader getDownloader() {
-        return new Aria2cDownloader(this.token,this.path,this.url);
+        return new Aria2cDownloader(this.url, this.password, this.fileDir);
     }
 }

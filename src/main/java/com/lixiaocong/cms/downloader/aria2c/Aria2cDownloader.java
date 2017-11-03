@@ -62,7 +62,7 @@ public class Aria2cDownloader implements IDownloader {
     private JsonParser jsonParser;
     private Gson gson;
 
-    public Aria2cDownloader(String token, String baseDir, String url) {
+    public Aria2cDownloader(String url, String token, String baseDir) {
         this.uri = url;
         this.token = token;
         this.baseDir = baseDir;

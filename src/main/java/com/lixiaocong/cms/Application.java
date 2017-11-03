@@ -35,13 +35,13 @@ package com.lixiaocong.cms;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
 public class Application extends SpringBootServletInitializer {
+
     /**
      * 打包war文件放在tomcat下运行必须实现这个接口
      */

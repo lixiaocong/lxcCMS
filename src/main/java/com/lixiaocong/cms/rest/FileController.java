@@ -50,7 +50,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -62,52 +61,46 @@ public class FileController {
     private final ImageCodeService codeService;
     private Log logger = LogFactory.getLog(getClass());
 
-    private String fileServerRoot;
-    private String fileServerUrl;
+    private String fileDir;
 
     @Autowired
-    public FileController(ImageCodeService codeService, @Value("${file.server.root}") String fileServerRoot, @Value("${file.server.url}") String fileServerUrl) {
+    public FileController(ImageCodeService codeService, @Value("${file.dir}") String fileDir) {
         this.codeService = codeService;
-        this.fileServerRoot = fileServerRoot;
-        if (!this.fileServerRoot.endsWith("/"))
-            this.fileServerRoot += "/";
-        this.fileServerUrl = fileServerUrl;
-        if (!this.fileServerUrl.endsWith("/"))
-            this.fileServerUrl += "/";
+        this.fileDir = fileDir;
+        if (!this.fileDir.endsWith("/"))
+            this.fileDir += "/";
     }
 
     @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String post(MultipartFile imageFile) {
         try {
-            File newFile = new File(fileServerRoot + "image/" + UUID.randomUUID() + imageFile.getOriginalFilename());
+            File newFile = new File(fileDir + "image/" + UUID.randomUUID() + imageFile.getOriginalFilename());
             imageFile.transferTo(newFile);
-            return fileServerUrl + "image/" + newFile.getName();
+            return "image/" + newFile.getName();
         } catch (Exception e) {
             logger.error(e);
         }
-        return fileServerUrl + "image/" + "error.jpg";
+        return "image/" + "error.jpg";
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.GET)
     public Map<String, Object> video() {
-        File folder = new File(fileServerRoot);
+        File folder = new File(fileDir);
         if (!folder.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
         Collection<File> files = FileUtils.listFiles(folder, TrueFileFilter.INSTANCE, FalseFileFilter.INSTANCE);
         List<String> fileList = new LinkedList<>();
         for (File video : files) {
             if (video.isFile()) fileList.add(video.getName());
         }
-        Map<String, Object> ret = ResponseMsgFactory.createSuccessResponse("videos", fileList);
-        ret.put("serverUrl", fileServerUrl);
-        return ret;
+        return ResponseMsgFactory.createSuccessResponse("videos", fileList);
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/video", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@RequestParam String fileName) {
-        File file = new File(fileServerRoot + fileName);
+        File file = new File(fileDir + fileName);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("文件不存在");
         else if (!file.isFile()) return ResponseMsgFactory.createFailedResponse("不是文件");
         else if (!file.delete()) return ResponseMsgFactory.createFailedResponse("删除不成功");

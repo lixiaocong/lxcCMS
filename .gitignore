@@ -3,6 +3,6 @@
 /build/
 /.gradle/
 
+/src/main/resources/application-develop.properties
 /src/main/resources/qqconnectconfig.properties
-/src/main/resources/application.properties
 /src/main/webapp/admin/
