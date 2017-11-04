@@ -52,6 +52,7 @@ import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
+//TODO make aria2c4j a standalone project, use together with transmission4j to implement IDownloader here
 public class Aria2cDownloader implements IDownloader {
     private final Log log = LogFactory.getLog(getClass().getName());
     private final String uri;

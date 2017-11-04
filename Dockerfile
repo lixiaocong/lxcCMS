@@ -1,2 +1,4 @@
-FROM tomcat:8.5
-CMD ["catalina.sh", "run"]
+FROM openjdk:8-jdk-alpine
+ADD target/lxccms-3.0.jar app.jar
+ENV JAVA_OPTS=""
+ENTRYPOINT exec java $JAVA_OPTS -jar /app.jar

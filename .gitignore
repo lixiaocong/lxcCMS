@@ -6,3 +6,5 @@
 /src/main/resources/application-develop.properties
 /src/main/resources/qqconnectconfig.properties
 /src/main/webapp/admin/
+/lxcCMS.iml
+/out/

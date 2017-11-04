@@ -1,28 +1,35 @@
 buildscript {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE'
         classpath 'org.springframework:springloaded:1.2.0.RELEASE'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.4-3'
-        classpath('se.transmode.gradle:gradle-docker:1.2')
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
     }
 }
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'idea'
-apply plugin: 'war'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'docker'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'lixiaocong'
+jar {
+    baseName = 'lxccms'
+    version = '3.0'
+}
 
 task buildDocker(type: Docker, dependsOn: build) {
     applicationName = jar.baseName
-    dockerfile = file('Dockerfile')
+    dockerfile = file('./Dockerfile')
     doFirst {
         copy {
             from jar
