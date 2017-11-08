@@ -1,10 +1,10 @@
 *.log
+/.gradle/
 /.idea/
 /build/
-/.gradle/
+/out/
 
 /src/main/resources/application-develop.properties
 /src/main/resources/qqconnectconfig.properties
-/src/main/webapp/admin/
+/src/main/resources/static/admin/
 /lxcCMS.iml
-/out/

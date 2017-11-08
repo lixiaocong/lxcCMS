@@ -27,6 +27,14 @@ jar {
     version = '3.0'
 }
 
+task buildAdmin(type: Exec){
+    workingDir = "admin"
+    commandLine = "npm"
+    args = ["run","devBuild"]
+}
+
+build.dependsOn(buildAdmin)
+
 task buildDocker(type: Docker, dependsOn: build) {
     applicationName = jar.baseName
     dockerfile = file('./Dockerfile')

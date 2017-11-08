@@ -2,6 +2,6 @@
 
 cd admin
 npm install
-npm run build
+npm run devBuild
 cd ..
 ./gradlew buildDocker
