@@ -1,0 +1,31 @@
+version: "2"
+services:
+
+  aria2:
+    image: hobbsau/aria2 
+    user: "${UID}"
+    volumes:
+      - ${STORAGE_DIR}:/downloads
+      - ${CONFIG_DIR}/aria2:/home/aria2
+    ports:
+      - 6800:6800
+
+  transmission:
+    image: linuxserver/transmission
+    volumes:
+      - ${STORAGE_DIR}:/downloads
+      - ${CONFIG_DIR}/transmission/settings.json:/config/settings.json
+    environment:
+      - PUID= ${UID}
+      - PGID= ${GID}
+    ports:
+      - 9091:9091
+
+  nginx:
+    image: nginx:1.13
+    user: "${UID}"
+    volumes:
+      - ${STORAGE_DIR}:/storage
+      - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ${CONFIG_DIR}/nginx/ariaNG:/ariaNG
+    network_mode: host
