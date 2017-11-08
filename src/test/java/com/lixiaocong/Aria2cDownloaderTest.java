@@ -33,9 +33,7 @@
 package com.lixiaocong;
 
 import com.lixiaocong.cms.downloader.aria2c.Aria2cDownloader;
-import com.lixiaocong.cms.task.DownloaderSchedulingTask;
 import com.lixiaocong.downloader.DownloadTask;
-import com.lixiaocong.downloader.DownloaderException;
 import org.junit.Test;
 
 import java.io.File;
@@ -47,13 +45,6 @@ import java.util.List;
 public class Aria2cDownloaderTest {
     private Aria2cDownloader downloader = new Aria2cDownloader("123456", "/Users/lixiaocong/Documents/aria2c","http://localhost:6800/jsonrpc");
     private final String gid = "20af5d0ffd685567";
-
-    @Test
-    public void moveTest() throws DownloaderException {
-        List<DownloadTask> downloadTasks = downloader.get();
-        DownloaderSchedulingTask task = new DownloaderSchedulingTask(downloader,"/Users/lixiaocong/Downloads",".torrent|.iso",null);
-        task.handleCompleteFiles(downloadTasks);
-    }
 
     @Test
     public void addByMetainfo() throws Exception {

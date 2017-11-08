@@ -32,7 +32,13 @@ services:
       - transmission
     environment:
       - JAVA_OPTS=${JAVA_OPTS}
-      - CMS_OPTS=${CMS_OPTS}
+      - APPLICATION_URL=${APPLICATION_URL}
+      - QQ_ID=${QQ_ID}
+      - QQ_SECRET=${QQ_SECRET}
+      - WEIXIN_ID=${WEIXIN_ID}
+      - WEIXIN_SECRET=${WEIXIN_SECRET}
+      - WEIXIN_TOKEN=${WEIXIN_TOKEN}
+      - WEIXIN_KEY=${WEIXIN_KEY}
     expose:
       - 8080
 

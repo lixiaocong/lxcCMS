@@ -50,7 +50,7 @@ import java.util.Set;
 public class DevSigninFilter implements Filter {
     private final IUserRepository userRepository;
 
-    public DevSigninFilter(IUserRepository userRepository) {
+    DevSigninFilter(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
