@@ -11,8 +11,8 @@ import {UTF8} from "../../utils/UTF8";
 })
 export class FileComponent implements OnInit {
 
-    private url;
-    private videos;
+    url;
+    videos;
     constructor(private fileService: FileService) {
     }
 

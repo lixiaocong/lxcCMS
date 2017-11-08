@@ -10,9 +10,9 @@ import {INglDatatableRowClick, INglDatatableSort} from "ng-lightning/ng-lightnin
 })
 export class UserComponent implements OnInit {
 
-    private data;
-    private page: number;
-    private total: number;
+    data;
+    page: number;
+    total: number;
 
     sort: INglDatatableSort = {key: 'id', order: 'asc'};
 

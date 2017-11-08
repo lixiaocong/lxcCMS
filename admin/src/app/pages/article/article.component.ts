@@ -9,10 +9,10 @@ import {ArticleService} from "./article.service";
     providers: [ArticleService]
 })
 export class ArticleComponent implements OnInit {
-    private data;
+    data;
 
-    private page: number;
-    private total: number;
+    page: number;
+    total: number;
 
     sort: INglDatatableSort = {key: 'id', order: 'asc'};
 

@@ -11,7 +11,7 @@ import {environment} from "../../../environments/environment";
 })
 export class DownloaderComponent implements OnInit {
     ws: WebSocket;
-    private downloadTasks: DownloadTask[];
+    downloadTasks: DownloadTask[];
 
     constructor(public dialog: MdDialog) {
     }
