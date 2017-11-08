@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {MdDialog} from "@angular/material";
+import {MatDialog} from "@angular/material";
 import {DownloadTask} from "./download-task/download-task.component";
 import {AddtaskDialogComponent, AddTaskInfo} from "./addtask-dialog/addtask-dialog.component";
 import {environment} from "../../../environments/environment";
@@ -13,7 +13,7 @@ export class DownloaderComponent implements OnInit {
     ws: WebSocket;
     downloadTasks: DownloadTask[];
 
-    constructor(public dialog: MdDialog) {
+    constructor(public dialog: MatDialog) {
     }
 
     ngOnInit() {

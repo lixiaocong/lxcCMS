@@ -7,8 +7,8 @@
     </div>
 
     <div>
-        <template let-downloadTask ngFor [ngForOf]="downloadTasks">
+        <ng-template let-downloadTask ngFor [ngForOf]="downloadTasks">
             <download-task [downloadTask]=downloadTask></download-task>
-        </template>
+        </ng-template>
     </div>
 </div>

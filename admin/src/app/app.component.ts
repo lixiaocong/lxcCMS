@@ -1,22 +1,22 @@
-import {Component, OnInit} from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-    title: string;
-    sideBarMode: string;
-    isSideBarOpen: boolean;
+export class AppComponent {
+  title: string;
+  sideBarMode: string;
+  isSideBarOpen: boolean;
 
-    ngOnInit(): void {
-        this.title = 'Admin Lixiaocong';
-        this.sideBarMode = 'over';
-        this.isSideBarOpen = false;
-    }
+  ngOnInit(): void {
+      this.title = 'Admin Lixiaocong';
+      this.sideBarMode = 'over';
+      this.isSideBarOpen = false;
+  }
 
-    sideBarClicked() {
-        this.isSideBarOpen = !this.isSideBarOpen;
-    }
+  sideBarClicked() {
+    console.log("test")
+  }
 }

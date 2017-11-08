@@ -4,10 +4,10 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-    production: false,
-    articleUrl: "http://127.0.0.1/article",
-    commentUrl: "http://127.0.0.1/comment",
-    userUrl: "http://127.0.0.1/user",
-    fileUrl: "http://127.0.0.1/file/video",
-    downloaderUrl: 'ws://127.0.0.1/downloader-socket',
+  production: false,
+  articleUrl: "http://127.0.0.1/article",
+  commentUrl: "http://127.0.0.1/comment",
+  userUrl: "http://127.0.0.1/user",
+  fileUrl: "http://127.0.0.1/file/video",
+  downloaderUrl: 'ws://127.0.0.1/downloader-socket',
 };

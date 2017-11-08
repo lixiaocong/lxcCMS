@@ -4,9 +4,9 @@
         <ngl-datatable-column heading="ID" key="id" sortable></ngl-datatable-column>
         <ngl-datatable-column heading="NAME" key="username"></ngl-datatable-column>
         <ngl-datatable-column heading="Opeations" key="id">
-            <template nglDatatableCell let-value>
+            <ng-template nglDatatableCell let-value>
                 <button type="button" nglButton="neutral" (click)="onDelete(value)">delete</button>
-            </template>
+            </ng-template>
         </ngl-datatable-column>
 
         <!-- Loading overlay -->

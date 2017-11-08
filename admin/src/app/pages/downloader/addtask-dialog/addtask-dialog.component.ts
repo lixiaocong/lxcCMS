@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {MdDialogRef} from "@angular/material";
+import {MatDialogRef} from "@angular/material";
 
 @Component({
     selector: 'app-addtask-dialog',
@@ -12,7 +12,7 @@ export class AddtaskDialogComponent implements OnInit {
     metalinkValue: string;
     torrentValue: string;
 
-    constructor(public dialogRef: MdDialogRef<AddtaskDialogComponent>) {
+    constructor(public dialogRef: MatDialogRef<AddtaskDialogComponent>) {
     }
 
     ngOnInit() {
