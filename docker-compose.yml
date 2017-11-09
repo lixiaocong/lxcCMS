@@ -20,6 +20,7 @@ services:
       - PGID=${GID}
     expose:
       - 9091
+    network_mode: host
 
   cms:
     image: lixiaocong/lxccms
@@ -61,3 +62,4 @@ services:
       - PASSWORD=${SS_PASSWD}
     ports:
       - 8388:8388
+    network_mode: host

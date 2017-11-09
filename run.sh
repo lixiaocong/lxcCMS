@@ -2,7 +2,7 @@
 
 # build the angular project
 cd admin
-cnpm install
+npm install
 npm run devBuild
 
 # build the docker image
@@ -10,4 +10,4 @@ cd ..
 ./gradlew buildDocker
 
 # run the project
-docker-compose up
+docker-compose up -d
