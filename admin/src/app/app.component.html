@@ -1,5 +1,6 @@
-<i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i> {{title}}
-
+<mat-toolbar>
+  <i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i> {{title}}
+</mat-toolbar>
 <mat-sidenav-container>
   <mat-sidenav id="sidebar" [mode]='sideBarMode' [opened]="isSideBarOpen" (click)="sideBarClicked()">
     <app-side-navbar></app-side-navbar>

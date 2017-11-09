@@ -9,12 +9,12 @@
 
     <div [hidden]="taskType != 'url'">
         <mat-input-container>
-            <input mdInput [(ngModel)]="urlValue">
+            <input matInput [(ngModel)]="urlValue">
         </mat-input-container>
     </div>
     <div [hidden]="taskType != 'metalink'">
         <mat-input-container>
-            <input mdInput [(ngModel)]="metalinkValue">
+            <input matInput [(ngModel)]="metalinkValue">
         </mat-input-container>
     </div>
     <div [hidden]="taskType != 'torrent'">

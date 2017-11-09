@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Http, URLSearchParams} from "@angular/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PageDataHandler} from "../../utils/PageDataHandler";
 import {environment} from "../../../environments/environment";
@@ -8,15 +8,14 @@ import {environment} from "../../../environments/environment";
 export class CommentService {
     private commentUrl: string = environment.commentUrl;
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
     }
 
     getCommends(page: number = 1, size: number = 10): Observable<any> {
-        let params = new URLSearchParams();
+        let params = new HttpParams();
         params.set("page", page.toString());
         params.set("size", size.toString());
-        return this.http.get(this.commentUrl, {search: params})
-            .map(PageDataHandler.extractData)
+        return this.http.get(this.commentUrl, {params: params})
             .filter(PageDataHandler.successResponseFilter)
             .map(data => data.comments)
     }
@@ -27,6 +26,5 @@ export class CommentService {
 
     deleteComment(id: number) {
         return this.http.delete(this.commentUrl + "/" + id)
-            .map(PageDataHandler.extractData);
     }
 }

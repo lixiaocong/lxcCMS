@@ -17,7 +17,8 @@ export class DownloaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        let url: string = environment.downloaderUrl;
+        let host = window.location.host;
+        let url: string = 'ws://'+host+'/downloader-socket';
         this.ws = new WebSocket(url);
         this.downloadTasks = [];
 
@@ -26,6 +27,7 @@ export class DownloaderComponent implements OnInit {
         };
 
         this.ws.onerror = event => {
+            console.log(JSON.stringify(event));
             console.log('error');
         };
 

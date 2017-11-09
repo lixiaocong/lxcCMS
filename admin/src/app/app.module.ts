@@ -1,12 +1,11 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-import { NglModule } from 'ng-lightning/ng-lightning'
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NgModule} from '@angular/core';
+import {NglModule} from 'ng-lightning/ng-lightning'
 import {FormsModule} from "@angular/forms";
-import {HttpModule} from "@angular/http";
 import {routes} from "./app.router";
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {SideNavbarComponent} from "./components/side-navbar/side-navbar.component";
 import {SideNavbarItemComponent} from "./components/side-navbar-item/side-navbar-item.component";
 import {UserComponent} from "./pages/user/user.component";
@@ -21,39 +20,56 @@ import {DashboardCardComponent} from "./pages/dashboard/dashboard-card/dashboard
 import {UserItemComponent} from "./pages/user/user-item/user-item.component";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 
-import {MatCardModule,MatGridListModule,MatInputModule,MatRadioModule,MatSidenavModule, MatProgressBarModule, MatIconModule } from '@angular/material'
-@NgModule({
-  declarations: [
-    AppComponent,
-    UserComponent,
-    ArticleComponent,
-    CommentComponent,
-    DownloaderComponent,
-    FileComponent,
-    DownloadTaskComponent,
-    SideNavbarComponent,
-    SideNavbarItemComponent,
-    AddtaskDialogComponent,
-    DashboardComponent,
-    DashboardCardComponent,
-    UserItemComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
+import {
+    MatCardModule,
+    MatGridListModule,
+    MatInputModule,
+    MatRadioModule,
     MatSidenavModule,
     MatProgressBarModule,
-    MatIconModule,
-    MatRadioModule,
-    MatInputModule,
-    MatGridListModule,
-    MatCardModule,
-    FormsModule,
-    HttpModule,
-    routes,
-    NglModule.forRoot(),
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    MatIconModule, MatToolbarModule, MatDialogModule
+} from '@angular/material'
+import {HttpClientModule} from "@angular/common/http";
+import 'rxjs/Rx';
+
+@NgModule({
+    declarations: [
+        AppComponent,
+        UserComponent,
+        ArticleComponent,
+        CommentComponent,
+        DownloaderComponent,
+        FileComponent,
+        DownloadTaskComponent,
+        SideNavbarComponent,
+        SideNavbarItemComponent,
+        AddtaskDialogComponent,
+        DashboardComponent,
+        DashboardCardComponent,
+        UserItemComponent,
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatSidenavModule,
+        MatProgressBarModule,
+        MatIconModule,
+        MatRadioModule,
+        MatInputModule,
+        MatGridListModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatDialogModule,
+        HttpClientModule,
+        FormsModule,
+        routes,
+        NglModule.forRoot({
+            svgPath: 'assets'
+        }),
+    ],
+    providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+    entryComponents: [AddtaskDialogComponent],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

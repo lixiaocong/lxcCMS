@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {FileService} from "./file.service";
 import {UTF8} from "../../utils/UTF8";
 
-
 @Component({
     selector: 'app-file',
     templateUrl: './file.component.html',
@@ -22,10 +21,10 @@ export class FileComponent implements OnInit {
 
     onDelete(fileName: string) {
         this.fileService.deleteFile(fileName).subscribe(response => {
-            if (response.result == 'success')
-                this.update();
-            else
-                console.log(response.message);
+            // if (response.result == 'success')
+            //     this.update();
+            // else
+            //     console.log(response.message);
         });
     }
 

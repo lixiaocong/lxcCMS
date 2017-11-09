@@ -17,6 +17,6 @@ export class AppComponent {
   }
 
   sideBarClicked() {
-    console.log("test")
+      this.isSideBarOpen = !this.isSideBarOpen;
   }
 }

@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Http, URLSearchParams} from "@angular/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PageDataHandler} from "../../utils/PageDataHandler";
 import {environment} from "../../../environments/environment";
@@ -9,15 +9,15 @@ export class ArticleService {
 
     private articleUrl: string = environment.articleUrl;
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
     }
 
     getArticles(page: number = 1, size: number = 10): Observable<any> {
-        let params = new URLSearchParams();
+        let params = new HttpParams();
         params.set("page", page.toString());
         params.set("size", size.toString());
-        return this.http.get(this.articleUrl, {search: params})
-            .map(PageDataHandler.extractData)
+
+        return this.http.get(this.articleUrl, {params: params})
             .filter(PageDataHandler.successResponseFilter)
             .map(data => data.articles)
     }
@@ -28,6 +28,5 @@ export class ArticleService {
 
     deleteArticle(id: number): Observable<any> {
         return this.http.delete(this.articleUrl + "/" + id)
-            .map(PageDataHandler.extractData);
     }
 }
