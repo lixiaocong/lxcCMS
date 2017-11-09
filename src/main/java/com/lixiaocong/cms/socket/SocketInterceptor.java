@@ -32,6 +32,7 @@
 
 package com.lixiaocong.cms.socket;
 
+import com.lixiaocong.cms.entity.User;
 import com.lixiaocong.cms.repository.IUserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,15 +57,14 @@ public class SocketInterceptor implements HandshakeInterceptor{
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        return true;
-
-//        String name = request.getPrincipal().getName();
-//        User user = userRepository.findByUsername(name);
-//        return user != null && user.isAdmin();
+        String name = request.getPrincipal().getName();
+        User user = userRepository.findByUsername(name);
+        return user != null && user.isAdmin();
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+        log.info("connection finished");
 
     }
 }

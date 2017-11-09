@@ -9,3 +9,4 @@
 /src/main/resources/static/admin/
 /lxcCMS.iml
 /admin/package-lock.json
+/dev-enviroment/docker-config/aria2/.cache/

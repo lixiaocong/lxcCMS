@@ -57,7 +57,7 @@ public class SocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
          registry.addHandler(downloaderSocketHandler(),"/downloader-socket")
-                 .setAllowedOrigins("http://localhost:4200")
+                 .setAllowedOrigins("*")
                  .addInterceptors(new SocketInterceptor(userRepository));
     }
 
