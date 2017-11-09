@@ -30,29 +30,24 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-package com.lixiaocong.cms.downloader.aria2c;
+package com.lixiaocong.downloader.aria2c4j;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 //TODO change the way to get request json
-class Aria2cReuqestFactory {
+class AriaReuqestFactory {
 
-    static Aria2cRequest getAddUriRequest(String token, String uri, String baseDir) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.ADD_URI);
+    static AriaRequest getAddUriRequest(String token, String uri) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.ADD_URI);
         List<Object> params = request.getParams();
         params.add(new String[]{uri});
-        String dir = baseDir + UUID.randomUUID().toString();//random folder
-        new File(dir).mkdir();
-        params.add(new DirConfig(dir));
         return request;
     }
 
-    static Aria2cRequest getAddTorrentRequest(String token, String torrentBase64Content, String baseDir) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.ADD_TORRENT);
+    static AriaRequest getAddTorrentRequest(String token, String torrentBase64Content, String baseDir) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.ADD_TORRENT);
         List<Object> params = request.getParams();
         params.add(torrentBase64Content);
         params.add(new String[]{""});
@@ -62,60 +57,60 @@ class Aria2cReuqestFactory {
         return request;
     }
 
-    static Aria2cRequest getTellActiveReuqest(String token) {
-        return new Aria2cRequest(token, Aria2cRequestMethod.TELL_ACTIVE);
+    static AriaRequest getTellActiveReuqest(String token) {
+        return new AriaRequest(token, AriaRequestMethod.TELL_ACTIVE);
     }
 
-    static Aria2cRequest getTellWaitingRequest(String token) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_WAITING);
+    static AriaRequest getTellWaitingRequest(String token) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.TELL_WAITING);
         List<Object> params = request.getParams();
         params.add(0);
         params.add(1000);
         return request;
     }
 
-    static Aria2cRequest getTellStoppedRequest(String token) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_STOPPED);
+    static AriaRequest getTellStoppedRequest(String token) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.TELL_STOPPED);
         List<Object> params = request.getParams();
         params.add(0);
         params.add(1000);
         return request;
     }
 
-    static Aria2cRequest getPauseReuqest(String token, String gid) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.PAUSE);
+    static AriaRequest getPauseReuqest(String token, String gid) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.PAUSE);
         request.getParams().add(gid);
         return request;
     }
 
-    static Aria2cRequest getPauseAllReuqest(String token) {
-        return new Aria2cRequest(token, Aria2cRequestMethod.PAUSE_ALL);
+    static AriaRequest getPauseAllReuqest(String token) {
+        return new AriaRequest(token, AriaRequestMethod.PAUSE_ALL);
     }
 
-    static Aria2cRequest getUnpauseReuqest(String token, String gid) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.UNPAUSE);
+    static AriaRequest getUnpauseReuqest(String token, String gid) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.UNPAUSE);
         request.getParams().add(gid);
         return request;
     }
 
-    static Aria2cRequest getUnpauseAllReuqest(String token) {
-        return new Aria2cRequest(token, Aria2cRequestMethod.UNPAUSE_ALL);
+    static AriaRequest getUnpauseAllReuqest(String token) {
+        return new AriaRequest(token, AriaRequestMethod.UNPAUSE_ALL);
     }
 
-    static Aria2cRequest getRemoveReuqest(String token, String gid) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.REMOVE);
+    static AriaRequest getRemoveReuqest(String token, String gid) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.REMOVE);
         request.getParams().add(gid);
         return request;
     }
 
-    static Aria2cRequest getRemoveResultReuqest(String token, String gid) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.REMOVE_DOWNLOAD_RESULT);
+    static AriaRequest getRemoveResultReuqest(String token, String gid) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.REMOVE_DOWNLOAD_RESULT);
         request.getParams().add(gid);
         return request;
     }
 
-    static Aria2cRequest getTellStatusRequest(String token, String gid) {
-        Aria2cRequest request = new Aria2cRequest(token, Aria2cRequestMethod.TELL_STATUS);
+    static AriaRequest getTellStatusRequest(String token, String gid) {
+        AriaRequest request = new AriaRequest(token, AriaRequestMethod.TELL_STATUS);
         request.getParams().add(gid);
         return request;
     }

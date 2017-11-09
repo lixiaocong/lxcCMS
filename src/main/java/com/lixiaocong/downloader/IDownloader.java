@@ -30,36 +30,35 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package com.lixiaocong.downloader;
 
 import java.util.List;
 
 public interface IDownloader {
 
-    boolean addByMetainfo(String meatinfo) throws DownloaderException;
+    void addByMetainfo(String metainfo) throws DownloaderException;
 
-    boolean addByMetalink(String meatlink) throws DownloaderException;
+    void addByMetalink(String metalink) throws DownloaderException;
 
-    boolean addByUrl(String url) throws DownloaderException;
+    void addByUrl(String url) throws DownloaderException;
 
-    boolean remove(String[] ids) throws DownloaderException;
+    void remove(List<String> ids) throws DownloaderException;
 
-    boolean remove(String id) throws DownloaderException;
+    void remove(String id) throws DownloaderException;
 
-    boolean remove() throws DownloaderException;
+    void remove() throws DownloaderException;
 
-    boolean start(String[] ids) throws DownloaderException;
+    void start(List<String> ids) throws DownloaderException;
 
-    boolean start(String id) throws DownloaderException;
+    void start(String id) throws DownloaderException;
 
-    boolean start() throws DownloaderException;
+    void start() throws DownloaderException;
 
-    boolean stop(String[] ids) throws DownloaderException;
+    void stop(List<String> ids) throws DownloaderException;
 
-    boolean stop(String id) throws DownloaderException;
+    void stop(String id) throws DownloaderException;
 
-    boolean stop() throws DownloaderException;
+    void stop() throws DownloaderException;
 
     DownloadTask get(String gid) throws DownloaderException;
 

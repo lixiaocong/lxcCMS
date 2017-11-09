@@ -2,7 +2,7 @@
 
 # build the angular project
 cd admin
-npm install
+cnpm install
 npm run devBuild
 
 # build the docker image

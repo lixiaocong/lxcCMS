@@ -30,10 +30,9 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.lixiaocong.downloader.aria2c4j;
 
-package com.lixiaocong.cms.downloader.aria2c;
-
-class Aria2cRequestMethod {
+class AriaRequestMethod {
     static final String ADD_TORRENT = "aria2.addTorrent";
     static final String ADD_URI = "aria2.addUri";
     static final String TELL_ACTIVE = "aria2.tellActive";

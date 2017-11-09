@@ -32,10 +32,11 @@
 
 package com.lixiaocong.cms.downloader;
 
-import com.lixiaocong.cms.downloader.aria2c.Aria2cDownloader;
+import com.lixiaocong.downloader.aria2c4j.AriaClient;
 import com.lixiaocong.downloader.DownloaderConfigurer;
 import com.lixiaocong.downloader.EnableDownloader;
 import com.lixiaocong.downloader.IDownloader;
+import com.lixiaocong.downloader.transmission4j.TransmissionClient;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -44,16 +45,26 @@ import org.springframework.context.annotation.Configuration;
 @EnableDownloader
 public class DownloaderConfig implements DownloaderConfigurer {
 
-    @Value("${aria2.password}")
-    private String password;
-    @Value("${aria2.url}")
-    private String url;
+    @Value("${aria2c.url}")
+    private String aria2cUrl;
+    @Value("${aria2c.password}")
+    private String aria2cPassword;
     @Value("${file.dir}")
     private String fileDir;
+
+    @Value("${transmission.url}")
+    private String transmissionUri;
+    @Value("${transmission.username}")
+    private String transmissionUsername;
+    @Value("${transmission.password}")
+    private String transmissionPassword;
+
 
     @NotNull
     @Override
     public IDownloader getDownloader() {
-        return new Aria2cDownloader(this.url, this.password, this.fileDir);
+        AriaClient ariaClient = new AriaClient(this.aria2cUrl, this.aria2cPassword, this.fileDir);
+        TransmissionClient transmissionClient = new TransmissionClient(this.transmissionUsername,this.transmissionPassword,this.transmissionUri);
+        return new UnionDownloader(transmissionClient,ariaClient);
     }
 }

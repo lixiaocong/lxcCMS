@@ -125,16 +125,11 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
         });
     }
 
-    private String[] getIds(JsonNode jsonNode) {
+    private List<String> getIds(JsonNode jsonNode) {
         JsonNode ids = jsonNode.path("ids");
         List<String> idList = new LinkedList<>();
         ids.forEach(node -> idList.add(node.getTextValue()));
-
-        String[] idArray = new String[idList.size()];
-        for (int i = 0; i < idList.size(); i++)
-            idArray[i] = idList.get(i);
-
-        return idArray;
+        return idList;
     }
 
     private String handleAddTask(JsonNode jsonNode) {
@@ -163,7 +158,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     }
 
     private String handleStartTask(JsonNode jsonNode) {
-        String[] ids = getIds(jsonNode);
+        List<String> ids = getIds(jsonNode);
         try {
             downloader.start(ids);
         } catch (DownloaderException e) {
@@ -174,7 +169,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     }
 
     private String handlePauseTask(JsonNode jsonNode) {
-        String[] ids = getIds(jsonNode);
+        List<String> ids = getIds(jsonNode);
         try {
             downloader.stop(ids);
         } catch (DownloaderException e) {
@@ -185,7 +180,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     }
 
     private String handleRemoveTask(JsonNode jsonNode) {
-        String[] ids = getIds(jsonNode);
+        List<String> ids = getIds(jsonNode);
         try {
             downloader.remove(ids);
         } catch (DownloaderException e) {

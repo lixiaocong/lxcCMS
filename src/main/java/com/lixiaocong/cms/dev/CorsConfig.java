@@ -30,7 +30,6 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package com.lixiaocong.cms.dev;
 
 import org.springframework.context.annotation.Configuration;

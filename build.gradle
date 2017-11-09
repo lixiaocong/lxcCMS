@@ -42,7 +42,6 @@ task buildDocker(type: Docker, dependsOn: build) {
 
 repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-    maven { url 'https://jitpack.io' }
 }
 
 dependencies {

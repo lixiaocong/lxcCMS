@@ -64,8 +64,8 @@ public class DownloaderController {
     public Map<String, Object> post(MultipartFile file) {
         try {
             String metainfo = Base64.getEncoder().encodeToString(file.getBytes());
-            if (downloader.addByMetainfo(metainfo))
-                return ResponseMsgFactory.createSuccessResponse();
+            downloader.addByMetainfo(metainfo);
+            return ResponseMsgFactory.createSuccessResponse();
         } catch (Exception e) {
             log.error(e);
         }
@@ -74,9 +74,8 @@ public class DownloaderController {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public Map<String, Object> delete(String id) throws DownloaderException {
-        if (downloader.remove(id))
-            return ResponseMsgFactory.createSuccessResponse();
-        return ResponseMsgFactory.createFailedResponse("error");
+        downloader.remove(id);
+        return ResponseMsgFactory.createSuccessResponse();
     }
 
     @RequestMapping(value = "/start", method = RequestMethod.PUT)

@@ -60,7 +60,7 @@ public class DownloaderSchedulingTask {
         log.info("application is running on " + applicationUrl);
     }
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 1000)
     public void broadcastTask() {
         List<DownloadTask> torrents = null;
         try {

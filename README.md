@@ -33,7 +33,7 @@ To run this project on your machine, you need to install NodeJS Tomcat8 and Aria
 I'm using H2 as my database, you can change to MySQL and other JDBC database.
 Execute db.sql to init your database
 
-The downloader is aria2c, you can also change to other downloader such as Transmission,checkout my [code](https://github.com/lixiaocong/transmission4j)
+The downloader is aria2cClient, you can also change to other downloader such as Transmission,checkout my [code](https://github.com/lixiaocong/transmission4j)
 
 ## Deployment
 

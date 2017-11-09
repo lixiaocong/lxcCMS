@@ -30,7 +30,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.downloader.aria2c;
+package com.lixiaocong.downloader.aria2c4j;
 
 import com.google.gson.*;
 import com.lixiaocong.downloader.*;
@@ -52,8 +52,7 @@ import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
-//TODO make aria2c4j a standalone project, use together with transmission4j to implement IDownloader here
-public class Aria2cDownloader implements IDownloader {
+public class AriaClient implements IDownloader {
     private final Log log = LogFactory.getLog(getClass().getName());
     private final String uri;
     private final String token;
@@ -63,7 +62,7 @@ public class Aria2cDownloader implements IDownloader {
     private JsonParser jsonParser;
     private Gson gson;
 
-    public Aria2cDownloader(String url, String token, String baseDir) {
+    public AriaClient(String url, String token, String baseDir) {
         this.uri = url;
         this.token = token;
         this.baseDir = baseDir;
@@ -75,7 +74,7 @@ public class Aria2cDownloader implements IDownloader {
         this.gson = new Gson();
     }
 
-    private String post(Aria2cRequest request) throws DownloaderException {
+    private String post(AriaRequest request) throws DownloaderException {
         String json = gson.toJson(request);
         StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         HttpPost httpPost = new HttpPost(uri);
@@ -93,52 +92,47 @@ public class Aria2cDownloader implements IDownloader {
         if (response.getStatusLine().getStatusCode() == SC_OK)
             return responseEntity;
         else {
-            Aria2cErrorResponse aria2CErrorResponse = gson.fromJson(responseEntity, Aria2cErrorResponse.class);
-            throw new DownloaderException(aria2CErrorResponse.getMessage());
+            AriaErrorResponse ariaErrorResponse = gson.fromJson(responseEntity, AriaErrorResponse.class);
+            throw new DownloaderException(ariaErrorResponse.getMessage());
         }
     }
 
     @Override
-    public boolean addByMetainfo(String meatinfo) throws DownloaderException {
-        Aria2cRequest addTorrentRequest = Aria2cReuqestFactory.getAddTorrentRequest(token, meatinfo, baseDir);
+    public void addByMetainfo(String metainfo) throws DownloaderException {
+        AriaRequest addTorrentRequest = AriaReuqestFactory.getAddTorrentRequest(token, metainfo, baseDir);
         String resultJson = post(addTorrentRequest);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
-        return result != null;
     }
 
     @Override
-    public boolean addByMetalink(String meatlink) throws DownloaderException {
+    public void addByMetalink(String metalink) throws DownloaderException {
         throw new DownloaderException("method not supported");
     }
 
     @Override
-    public boolean addByUrl(String url) throws DownloaderException {
-        Aria2cRequest request = Aria2cReuqestFactory.getAddUriRequest(token, url, baseDir);
+    public void addByUrl(String url) throws DownloaderException {
+        AriaRequest request = AriaReuqestFactory.getAddUriRequest(token, url);
         String resultJson = post(request);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
-        return result != null;
     }
 
     @Override
-    public boolean remove(String[] ids) throws DownloaderException {
-        boolean success = true;
+    public void remove(List<String> ids) throws DownloaderException {
         for (String id : ids) {
-            if (!remove(id))
-                success = false;
+            remove(id);
         }
-        return success;
     }
 
     @Override
-    public boolean remove(String id) throws DownloaderException {
+    public void remove(String id) throws DownloaderException {
         DownloadTask downloadTask = get(id);
         if (downloadTask.getStatus() == DownloadStatus.ACTIVE) {
-            Aria2cRequest removeRequest = Aria2cReuqestFactory.getRemoveReuqest(token, id);
+            AriaRequest removeRequest = AriaReuqestFactory.getRemoveReuqest(token, id);
             post(removeRequest);
         }
-        Aria2cRequest removeResultRequest = Aria2cReuqestFactory.getRemoveResultReuqest(token, id);
+        AriaRequest removeResultRequest = AriaReuqestFactory.getRemoveResultReuqest(token, id);
         post(removeResultRequest);
         File folder = new File(downloadTask.getDir());
         try {
@@ -147,12 +141,10 @@ public class Aria2cDownloader implements IDownloader {
             log.error("delete folder " + folder.getAbsolutePath() + " failed");
             log.error(e);
         }
-        return true;
     }
 
     @Override
-    public boolean remove() throws DownloaderException {
-        boolean success = true;
+    public void remove() throws DownloaderException {
         List<DownloadTask> downloadTasks = get();
 
         for (DownloadTask downloadTask : downloadTasks) {
@@ -160,71 +152,60 @@ public class Aria2cDownloader implements IDownloader {
                 remove(downloadTask.getId());
             } catch (DownloaderException e) {
                 log.error(e);
-                success = false;
             }
         }
-        return success;
     }
 
     @Override
-    public boolean start(String[] ids) throws DownloaderException {
+    public void start(List<String> ids) throws DownloaderException {
         boolean success = true;
         for (String id : ids) {
-            if (!start(id))
-                success = false;
+            start(id);
         }
-        return success;
     }
 
     @Override
-    public boolean start(String id) throws DownloaderException {
-        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getUnpauseReuqest(token, id);
+    public void start(String id) throws DownloaderException {
+        AriaRequest pauseReuqest = AriaReuqestFactory.getUnpauseReuqest(token, id);
         String resultJson = post(pauseReuqest);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
-        return result != null;
     }
 
     @Override
-    public boolean start() throws DownloaderException {
-        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getUnpauseAllReuqest(token);
+    public void start() throws DownloaderException {
+        AriaRequest pauseReuqest = AriaReuqestFactory.getUnpauseAllReuqest(token);
         String resultJson = post(pauseReuqest);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
-        return result != null;
     }
 
     @Override
-    public boolean stop(String[] ids) throws DownloaderException {
-        boolean success = true;
+    public void stop(List<String> ids) throws DownloaderException {
         for (String id : ids) {
-            if (!stop(id))
-                success = false;
+            stop(id);
         }
-        return success;
     }
 
     @Override
-    public boolean stop(String id) throws DownloaderException {
-        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getPauseReuqest(token, id);
+    public void stop(String id) throws DownloaderException {
+        AriaRequest pauseReuqest = AriaReuqestFactory.getPauseReuqest(token, id);
         String resultJson = post(pauseReuqest);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
-        return result != null;
     }
 
     @Override
-    public boolean stop() throws DownloaderException {
-        Aria2cRequest pauseReuqest = Aria2cReuqestFactory.getPauseAllReuqest(token);
+    public void stop() throws DownloaderException {
+        AriaRequest pauseReuqest = AriaReuqestFactory.getPauseAllReuqest(token);
         String resultJson = post(pauseReuqest);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         String result = jsonObject.get("result").getAsString();
-        return result != null;
     }
 
     @Override
     public DownloadTask get(String gid) throws DownloaderException {
-        Aria2cRequest tellStatusRequest = Aria2cReuqestFactory.getTellStatusRequest(token, gid);
+        AriaRequest tellStatusRequest = AriaReuqestFactory.getTellStatusRequest(token, gid);
         String resultJson = post(tellStatusRequest);
         JsonObject jsonObject = (JsonObject) jsonParser.parse(resultJson);
         JsonObject result = jsonObject.get("result").getAsJsonObject();
@@ -233,15 +214,15 @@ public class Aria2cDownloader implements IDownloader {
 
     @Override
     public List<DownloadTask> get() throws DownloaderException {
-        Aria2cRequest tellActiveReuqest = Aria2cReuqestFactory.getTellActiveReuqest(token);
+        AriaRequest tellActiveReuqest = AriaReuqestFactory.getTellActiveReuqest(token);
         String activeResultJson = post(tellActiveReuqest);
         List<DownloadTask> tasks = getTasksFromJson(activeResultJson);
 
-        Aria2cRequest tellWaitingRequest = Aria2cReuqestFactory.getTellWaitingRequest(token);
+        AriaRequest tellWaitingRequest = AriaReuqestFactory.getTellWaitingRequest(token);
         String waitingResultJson = post(tellWaitingRequest);
         tasks.addAll(getTasksFromJson(waitingResultJson));
 
-        Aria2cRequest tellStoppedRequest = Aria2cReuqestFactory.getTellStoppedRequest(token);
+        AriaRequest tellStoppedRequest = AriaReuqestFactory.getTellStoppedRequest(token);
         String stoppedRequestJson = post(tellStoppedRequest);
         tasks.addAll(getTasksFromJson(stoppedRequestJson));
 

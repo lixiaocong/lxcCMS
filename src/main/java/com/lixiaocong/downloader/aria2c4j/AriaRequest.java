@@ -30,17 +30,52 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong;
+package com.lixiaocong.downloader.aria2c4j;
 
-import org.junit.Test;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
-public class NormalTest
-{
-    @Test
-    public void test() throws Exception
-    {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        System.out.println(bCryptPasswordEncoder.encode("123456"));
+public class AriaRequest {
+    private final String jsonrpc;
+
+    private String id;
+    private String method;
+    private List<Object> params;
+
+    AriaRequest(String token, String method) {
+        this.id = UUID.randomUUID().toString();
+        this.method = method;
+        this.params = new LinkedList<>() ;
+        this.params.add("token:"+token);
+        jsonrpc = "2.0";
+    }
+
+    public String getJsonrpc() {
+        return jsonrpc;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    List<Object> getParams() {
+        return params;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setParams(List<Object> params) {
+        this.params = params;
     }
 }

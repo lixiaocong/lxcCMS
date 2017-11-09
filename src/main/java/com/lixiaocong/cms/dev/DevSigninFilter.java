@@ -30,7 +30,6 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package com.lixiaocong.cms.dev;
 
 import com.lixiaocong.cms.entity.User;

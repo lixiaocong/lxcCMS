@@ -30,53 +30,59 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.lixiaocong.downloader.aria2c4j;
 
-package com.lixiaocong.cms.downloader.aria2c;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
-public class Aria2cRequest {
-    private final String jsonrpc;
-
+public class AriaErrorResponse {
     private String id;
-    private String method;
-    private List<Object> params;
+    private String jsonrpc;
+    private Aria2cError error;
 
-    Aria2cRequest(String token, String method) {
-        this.id = UUID.randomUUID().toString();
-        this.method = method;
-        this.params = new LinkedList<>() ;
-        this.params.add("token:"+token);
-        jsonrpc = "2.0";
-    }
+    private class Aria2cError {
+        private long code;
+        private String message;
 
-    public String getJsonrpc() {
-        return jsonrpc;
+        public long getCode() {
+            return code;
+        }
+
+        public void setCode(long code) {
+            this.code = code;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 
     public String getId() {
         return id;
     }
 
-    public String getMethod() {
-        return method;
-    }
-
-    List<Object> getParams() {
-        return params;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public String getJsonrpc() {
+        return jsonrpc;
     }
 
-    public void setParams(List<Object> params) {
-        this.params = params;
+    public void setJsonrpc(String jsonrpc) {
+        this.jsonrpc = jsonrpc;
+    }
+
+    public Aria2cError getError() {
+        return error;
+    }
+
+    public void setError(Aria2cError error) {
+        this.error = error;
+    }
+
+    public String getMessage(){
+        return this.error.getMessage();
     }
 }
