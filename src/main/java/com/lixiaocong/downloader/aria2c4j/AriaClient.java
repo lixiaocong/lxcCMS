@@ -134,13 +134,6 @@ public class AriaClient implements IDownloader {
         }
         AriaRequest removeResultRequest = AriaReuqestFactory.getRemoveResultReuqest(token, id);
         post(removeResultRequest);
-        File folder = new File(downloadTask.getDir());
-        try {
-            FileUtils.forceDelete(folder);
-        } catch (IOException e) {
-            log.error("delete folder " + folder.getAbsolutePath() + " failed");
-            log.error(e);
-        }
     }
 
     @Override

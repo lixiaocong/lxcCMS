@@ -146,7 +146,7 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
         }
 
         ret.addAll(aria2cList)
-        ret.addAll(transmissionClient.get())
+        ret.addAll(transmissionList)
         return ret
     }
 
@@ -156,12 +156,12 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
         val aria2cList = LinkedList<String>()
         val transmissionList = LinkedList<String>()
         ids.forEach { id ->
-            if (downloaderMap[id] === transmissionClient)
+            if (downloaderMap[id] == transmissionClient)
                 transmissionList.add(id)
             else
                 aria2cList.add(id)
         }
-        return DivideResult(transmissionList, aria2cList)
+        return DivideResult(aria2cList, transmissionList)
     }
 }
 

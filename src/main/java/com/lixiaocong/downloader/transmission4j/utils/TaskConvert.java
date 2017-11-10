@@ -51,8 +51,29 @@ public class TaskConvert {
 
     private static DownloadTask convertToDownloadTask(Torrent torrent) {
         String id = String.valueOf(torrent.getId());
-        //TODO change status according to torrent status
-        DownloadStatus status = torrent.getStatus() == 0 ? DownloadStatus.ACTIVE : DownloadStatus.COMPLETED;
+        DownloadStatus status;
+        switch (torrent.getStatus()) {
+            case 0:
+                status = DownloadStatus.PAUSED;
+                break;
+            case 1:
+            case 2:
+            case 3:
+                status = DownloadStatus.WAITING;
+                break;
+            case 4:
+                status = DownloadStatus.ACTIVE;
+                break;
+            case 5:
+            case 6:
+                status = DownloadStatus.COMPLETED;
+                break;
+            case 7:
+                status = DownloadStatus.ERROR;
+                break;
+            default:
+                status = DownloadStatus.OTHER;
+        }
 
         DownloadType type = DownloadType.TORRENT;
         String name = torrent.getName();
@@ -68,9 +89,7 @@ public class TaskConvert {
 
     private static List<DownloadFile> covertToDownloadFile(List<TorrentFile> files) {
         List<DownloadFile> ret = new LinkedList<>();
-        files.forEach(file -> {
-            ret.add(convertToDownloadTask(file));
-        });
+        files.forEach(file -> ret.add(convertToDownloadTask(file)));
         return ret;
     }
 
