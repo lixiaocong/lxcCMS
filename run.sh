@@ -10,4 +10,4 @@ cd ..
 ./gradlew buildDocker
 
 # run the project
-docker-compose up -d
+docker-compose up

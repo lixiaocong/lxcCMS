@@ -7,8 +7,7 @@ services:
     volumes:
       - ${STORAGE_DIR}:/downloads
       - ${CONFIG_DIR}/aria2:/home/aria2
-    expose:
-      - 6800
+    network_mode: host
 
   transmission:
     image: linuxserver/transmission
@@ -18,8 +17,6 @@ services:
     environment:
       - PUID=${UID}
       - PGID=${GID}
-    expose:
-      - 9091
     network_mode: host
 
   cms:
@@ -28,9 +25,6 @@ services:
     volumes:
       - ${STORAGE_DIR}:/storage
       - ${CONFIG_DIR}:/config
-    links:
-      - aria2
-      - transmission
     environment:
       - JAVA_OPTS=${JAVA_OPTS}
       - APPLICATION_URL=${APPLICATION_URL}
@@ -40,8 +34,7 @@ services:
       - WEIXIN_SECRET=${WEIXIN_SECRET}
       - WEIXIN_TOKEN=${WEIXIN_TOKEN}
       - WEIXIN_KEY=${WEIXIN_KEY}
-    expose:
-      - 8080
+    network_mode: host
 
   nginx:
     image: nginx:1.13
@@ -49,10 +42,7 @@ services:
     volumes:
       - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ${STORAGE_DIR}:/storage
-    links:
-      - cms
-    ports:
-      - 80:80
+    network_mode: host
 
   shadowsocks:
     image: easypi/shadowsocks-libev
@@ -60,6 +50,4 @@ services:
     environment:
       - METHOD=${SS_METHOD}
       - PASSWORD=${SS_PASSWD}
-    ports:
-      - 8388:8388
     network_mode: host
