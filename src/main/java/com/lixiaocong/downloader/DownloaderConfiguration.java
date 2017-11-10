@@ -47,11 +47,11 @@ public class DownloaderConfiguration {
     }
 
     @Bean
-    public IDownloader downloader(){
+    public IDownloader downloader() {
         IDownloader downloader = null;
         for (DownloaderConfigurer downloaderConfigurer : downloaderConfigurers) {
             IDownloader downloaderCandidate = downloaderConfigurer.getDownloader();
-            if(downloaderCandidate != null) {
+            if (downloaderCandidate != null) {
                 downloader = downloaderCandidate;
                 break;
             }

@@ -42,15 +42,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class Application extends SpringBootServletInitializer {
 
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
     /**
      * 打包war文件放在tomcat下运行必须实现这个接口
      */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(Application.class);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
     }
 }

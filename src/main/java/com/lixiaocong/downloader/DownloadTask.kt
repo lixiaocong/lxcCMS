@@ -43,12 +43,12 @@ class DownloadTask(
         var uploadLength: Long,
         var uploadSpeed: Long,
         var dir: String,
-        var files: MutableList<DownloadFile>){
+        var files: MutableList<DownloadFile>) {
     fun isFinished(): Boolean {
-        if(status==DownloadStatus.COMPLETED)
+        if (status == DownloadStatus.COMPLETED)
             return true
-        if(status==DownloadStatus.ACTIVE)
-            return downloadLength==totalLength
+        if (status == DownloadStatus.ACTIVE)
+            return downloadLength == totalLength
         return false
     }
 }

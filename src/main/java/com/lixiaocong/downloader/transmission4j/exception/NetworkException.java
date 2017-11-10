@@ -30,10 +30,8 @@
 
 package com.lixiaocong.downloader.transmission4j.exception;
 
-public class NetworkException extends Exception
-{
-    public NetworkException(String message)
-    {
+public class NetworkException extends Exception {
+    public NetworkException(String message) {
         super(message);
     }
 }

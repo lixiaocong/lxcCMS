@@ -49,7 +49,7 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 @Profile("develop")
 @Order(1)
 @Configuration
-public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter{
+public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Log log = LogFactory.getLog(getClass());
 

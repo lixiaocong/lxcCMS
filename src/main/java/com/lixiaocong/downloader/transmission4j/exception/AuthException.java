@@ -30,10 +30,8 @@
 
 package com.lixiaocong.downloader.transmission4j.exception;
 
-public class AuthException extends Exception
-{
-    public AuthException(String message)
-    {
+public class AuthException extends Exception {
+    public AuthException(String message) {
         super(message);
     }
 }

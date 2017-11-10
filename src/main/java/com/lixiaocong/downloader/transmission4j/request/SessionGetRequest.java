@@ -30,10 +30,8 @@
 
 package com.lixiaocong.downloader.transmission4j.request;
 
-public class SessionGetRequest extends TransmissionRequest
-{
-    public SessionGetRequest()
-    {
+public class SessionGetRequest extends TransmissionRequest {
+    public SessionGetRequest() {
         super(TransmissionRequestMethod.SESSION_GET);
     }
 }

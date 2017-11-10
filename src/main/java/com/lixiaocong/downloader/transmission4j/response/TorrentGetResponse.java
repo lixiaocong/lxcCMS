@@ -30,17 +30,14 @@
 
 package com.lixiaocong.downloader.transmission4j.response;
 
-public class TorrentGetResponse extends TransmissionResponse
-{
+public class TorrentGetResponse extends TransmissionResponse {
     private TorrentGetResponseArguments arguments;
 
-    public TorrentGetResponseArguments getArguments()
-    {
+    public TorrentGetResponseArguments getArguments() {
         return arguments;
     }
 
-    public void setArguments(TorrentGetResponseArguments arguments)
-    {
+    public void setArguments(TorrentGetResponseArguments arguments) {
         this.arguments = arguments;
     }
 }

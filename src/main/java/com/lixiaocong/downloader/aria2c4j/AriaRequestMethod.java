@@ -37,7 +37,7 @@ class AriaRequestMethod {
     static final String ADD_URI = "aria2.addUri";
     static final String TELL_ACTIVE = "aria2.tellActive";
     static final String TELL_WAITING = "aria2.tellWaiting";
-    static final String TELL_STOPPED= "aria2.tellStopped";
+    static final String TELL_STOPPED = "aria2.tellStopped";
     static final String PAUSE = "aria2.pause";
     static final String PAUSE_ALL = "aria2.pauseAll";
     static final String UNPAUSE = "aria2.unpause";

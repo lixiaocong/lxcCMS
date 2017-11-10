@@ -70,7 +70,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status){
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         this.webSocketSessions.remove(session);
     }
 
@@ -114,7 +114,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    public void broadcast(List<DownloadTask> torrents){
+    public void broadcast(List<DownloadTask> torrents) {
         this.webSocketSessions.forEach(webSocketSession -> {
             try {
                 String data = mapper.writeValueAsString(torrents);

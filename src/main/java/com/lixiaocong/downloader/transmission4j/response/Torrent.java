@@ -34,8 +34,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class Torrent
-{
+public class Torrent {
     private long id;
     private String name;
     @JsonProperty("isFinished")
@@ -62,233 +61,187 @@ public class Torrent
     private double percentDone;
     private int status;
 
-    public long getId()
-    {
+    public long getId() {
         return id;
     }
 
-    public void setId(long id)
-    {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public boolean isFinished()
-    {
+    public boolean isFinished() {
         return finished;
     }
 
-    public void setFinished(boolean finished)
-    {
+    public void setFinished(boolean finished) {
         this.finished = finished;
     }
 
-    public String getDownloadDir()
-    {
+    public String getDownloadDir() {
         return downloadDir;
     }
 
-    public void setDownloadDir(String downloadDir)
-    {
+    public void setDownloadDir(String downloadDir) {
         this.downloadDir = downloadDir;
     }
 
-    public long getActivityDate()
-    {
+    public long getActivityDate() {
         return activityDate;
     }
 
-    public void setActivityDate(long activityDate)
-    {
+    public void setActivityDate(long activityDate) {
         this.activityDate = activityDate;
     }
 
-    public long getAddedDate()
-    {
+    public long getAddedDate() {
         return addedDate;
     }
 
-    public void setAddedDate(long addedDate)
-    {
+    public void setAddedDate(long addedDate) {
         this.addedDate = addedDate;
     }
 
-    public long getDoneDate()
-    {
+    public long getDoneDate() {
         return doneDate;
     }
 
-    public void setDoneDate(long doneDate)
-    {
+    public void setDoneDate(long doneDate) {
         this.doneDate = doneDate;
     }
 
-    public long getDateCreated()
-    {
+    public long getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(long dateCreated)
-    {
+    public void setDateCreated(long dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public long getBandwidthPriority()
-    {
+    public long getBandwidthPriority() {
         return bandwidthPriority;
     }
 
-    public void setBandwidthPriority(long bandwidthPriority)
-    {
+    public void setBandwidthPriority(long bandwidthPriority) {
         this.bandwidthPriority = bandwidthPriority;
     }
 
-    public String getCreator()
-    {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator)
-    {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
-    public long getDesiredAvailable()
-    {
+    public long getDesiredAvailable() {
         return desiredAvailable;
     }
 
-    public void setDesiredAvailable(long desiredAvailable)
-    {
+    public void setDesiredAvailable(long desiredAvailable) {
         this.desiredAvailable = desiredAvailable;
     }
 
-    public List<TorrentFile> getFiles()
-    {
+    public List<TorrentFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<TorrentFile> files)
-    {
+    public void setFiles(List<TorrentFile> files) {
         this.files = files;
     }
 
-    public boolean isStalled()
-    {
+    public boolean isStalled() {
         return stalled;
     }
 
-    public void setStalled(boolean stalled)
-    {
+    public void setStalled(boolean stalled) {
         this.stalled = stalled;
     }
 
-    public String getMagnetLink()
-    {
+    public String getMagnetLink() {
         return magnetLink;
     }
 
-    public void setMagnetLink(String magnetLink)
-    {
+    public void setMagnetLink(String magnetLink) {
         this.magnetLink = magnetLink;
     }
 
-    public long getRateDownload()
-    {
+    public long getRateDownload() {
         return rateDownload;
     }
 
-    public void setRateDownload(long rateDownload)
-    {
+    public void setRateDownload(long rateDownload) {
         this.rateDownload = rateDownload;
     }
 
-    public long getRateUpload()
-    {
+    public long getRateUpload() {
         return rateUpload;
     }
 
-    public void setRateUpload(long rateUpload)
-    {
+    public void setRateUpload(long rateUpload) {
         this.rateUpload = rateUpload;
     }
 
-    public long getSecondsDownloading()
-    {
+    public long getSecondsDownloading() {
         return secondsDownloading;
     }
 
-    public void setSecondsDownloading(long secondsDownloading)
-    {
+    public void setSecondsDownloading(long secondsDownloading) {
         this.secondsDownloading = secondsDownloading;
     }
 
-    public long getSecondsSeeding()
-    {
+    public long getSecondsSeeding() {
         return secondsSeeding;
     }
 
-    public void setSecondsSeeding(long secondsSeeding)
-    {
+    public void setSecondsSeeding(long secondsSeeding) {
         this.secondsSeeding = secondsSeeding;
     }
 
-    public long getTotalSize()
-    {
+    public long getTotalSize() {
         return totalSize;
     }
 
-    public void setTotalSize(long totalSize)
-    {
+    public void setTotalSize(long totalSize) {
         this.totalSize = totalSize;
     }
 
-    public double getUploadRatio()
-    {
+    public double getUploadRatio() {
         return uploadRatio;
     }
 
-    public void setUploadRatio(double uploadRatio)
-    {
+    public void setUploadRatio(double uploadRatio) {
         this.uploadRatio = uploadRatio;
     }
 
-    public long getDownloadedEver()
-    {
+    public long getDownloadedEver() {
         return downloadedEver;
     }
 
-    public void setDownloadedEver(long downloadedEver)
-    {
+    public void setDownloadedEver(long downloadedEver) {
         this.downloadedEver = downloadedEver;
     }
 
-    public double getPercentDone()
-    {
+    public double getPercentDone() {
         return percentDone;
     }
 
-    public void setPercentDone(double percentDone)
-    {
+    public void setPercentDone(double percentDone) {
         this.percentDone = percentDone;
     }
 
-    public int getStatus()
-    {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(int status)
-    {
+    public void setStatus(int status) {
         this.status = status;
     }
 }

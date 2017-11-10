@@ -40,10 +40,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @RequestMapping("info")
-    public String getInfo(){
+    public String getInfo() {
         String info = System.getProperty("file.encoding");
         StringBuilder sb = new StringBuilder();
-        sb.append("Encoding:"+info+'\n');
+        sb.append("Encoding:" + info + '\n');
         return sb.toString();
     }
 }

@@ -54,7 +54,8 @@ public class DevSigninFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -64,10 +65,10 @@ public class DevSigninFilter implements Filter {
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
         User admin = userRepository.findByUsername("admin");
-        UserDetails user = new DaoBasedUserDetails(admin.getId(),admin.getUsername(),admin.getPassword(), authorities);
+        UserDetails user = new DaoBasedUserDetails(admin.getId(), admin.getUsername(), admin.getPassword(), authorities);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 
     @Override

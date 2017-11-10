@@ -30,17 +30,14 @@
 
 package com.lixiaocong.downloader.transmission4j.response;
 
-public class SessionStatsResponse extends TransmissionResponse
-{
+public class SessionStatsResponse extends TransmissionResponse {
     private SessionStatsResponseArguments arguments;
 
-    public SessionStatsResponseArguments getArguments()
-    {
+    public SessionStatsResponseArguments getArguments() {
         return arguments;
     }
 
-    public void setArguments(SessionStatsResponseArguments arguments)
-    {
+    public void setArguments(SessionStatsResponseArguments arguments) {
         this.arguments = arguments;
     }
 }

@@ -18,13 +18,13 @@ export class DownloaderComponent implements OnInit {
 
     ngOnInit() {
         let host = window.location.host;
+        if(!environment.production)
+            host = '127.0.0.1';
         let url: string = 'ws://'+host+'/downloader-socket';
         this.ws = new WebSocket(url);
         this.downloadTasks = [];
 
-        this.ws.onclose = event => {
-            console.log('close');
-        };
+        this.ws.onclose = event => console.log('close');
 
         this.ws.onerror = event => {
             console.log(JSON.stringify(event));

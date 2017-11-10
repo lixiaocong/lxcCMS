@@ -32,7 +32,7 @@
 
 package com.lixiaocong.downloader;
 
-public class DownloaderException extends Exception{
+public class DownloaderException extends Exception {
     public DownloaderException(String s) {
         super(s);
     }

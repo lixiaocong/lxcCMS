@@ -44,11 +44,10 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import java.util.Map;
 
-public class SocketInterceptor implements HandshakeInterceptor{
-
-    private Log log= LogFactory.getLog(getClass().getName());
+public class SocketInterceptor implements HandshakeInterceptor {
 
     private final IUserRepository userRepository;
+    private Log log = LogFactory.getLog(getClass().getName());
 
     @Autowired
     public SocketInterceptor(IUserRepository userRepository) {
@@ -64,7 +63,5 @@ public class SocketInterceptor implements HandshakeInterceptor{
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
-        log.info("connection finished");
-
     }
 }

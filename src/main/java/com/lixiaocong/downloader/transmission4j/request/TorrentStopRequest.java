@@ -33,8 +33,7 @@ package com.lixiaocong.downloader.transmission4j.request;
 import java.util.List;
 
 public class TorrentStopRequest extends TransmissionRequest {
-    TorrentStopRequest(List<Integer> ids)
-    {
+    TorrentStopRequest(List<Integer> ids) {
         super(TransmissionRequestMethod.TORRENT_STOP);
         if (ids != null)
             arguments.put("ids", ids);

@@ -37,9 +37,7 @@ import com.lixiaocong.downloader.DownloaderException
 import com.lixiaocong.downloader.IDownloader
 import com.lixiaocong.downloader.aria2c4j.AriaClient
 import com.lixiaocong.downloader.transmission4j.TransmissionClient
-
-import java.util.HashMap
-import java.util.LinkedList
+import java.util.*
 
 class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaClient) : IDownloader {
 
@@ -71,10 +69,10 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
 
     @Throws(DownloaderException::class)
     override fun remove(ids: List<String>) {
-        val (aria2cList,transmissionList)= divideList(ids)
+        val (aria2cList, transmissionList) = divideList(ids)
         aria2cClient.remove(aria2cList)
         transmissionClient.remove(transmissionList)
-        ids.forEach{ id->
+        ids.forEach { id ->
             downloaderMap.remove(id)
         }
     }
@@ -94,7 +92,7 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
 
     @Throws(DownloaderException::class)
     override fun start(ids: List<String>) {
-        val (aria2cList,transmissionList)= divideList(ids)
+        val (aria2cList, transmissionList) = divideList(ids)
         transmissionClient.start(transmissionList)
         aria2cClient.start(aria2cList)
     }
@@ -112,7 +110,7 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
 
     @Throws(DownloaderException::class)
     override fun stop(ids: List<String>) {
-        val (aria2cList,transmissionList)= divideList(ids)
+        val (aria2cList, transmissionList) = divideList(ids)
         aria2cClient.stop(aria2cList)
         transmissionClient.stop(transmissionList)
     }
@@ -138,13 +136,13 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
         val ret = LinkedList<DownloadTask>()
 
         val aria2cList = aria2cClient.get()
-        aria2cList.forEach{ task->
-            downloaderMap.put(task.id,aria2cClient)
+        aria2cList.forEach { task ->
+            downloaderMap.put(task.id, aria2cClient)
         }
 
         val transmissionList = transmissionClient.get()
-        transmissionList.forEach{task->
-            downloaderMap.put(task.id,transmissionClient)
+        transmissionList.forEach { task ->
+            downloaderMap.put(task.id, transmissionClient)
         }
 
         ret.addAll(aria2cList)
@@ -152,8 +150,9 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
         return ret
     }
 
-    data class DivideResult(var tList:List<String>, var aList:List<String>)
-    private fun divideList(ids:List<String>): DivideResult {
+    data class DivideResult(var tList: List<String>, var aList: List<String>)
+
+    private fun divideList(ids: List<String>): DivideResult {
         val aria2cList = LinkedList<String>()
         val transmissionList = LinkedList<String>()
         ids.forEach { id ->
@@ -162,7 +161,7 @@ class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaCl
             else
                 aria2cList.add(id)
         }
-        return DivideResult(transmissionList,aria2cList)
+        return DivideResult(transmissionList, aria2cList)
     }
 }
 

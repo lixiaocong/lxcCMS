@@ -32,8 +32,7 @@ package com.lixiaocong.downloader.transmission4j.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SessionStatsResponseArguments
-{
+public class SessionStatsResponseArguments {
     private long activeTorrentCount;
     private long downloadSpeed;
     private long pausedTorrentCount;
@@ -46,73 +45,59 @@ public class SessionStatsResponseArguments
     @JsonProperty("current-stats")
     private SessionStats currentStats;
 
-    public long getActiveTorrentCount()
-    {
+    public long getActiveTorrentCount() {
         return activeTorrentCount;
     }
 
-    public void setActiveTorrentCount(long activeTorrentCount)
-    {
+    public void setActiveTorrentCount(long activeTorrentCount) {
         this.activeTorrentCount = activeTorrentCount;
     }
 
-    public long getDownloadSpeed()
-    {
+    public long getDownloadSpeed() {
         return downloadSpeed;
     }
 
-    public void setDownloadSpeed(long downloadSpeed)
-    {
+    public void setDownloadSpeed(long downloadSpeed) {
         this.downloadSpeed = downloadSpeed;
     }
 
-    public long getPausedTorrentCount()
-    {
+    public long getPausedTorrentCount() {
         return pausedTorrentCount;
     }
 
-    public void setPausedTorrentCount(long pausedTorrentCount)
-    {
+    public void setPausedTorrentCount(long pausedTorrentCount) {
         this.pausedTorrentCount = pausedTorrentCount;
     }
 
-    public long getTorrentCount()
-    {
+    public long getTorrentCount() {
         return torrentCount;
     }
 
-    public void setTorrentCount(long torrentCount)
-    {
+    public void setTorrentCount(long torrentCount) {
         this.torrentCount = torrentCount;
     }
 
-    public long getUploadSpeed()
-    {
+    public long getUploadSpeed() {
         return uploadSpeed;
     }
 
-    public void setUploadSpeed(long uploadSpeed)
-    {
+    public void setUploadSpeed(long uploadSpeed) {
         this.uploadSpeed = uploadSpeed;
     }
 
-    public SessionStats getCumnlativeStats()
-    {
+    public SessionStats getCumnlativeStats() {
         return cumnlativeStats;
     }
 
-    public void setCumnlativeStats(SessionStats cumnlativeStats)
-    {
+    public void setCumnlativeStats(SessionStats cumnlativeStats) {
         this.cumnlativeStats = cumnlativeStats;
     }
 
-    public SessionStats getCurrentStats()
-    {
+    public SessionStats getCurrentStats() {
         return currentStats;
     }
 
-    public void setCurrentStats(SessionStats currentStats)
-    {
+    public void setCurrentStats(SessionStats currentStats) {
         this.currentStats = currentStats;
     }
 }

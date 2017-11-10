@@ -30,39 +30,32 @@
 
 package com.lixiaocong.downloader.transmission4j.response;
 
-public class TorrentFile
-{
+public class TorrentFile {
     private long bytesCompleted;
     private long length;
     private String name;
 
-    public long getBytesCompleted()
-    {
+    public long getBytesCompleted() {
         return bytesCompleted;
     }
 
-    public void setBytesCompleted(long bytesCompleted)
-    {
+    public void setBytesCompleted(long bytesCompleted) {
         this.bytesCompleted = bytesCompleted;
     }
 
-    public long getLength()
-    {
+    public long getLength() {
         return length;
     }
 
-    public void setLength(long length)
-    {
+    public void setLength(long length) {
         this.length = length;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 }

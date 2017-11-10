@@ -49,13 +49,13 @@ public class TaskConvert {
         return ret;
     }
 
-    private static DownloadTask convertToDownloadTask(Torrent torrent){
+    private static DownloadTask convertToDownloadTask(Torrent torrent) {
         String id = String.valueOf(torrent.getId());
         //TODO change status according to torrent status
-        DownloadStatus status = torrent.getStatus()==0?DownloadStatus.ACTIVE:DownloadStatus.COMPLETED;
+        DownloadStatus status = torrent.getStatus() == 0 ? DownloadStatus.ACTIVE : DownloadStatus.COMPLETED;
 
-        DownloadType type=DownloadType.TORRENT;
-        String name=torrent.getName();
+        DownloadType type = DownloadType.TORRENT;
+        String name = torrent.getName();
         long totalLength = torrent.getTotalSize();
         long downloadLength = torrent.getDownloadedEver();
         long downloadSpeed = torrent.getRateDownload();
@@ -63,12 +63,12 @@ public class TaskConvert {
         long uploadSpeed = torrent.getRateUpload();
         String dir = torrent.getDownloadDir();
         List<DownloadFile> files = covertToDownloadFile(torrent.getFiles());
-        return new DownloadTask(id,status,type,name,totalLength,downloadLength,downloadSpeed,uploadLength,uploadSpeed,dir,files);
+        return new DownloadTask(id, status, type, name, totalLength, downloadLength, downloadSpeed, uploadLength, uploadSpeed, dir, files);
     }
 
     private static List<DownloadFile> covertToDownloadFile(List<TorrentFile> files) {
         List<DownloadFile> ret = new LinkedList<>();
-        files.forEach(file->{
+        files.forEach(file -> {
             ret.add(convertToDownloadTask(file));
         });
         return ret;
@@ -79,7 +79,7 @@ public class TaskConvert {
         String path = file.getName();
         long totalLength = file.getLength();
         long downloadLength = file.getBytesCompleted();
-        DownloadFile downloadFile = new DownloadFile(name,path,totalLength,downloadLength);
+        DownloadFile downloadFile = new DownloadFile(name, path, totalLength, downloadLength);
         return downloadFile;
     }
 }

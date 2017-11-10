@@ -67,7 +67,7 @@ import java.util.List;
 /**
  * Transmission java client
  */
-public class TransmissionClient implements IDownloader{
+public class TransmissionClient implements IDownloader {
     private static Log log = LogFactory.getLog(TransmissionClient.class.getName());
 
     private String username;
@@ -100,7 +100,7 @@ public class TransmissionClient implements IDownloader{
         httpClient = HttpClients.custom().setDefaultHeaders(headers).build();
     }
 
-    private <T extends TransmissionResponse> T execute(TransmissionRequest request, Class<T> responseClass) throws DownloaderException{
+    private <T extends TransmissionResponse> T execute(TransmissionRequest request, Class<T> responseClass) throws DownloaderException {
         String requestStr;
         try {
             requestStr = JsonUtil.getJson(request);
@@ -128,7 +128,7 @@ public class TransmissionClient implements IDownloader{
                 log.warn("read content of " + requestStr + ". exception:", e);
                 throw new DownloaderException(e.getMessage());
             }
-            log.info("execute response " + responseStr);
+//            log.info("execute response " + responseStr);
             try {
                 return JsonUtil.getObject(responseClass, responseStr);
             } catch (JsonException e) {

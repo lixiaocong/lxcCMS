@@ -62,12 +62,11 @@ public class DownloaderSchedulingTask {
 
     @Scheduled(fixedRate = 1000)
     public void broadcastTask() {
-        List<DownloadTask> torrents = null;
         try {
-            torrents = downloader.get();
+            List<DownloadTask> torrents = downloader.get();
+            this.downloaderSocketHandler.broadcast(torrents);
         } catch (DownloaderException e) {
             log.error(e);
         }
-        this.downloaderSocketHandler.broadcast(torrents);
     }
 }

@@ -75,14 +75,13 @@ public class SocialConfig extends SocialConfigurerAdapter {
      */
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository, Environment environment) {
-        ConnectController controller= new ConnectController(connectionFactoryLocator, connectionRepository);
+        ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
         controller.setApplicationUrl(environment.getProperty("application.url"));
         return controller;
     }
 
     @Bean
-    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter, Environment environment)
-    {
+    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter, Environment environment) {
         ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
         controller.setApplicationUrl(environment.getProperty("application.url"));
         return controller;

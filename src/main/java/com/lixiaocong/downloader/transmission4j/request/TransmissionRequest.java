@@ -33,24 +33,20 @@ package com.lixiaocong.downloader.transmission4j.request;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TransmissionRequest
-{
+public class TransmissionRequest {
     protected String method;
     protected Map<String, Object> arguments;
 
-    public TransmissionRequest(String method)
-    {
+    public TransmissionRequest(String method) {
         this.method = method;
         arguments = new HashMap<>();
     }
 
-    public String getMethod()
-    {
+    public String getMethod() {
         return method;
     }
 
-    public void setMethod(String method)
-    {
+    public void setMethod(String method) {
         this.method = method;
     }
 

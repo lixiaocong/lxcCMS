@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  articleUrl: "/article",
-  commentUrl: "/comment",
-  userUrl: "/user",
-  fileUrl: "/file/video",
+  articleUrl: "http://127.0.0.1/article",
+  commentUrl: "http://127.0.0.1/comment",
+  userUrl: "http://127.0.0.1/user",
+  fileUrl: "http://127.0.0.1/file/video",
 };

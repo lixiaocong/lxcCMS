@@ -44,10 +44,10 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedHeaders("x-requested-with","x-auth-token","content-type")
+                .allowedHeaders("x-requested-with", "x-auth-token", "content-type")
                 .maxAge(3600)
                 .allowedOrigins("*")
-                .allowedMethods("GET","POST","PUT","DELETE","HEAD")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
                 .allowCredentials(true);
     }
 }

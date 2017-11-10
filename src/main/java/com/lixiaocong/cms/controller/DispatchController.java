@@ -37,12 +37,10 @@ import com.lixiaocong.cms.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Controller
@@ -63,7 +61,7 @@ public class DispatchController {
     @RequestMapping(value = "/admin")
     public RedirectView admin(Principal principal) {
         User user = userService.getByUsername(principal.getName());
-        if(user.isAdmin())
+        if (user.isAdmin())
             return new RedirectView("/admin/index.html");
         return new RedirectView("/blog");
     }

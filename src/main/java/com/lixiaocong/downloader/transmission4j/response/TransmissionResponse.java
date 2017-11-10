@@ -35,29 +35,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TransmissionResponse
-{
+public class TransmissionResponse {
     private String result;
 
-    public String getResult()
-    {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(String result)
-    {
+    public void setResult(String result) {
         this.result = result;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         ObjectMapper mapper = new ObjectMapper();
-        try
-        {
+        try {
             return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e)
-        {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             return e.getMessage();
         }

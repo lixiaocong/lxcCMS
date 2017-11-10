@@ -57,9 +57,9 @@ public class SocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-         registry.addHandler(downloaderSocketHandler(),"/downloader-socket")
-                 .setAllowedOrigins("*")
-                 .addInterceptors(new SocketInterceptor(userRepository));
+        registry.addHandler(downloaderSocketHandler(), "/downloader-socket")
+                .setAllowedOrigins("*")
+                .addInterceptors(new SocketInterceptor(userRepository));
     }
 
     @Bean
@@ -71,7 +71,7 @@ public class SocketConfig implements WebSocketConfigurer {
     }
 
     @Bean
-    public DownloaderSocketHandler downloaderSocketHandler(){
+    public DownloaderSocketHandler downloaderSocketHandler() {
         return new DownloaderSocketHandler(downloader);
     }
 }

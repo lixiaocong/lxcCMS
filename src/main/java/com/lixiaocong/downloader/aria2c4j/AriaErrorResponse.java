@@ -37,27 +37,6 @@ public class AriaErrorResponse {
     private String jsonrpc;
     private Aria2cError error;
 
-    private class Aria2cError {
-        private long code;
-        private String message;
-
-        public long getCode() {
-            return code;
-        }
-
-        public void setCode(long code) {
-            this.code = code;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-    }
-
     public String getId() {
         return id;
     }
@@ -82,7 +61,28 @@ public class AriaErrorResponse {
         this.error = error;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return this.error.getMessage();
+    }
+
+    private class Aria2cError {
+        private long code;
+        private String message;
+
+        public long getCode() {
+            return code;
+        }
+
+        public void setCode(long code) {
+            this.code = code;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 }

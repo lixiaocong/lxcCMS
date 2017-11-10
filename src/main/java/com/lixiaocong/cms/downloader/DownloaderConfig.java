@@ -32,10 +32,10 @@
 
 package com.lixiaocong.cms.downloader;
 
-import com.lixiaocong.downloader.aria2c4j.AriaClient;
 import com.lixiaocong.downloader.DownloaderConfigurer;
 import com.lixiaocong.downloader.EnableDownloader;
 import com.lixiaocong.downloader.IDownloader;
+import com.lixiaocong.downloader.aria2c4j.AriaClient;
 import com.lixiaocong.downloader.transmission4j.TransmissionClient;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,7 +64,7 @@ public class DownloaderConfig implements DownloaderConfigurer {
     @Override
     public IDownloader getDownloader() {
         AriaClient ariaClient = new AriaClient(this.aria2cUrl, this.aria2cPassword, this.fileDir);
-        TransmissionClient transmissionClient = new TransmissionClient(this.transmissionUsername,this.transmissionPassword,this.transmissionUri);
-        return new UnionDownloader(transmissionClient,ariaClient);
+        TransmissionClient transmissionClient = new TransmissionClient(this.transmissionUsername, this.transmissionPassword, this.transmissionUri);
+        return new UnionDownloader(transmissionClient, ariaClient);
     }
 }
