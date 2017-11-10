@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {FileService} from "./file.service";
-import {UTF8} from "../../utils/UTF8";
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'app-file',
@@ -16,49 +16,27 @@ export class FileComponent implements OnInit {
     }
 
     ngOnInit() {
+        let host = window.location.host;
+        if (!environment.production)
+            host = '127.0.0.1';
+        this.url = 'http://' + host + '/download/';
         this.update();
     }
 
+
     onDelete(fileName: string) {
-        this.fileService.deleteFile(fileName).subscribe(response => {
-            // if (response.result == 'success')
-            //     this.update();
-            // else
-            //     console.log(response.message);
+        this.fileService.deleteFile(fileName).subscribe(data => {
+            if (data.result == 'success')
+                this.update();
+            else
+                console.log(data.message);
         });
     }
+
 
     private update() {
         this.fileService.getFiles().subscribe(data => {
-            this.videos = data.videos.filter(fileName => {
-                try {
-                    fileName = this.replaceSpecialChar(fileName);
-                    UTF8.b64DecodeUnicode(fileName);
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            });
-            this.url = data.serverUrl;
+            this.videos = data.videos;
         });
-    }
-
-    private getName(fileName: string) {
-        fileName = this.replaceSpecialChar(fileName);
-        fileName = UTF8.b64DecodeUnicode(fileName);
-        return fileName;
-    }
-
-    private replaceSpecialChar(fileName: string) {
-        let ret: string = "";
-        for (let i = 0; i < fileName.length; i++) {
-            if (fileName.charAt(i) == '_')
-                ret += '/';
-            else if(fileName.charAt(i) == '-')
-                ret += '=';
-            else
-                ret += fileName.charAt(i);
-        }
-        return ret;
     }
 }

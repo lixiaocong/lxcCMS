@@ -1,11 +1,12 @@
 <div class="file">
     <table ngl-datatable [data]="videos">
         <ngl-datatable-column heading="file">
-            <ng-template nglDatatableCell let-row="row">{{getName(row)}}</ng-template>
+            <ng-template nglDatatableCell let-row="row">{{row}}</ng-template>
         </ngl-datatable-column>
 
         <ngl-datatable-column heading="link">
-            <ng-template nglDatatableCell let-row="row"><a href="{{url}}{{row}}" download="{{getName(row)}}">download</a></ng-template>
+            <ng-template nglDatatableCell let-row="row"><a href="{{url}}{{row}}" download="{{row}}">download</a>
+            </ng-template>
         </ngl-datatable-column>
 
         <ngl-datatable-column heading="Opeations">

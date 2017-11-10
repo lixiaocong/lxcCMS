@@ -1,9 +1,8 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {PageDataHandler} from "../../utils/PageDataHandler";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
-import {LXCQueryEncoder} from "../../utils/CharEncoder";
 
 @Injectable()
 export class FileService {
@@ -18,9 +17,7 @@ export class FileService {
             .filter(PageDataHandler.successResponseFilter);
     }
 
-    deleteFile(fileName: string) {
-        let params = new HttpParams();
-        params.set("fileName", fileName);
-        return this.http.delete(this.fileUrl, {params: params})
+    deleteFile(fileName: string): Observable<any> {
+        return this.http.post(this.fileUrl + '/delete', fileName);
     }
 }

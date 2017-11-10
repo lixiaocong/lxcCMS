@@ -3,5 +3,5 @@ export const environment = {
   articleUrl: "/article",
   commentUrl: "/comment",
   userUrl: "/user",
-  fileUrl: "/file/video",
+    fileUrl: "/file",
 };

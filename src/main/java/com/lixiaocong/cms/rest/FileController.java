@@ -40,9 +40,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,7 +85,7 @@ public class FileController {
     }
 
     @RolesAllowed("ROLE_ADMIN")
-    @RequestMapping(value = "/video", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public Map<String, Object> video() {
         File folder = new File(fileDir);
         if (!folder.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
@@ -98,8 +98,8 @@ public class FileController {
     }
 
     @RolesAllowed("ROLE_ADMIN")
-    @RequestMapping(value = "/video", method = RequestMethod.DELETE)
-    public Map<String, Object> delete(@RequestParam String fileName) {
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public Map<String, Object> delete(@RequestBody String fileName) {
         File file = new File(fileDir + fileName);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("文件不存在");
         else if (!file.isFile()) return ResponseMsgFactory.createFailedResponse("不是文件");
