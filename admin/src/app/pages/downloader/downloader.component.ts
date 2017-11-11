@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {MatDialog} from "@angular/material";
 import {DownloadTask} from "./download-task/download-task.component";
 import {AddtaskDialogComponent, AddTaskInfo} from "./addtask-dialog/addtask-dialog.component";
@@ -9,7 +9,8 @@ import {environment} from "../../../environments/environment";
     templateUrl: './downloader.component.html',
     styleUrls: ['./downloader.component.css']
 })
-export class DownloaderComponent implements OnInit {
+export class DownloaderComponent implements OnInit, OnDestroy {
+
     ws: WebSocket;
     downloadTasks: DownloadTask[];
 
@@ -47,8 +48,9 @@ export class DownloaderComponent implements OnInit {
         };
     }
 
-    onBack() {
-
+    ngOnDestroy(): void {
+        this.ws.close();
+        console.log("closed");
     }
 
     upload_task() {
