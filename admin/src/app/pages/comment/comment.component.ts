@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {INglDatatableRowClick, INglDatatableSort} from "ng-lightning/ng-lightning";
+import {INglDatatableSort} from "ng-lightning/ng-lightning";
 import {CommentService} from "./comment.service";
 
 @Component({
@@ -27,9 +27,6 @@ export class CommentComponent implements OnInit {
         this.data.sort((a: any, b: any) => {
             return (key === 'id' ? b[key] - a[key] : b[key].localeCompare(a[key])) * (order === 'desc' ? 1 : -1);
         });
-    }
-
-    onRowClick($event: INglDatatableRowClick) {
     }
 
     onPageChange(pageNumber: number = 1) {

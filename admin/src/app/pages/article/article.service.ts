@@ -13,10 +13,7 @@ export class ArticleService {
     }
 
     getArticles(page: number = 1, size: number = 10): Observable<any> {
-        let params = new HttpParams();
-        params.set("page", page.toString());
-        params.set("size", size.toString());
-
+        let params = new HttpParams().set("page", page.toString()).set("size", size.toString());
         return this.http.get(this.articleUrl, {params: params})
             .filter(PageDataHandler.successResponseFilter)
             .map(data => data.articles)

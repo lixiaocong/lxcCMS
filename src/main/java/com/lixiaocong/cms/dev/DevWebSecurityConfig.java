@@ -64,8 +64,11 @@ public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/signin").defaultSuccessUrl("/blog").and().logout().logoutUrl("/logout").logoutSuccessUrl("/blog").and().rememberMe().rememberMeParameter("remember-me").and().csrf().disable();
 
-        User admin = new User("admin", "123456");
+        User admin = userRepository.findByUsername("admin");
+        if (admin == null)
+            admin = new User("admin", "123456");
         admin.setAdmin(true);
+        admin.setPassword("123456");
         userRepository.save(admin);
         http.addFilterAfter(new DevSigninFilter(userRepository), SecurityContextPersistenceFilter.class);
     }

@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
 })
 export class FileComponent implements OnInit {
 
-    url;
+    baseUrl;
     videos;
     constructor(private fileService: FileService) {
     }
@@ -19,7 +19,7 @@ export class FileComponent implements OnInit {
         let host = window.location.host;
         if (!environment.production)
             host = '127.0.0.1';
-        this.url = 'http://' + host + '/download/';
+        this.baseUrl = 'http://' + host + '/download/';
         this.update();
     }
 

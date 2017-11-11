@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {UserService} from "./user.service";
-import {INglDatatableRowClick, INglDatatableSort} from "ng-lightning/ng-lightning";
+import {INglDatatableSort} from "ng-lightning/ng-lightning";
 
 @Component({
     selector: 'app-user',
@@ -28,9 +28,6 @@ export class UserComponent implements OnInit {
         this.data.sort((a: any, b: any) => {
             return (key === 'id' ? b[key] - a[key] : b[key].localeCompare(a[key])) * (order === 'desc' ? 1 : -1);
         });
-    }
-
-    onRowClick($event: INglDatatableRowClick) {
     }
 
     onPageChange(pageNumber: number = 1) {

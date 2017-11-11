@@ -12,9 +12,7 @@ export class CommentService {
     }
 
     getCommends(page: number = 1, size: number = 10): Observable<any> {
-        let params = new HttpParams();
-        params.set("page", page.toString());
-        params.set("size", size.toString());
+        let params = new HttpParams().set("page", page.toString()).set("size", size.toString());
         return this.http.get(this.commentUrl, {params: params})
             .filter(PageDataHandler.successResponseFilter)
             .map(data => data.comments)
