@@ -80,7 +80,7 @@ public class TaskConvert {
         long totalLength = torrent.getTotalSize();
         long downloadLength = torrent.getDownloadedEver();
         long downloadSpeed = torrent.getRateDownload();
-        long uploadLength = 0;
+        long uploadLength = (long) (torrent.getUploadRatio() * torrent.getTotalSize());
         long uploadSpeed = torrent.getRateUpload();
         String dir = torrent.getDownloadDir();
         List<DownloadFile> files = covertToDownloadFile(torrent.getFiles());

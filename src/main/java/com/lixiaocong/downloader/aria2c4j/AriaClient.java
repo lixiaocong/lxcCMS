@@ -34,7 +34,6 @@ package com.lixiaocong.downloader.aria2c4j;
 
 import com.google.gson.*;
 import com.lixiaocong.downloader.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
@@ -45,7 +44,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -291,8 +289,8 @@ public class AriaClient implements IDownloader {
     private DownloadType handleType(JsonObject result) {
         JsonObject bitTorrent = result.getAsJsonObject("bittorrent");
         if (bitTorrent == null)
-            return DownloadType.TORRENT;
-        return DownloadType.URL;
+            return DownloadType.URL;
+        return DownloadType.TORRENT;
     }
 
     private DownloadStatus handleStatus(JsonObject result) {

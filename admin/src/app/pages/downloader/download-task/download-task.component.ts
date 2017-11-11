@@ -14,8 +14,12 @@ export class DownloadTaskComponent implements OnInit {
     progressMode: string;
     progressValue: number;
 
-    downloadSpeed: string;
+    isTorrent: boolean;
     totalLength: string;
+    downloadLength: string;
+    downloadSpeed: string;
+    uploadLength: string;
+    uploadSpeed: string;
 
     constructor() {
     }
@@ -28,9 +32,14 @@ export class DownloadTaskComponent implements OnInit {
 
         this.progressColor = 'primary';
         this.progressMode = 'determinate';
-        this.downloadSpeed = DownloadTaskComponent.formatBytes(this.downloadTask.downloadSpeed);
-        this.totalLength = DownloadTaskComponent.formatBytes(this.downloadTask.totalLength);
         this.progressValue = this.downloadTask.downloadLength / this.downloadTask.totalLength * 100;
+
+        this.isTorrent = this.downloadTask.type == "TORRENT";
+        this.totalLength = DownloadTaskComponent.formatBytes(this.downloadTask.totalLength);
+        this.downloadLength = DownloadTaskComponent.formatBytes(this.downloadTask.downloadLength);
+        this.downloadSpeed = DownloadTaskComponent.formatBytes(this.downloadTask.downloadSpeed);
+        this.uploadLength = DownloadTaskComponent.formatBytes(this.downloadTask.uploadLength);
+        this.uploadSpeed = DownloadTaskComponent.formatBytes(this.downloadTask.uploadSpeed);
     }
 
     onHover() {

@@ -1,5 +1,12 @@
 <div [ngClass]="styleClass" (mouseover)="onHover()" (mouseleave)="onLeave()" (click)='onClick()'>
-    {{downloadTask.name}}
-    <mat-progress-bar [color]="progressColor" [mode]="progressMode" [value]="progressValue" [bufferValue]=1></mat-progress-bar>
-    {{downloadSpeed}}/s size:{{totalLength}} {{downloadTask.status}}
+    {{downloadTask.status}} : <span>{{downloadTask.name}}</span>
+    <mat-progress-bar [color]="progressColor"
+                      [mode]="progressMode"
+                      [value]="progressValue"
+                      [bufferValue]=1>
+    </mat-progress-bar>
+    Download: {{downloadSpeed}}/s {{downloadLength}} / {{totalLength}}<br>
+    <span *ngIf="isTorrent">
+        Upload:{{uploadSpeed}}/s {{uploadLength}}
+    </span>
 </div>
