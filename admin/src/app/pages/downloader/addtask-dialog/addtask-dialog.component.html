@@ -18,7 +18,7 @@
         </mat-input-container>
     </div>
     <div [hidden]="taskType != 'torrent'">
-        <input type="file" (change)='onFileChange($event)' accept="application/x-bittorrent">
+        <input type="file" multiple="multiple" (change)='onFileChange($event)' accept="application/x-bittorrent">
     </div>
     <button mat-raised-button (click)='addTask()'>add task</button>
     <button mat-raised-button (click)='cancel()'>cancel</button>

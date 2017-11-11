@@ -135,7 +135,15 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     private String handleAddTask(JsonNode jsonNode) {
         JsonNode addTaskInfo = jsonNode.path("addTaskInfo");
         String taskType = addTaskInfo.path("taskType").getValueAsText();
-        String content = addTaskInfo.path("content").getValueAsText();
+        JsonNode contents = addTaskInfo.get("content");
+        contents.forEach(item -> {
+            String content = item.getValueAsText();
+            addSingleTask(taskType, content);
+        });
+        return null;
+    }
+
+    private void addSingleTask(String taskType, String content) {
         try {
             switch (taskType) {
                 case "url":
@@ -154,7 +162,6 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
             //TODO handle exception
             e.printStackTrace();
         }
-        return null;
     }
 
     private String handleStartTask(JsonNode jsonNode) {

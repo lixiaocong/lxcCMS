@@ -10,7 +10,7 @@ export class AddtaskDialogComponent implements OnInit {
     taskType: string;
     urlValue: string;
     metalinkValue: string;
-    torrentValue: string;
+    torrentValue: string[];
 
     constructor(public dialogRef: MatDialogRef<AddtaskDialogComponent>) {
     }
@@ -19,28 +19,31 @@ export class AddtaskDialogComponent implements OnInit {
         this.taskType = AddTaskInfo.TYPE_TORRENT;
         this.urlValue = 'http://';
         this.metalinkValue = 'megnets://';
-        this.torrentValue = null;
+        this.torrentValue = [];
     }
 
     onFileChange($event) {
-        let file: File = $event.target.files[0];
-        if (file == null) {
-            this.torrentValue = null;
-            return;
+        this.torrentValue = [];
+        let fileNumber = $event.target.files.length;
+        for (let i = 0; i < fileNumber; i++) {
+            let file: File = $event.target.files[i];
+            let myReader: FileReader = new FileReader();
+            myReader.onloadend = () => {
+                this.torrentValue.push(btoa(myReader.result));
+            };
+            myReader.readAsBinaryString(file);
         }
-        let myReader: FileReader = new FileReader();
-        myReader.onloadend = () => {
-            this.torrentValue = btoa(myReader.result);
-        };
-        myReader.readAsBinaryString(file);
+
+        return;
     }
 
     addTask() {
+        console.log(this.torrentValue);
         let taskInfo: AddTaskInfo = null;
         if (this.taskType == AddTaskInfo.TYPE_URL)
-            taskInfo = new AddTaskInfo(this.taskType, this.urlValue);
+            taskInfo = new AddTaskInfo(this.taskType, [this.urlValue]);
         else if (this.taskType == AddTaskInfo.TYPE_METALINK)
-            taskInfo = new AddTaskInfo(this.taskType, this.metalinkValue);
+            taskInfo = new AddTaskInfo(this.taskType, [this.metalinkValue]);
         else {
             taskInfo = new AddTaskInfo(this.taskType, this.torrentValue);
         }
@@ -58,9 +61,9 @@ export class AddTaskInfo {
     static TYPE_TORRENT = 'torrent';
 
     taskType: string;
-    content: string;
+    content: string[];
 
-    constructor(taskType: string, content: string) {
+    constructor(taskType: string, content: string[]) {
         this.taskType = taskType;
         this.content = content;
     }
