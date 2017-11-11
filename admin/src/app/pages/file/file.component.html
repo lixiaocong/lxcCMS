@@ -14,7 +14,7 @@
             <ng-template nglDatatableCell let-row="row">
                 <button type="button" nglButton="destructive" (click)="onDelete(row.name)">delete</button>
                 <a *ngIf="row.file" type="button" nglButton="neutral" href="{{baseUrl}}{{path}}{{row.name}}"
-                   download="{{row}}">download</a>
+                   download="{{row.name}}">download</a>
                 <button *ngIf="!row.file" type="button" nglButton="neutral" (click)="onOpen(row.name)">open</button>
             </ng-template>
         </ngl-datatable-column>
