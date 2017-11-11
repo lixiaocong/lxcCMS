@@ -34,8 +34,6 @@ package com.lixiaocong.cms.rest;
 
 import com.lixiaocong.cms.service.ImageCodeService;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FalseFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +51,10 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/file")
@@ -67,8 +68,8 @@ public class FileController {
     public FileController(ImageCodeService codeService, @Value("${file.dir}") String fileDir) {
         this.codeService = codeService;
         this.fileDir = fileDir;
-        if (!this.fileDir.endsWith("/"))
-            this.fileDir += "/";
+        if (this.fileDir.endsWith("/"))
+            this.fileDir = fileDir.substring(0, fileDir.length() - 1);
     }
 
     @RolesAllowed("ROLE_USER")
@@ -86,15 +87,41 @@ public class FileController {
 
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.GET)
-    public Map<String, Object> video() {
-        File folder = new File(fileDir);
-        if (!folder.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
-        Collection<File> files = FileUtils.listFiles(folder, TrueFileFilter.INSTANCE, FalseFileFilter.INSTANCE);
-        List<String> fileList = new LinkedList<>();
-        for (File video : files) {
-            if (video.isFile()) fileList.add(video.getName());
+    public Map<String, Object> get(@RequestParam String path) {
+        class Item {
+            private boolean isFile;
+            private String name;
+
+            public Item(String name, boolean isFile) {
+                this.name = name;
+                this.isFile = isFile;
+            }
+
+            public boolean isFile() {
+                return isFile;
+            }
+
+            public void setFile(boolean file) {
+                isFile = file;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
         }
-        return ResponseMsgFactory.createSuccessResponse("videos", fileList);
+
+        File folderFile = new File(fileDir + path);
+        if (!folderFile.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
+        List<Item> ret = new LinkedList<>();
+        File[] fileList = folderFile.listFiles();
+        for (File file : fileList)
+            ret.add(new Item(file.getName(), file.isFile()));
+        Map<String, Object> response = ResponseMsgFactory.createSuccessResponse("files", ret);
+        return response;
     }
 
     @RolesAllowed("ROLE_ADMIN")
@@ -102,8 +129,18 @@ public class FileController {
     public Map<String, Object> delete(@RequestParam String fileName) {
         File file = new File(fileDir + fileName);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("文件不存在");
-        else if (!file.isFile()) return ResponseMsgFactory.createFailedResponse("不是文件");
-        else if (!file.delete()) return ResponseMsgFactory.createFailedResponse("删除不成功");
+        else {
+            if (file.isFile()) {
+                if (!file.delete())
+                    return ResponseMsgFactory.createFailedResponse("删除不成功");
+            } else {
+                try {
+                    FileUtils.deleteDirectory(file);
+                } catch (IOException e) {
+                    return ResponseMsgFactory.createFailedResponse("删除不成功");
+                }
+            }
+        }
         return ResponseMsgFactory.createSuccessResponse();
     }
 

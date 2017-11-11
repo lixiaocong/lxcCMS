@@ -47,6 +47,10 @@ export class DownloaderComponent implements OnInit {
         };
     }
 
+    onBack() {
+
+    }
+
     upload_task() {
         let dialogRef = this.dialog.open(AddtaskDialogComponent);
         dialogRef.afterClosed().subscribe(result => {

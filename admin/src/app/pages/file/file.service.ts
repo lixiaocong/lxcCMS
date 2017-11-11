@@ -12,8 +12,9 @@ export class FileService {
     constructor(private http: HttpClient) {
     }
 
-    getFiles(): Observable<any> {
-        return this.http.get(this.fileUrl)
+    getFiles(path: string): Observable<any> {
+        let params = new HttpParams().set('path', path);
+        return this.http.get(this.fileUrl, {params: params})
             .filter(PageDataHandler.successResponseFilter);
     }
 

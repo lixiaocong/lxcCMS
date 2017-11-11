@@ -1,25 +1,28 @@
 <div class="file">
-    <table ngl-datatable [data]="videos">
+    <div id="menu">
+        <i class="material-icons" (click)="onBack()">arrow_back</i>
+    </div>
+    <div>
+        {{path}}
+    </div>
+    <table ngl-datatable [data]="files">
         <ngl-datatable-column heading="file">
-            <ng-template nglDatatableCell let-row="row">{{row}}</ng-template>
-        </ngl-datatable-column>
-
-        <ngl-datatable-column heading="link">
-            <ng-template nglDatatableCell let-row="row"><a href="{{baseUrl}}{{row}}" download="{{row}}">download</a>
-            </ng-template>
+            <ng-template nglDatatableCell let-row="row">{{row.name}}</ng-template>
         </ngl-datatable-column>
 
         <ngl-datatable-column heading="Opeations">
             <ng-template nglDatatableCell let-row="row">
-                <button type="button" nglButton="neutral" (click)="onDelete(row)">delete</button>
+                <button type="button" nglButton="destructive" (click)="onDelete(row.name)">delete</button>
+                <a *ngIf="row.file" type="button" nglButton="neutral" href="{{baseUrl}}{{path}}{{row.name}}"
+                   download="{{row}}">download</a>
+                <button *ngIf="!row.file" type="button" nglButton="neutral" (click)="onOpen(row.name)">open</button>
             </ng-template>
         </ngl-datatable-column>
-        <!-- Loading overlay -->
+
         <ng-template nglLoadingOverlay>
             <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">Loading...</div>
         </ng-template>
 
-        <!-- No rows overlay -->
         <ng-template nglNoRowsOverlay>No data available in table!</ng-template>
     </table>
 </div>
