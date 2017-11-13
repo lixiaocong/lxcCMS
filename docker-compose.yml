@@ -43,11 +43,3 @@ services:
       - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ${STORAGE_DIR}:/storage
     network_mode: host
-
-  shadowsocks:
-    image: easypi/shadowsocks-libev
-    user: "${UID}"
-    environment:
-      - METHOD=${SS_METHOD}
-      - PASSWORD=${SS_PASSWD}
-    network_mode: host

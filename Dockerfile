@@ -2,7 +2,7 @@ FROM openjdk:8-jdk
 ADD target/lxccms-3.0.jar app.jar
 
 ENV JAVA_OPTS=""
-ENV APPLICATION_URL=127.0.0.1
+ENV APPLICATION_URL=""
 
 ENV QQ_ID=""
 ENV QQ_SECRET=""
