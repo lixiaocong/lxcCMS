@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-# install required lib
-apt install -y curl nodejs
+# install jdk
+apt install -y openjdk-8-jdk
+
+# install nvm
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
 
 # install docker and docker-compose
 curl -fsSL get.docker.com -o get-docker.sh
