@@ -14,7 +14,7 @@ services:
     image: linuxserver/transmission
     volumes:
       - ${STORAGE_DIR}:/downloads
-      - ${CONFIG_DIR}/transmission/settings.json:/config/settings.json
+      - ${CONFIG_DIR}/transmission:/config
     environment:
       - PUID= ${UID}
       - PGID= ${GID}

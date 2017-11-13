@@ -5,8 +5,8 @@
                       [value]="progressValue"
                       [bufferValue]=1>
     </mat-progress-bar>
-    Download: {{downloadSpeed}}/s {{downloadLength}} / {{totalLength}}<br>
+    ↓ {{downloadSpeed}}/s size {{downloadLength}} of {{totalLength}}<br>
     <span *ngIf="isTorrent">
-        Upload:{{uploadSpeed}}/s {{uploadLength}}
+    ↑ {{uploadSpeed}}/s size {{uploadLength}}
     </span>
 </div>

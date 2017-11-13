@@ -12,7 +12,7 @@ services:
   transmission:
     image: linuxserver/transmission
     volumes:
-      - ${CONFIG_DIR}/transmission/settings.json:/config/settings.json
+      - ${CONFIG_DIR}/transmission:/config
       - ${STORAGE_DIR}:/downloads
     environment:
       - PUID=${UID}
