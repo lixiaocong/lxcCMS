@@ -1,6 +1,5 @@
 <div class="comment">
-    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)"
-           (onRowClick)="onRowClick($event)">
+    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)">
         <ngl-datatable-column heading="ID" key="id" sortable></ngl-datatable-column>
         <ngl-datatable-column heading="COMMENT" key="content"></ngl-datatable-column>
         <ngl-datatable-column heading="ARTICLE" key="article">

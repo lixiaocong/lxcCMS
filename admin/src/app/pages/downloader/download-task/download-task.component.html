@@ -2,11 +2,11 @@
     {{downloadTask.status}} : <span>{{downloadTask.name}}</span>
     <mat-progress-bar [color]="progressColor"
                       [mode]="progressMode"
-                      [value]="progressValue"
+                      [value]="downloadTask.progressValue"
                       [bufferValue]=1>
     </mat-progress-bar>
-    ↓ {{downloadSpeed}}/s size {{downloadLength}} of {{totalLength}}<br>
-    <span *ngIf="isTorrent">
-    ↑ {{uploadSpeed}}/s size {{uploadLength}}
+    ↓ {{downloadTask.downloadSpeed}} size {{downloadTask.downloadLength}} of {{downloadTask.totalLength}}<br>
+    <span *ngIf="downloadTask.isTorrent">
+    ↑ {{downloadTask.uploadSpeed}}/s size {{downloadTask.uploadLength}}
     </span>
 </div>

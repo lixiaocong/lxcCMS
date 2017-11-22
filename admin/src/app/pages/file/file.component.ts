@@ -48,11 +48,9 @@ export class FileComponent implements OnInit {
             this.path = '/';
         else {
             this.path = '/';
-            // console.log(name);
             for (let i = 1; i < length - 2; i++)
                 this.path += name[i] + '/';
         }
-        // console.log(this.path);
         this.update();
     }
 
@@ -65,7 +63,14 @@ export class FileComponent implements OnInit {
                         return 1;
                     return -1;
                 }
-                return 0;
+                else {
+                    if (a.name.toLowerCase() < b.name.toLowerCase())
+                        return -1;
+                    else if (a.name.toLowerCase() > b.name.toLowerCase())
+                        return 1;
+                    else
+                        return 0;
+                }
             });
         });
     }

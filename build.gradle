@@ -42,6 +42,7 @@ task buildDocker(type: Docker, dependsOn: build) {
 
 repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -60,11 +61,12 @@ dependencies {
     compile 'net.gplatform:spring-social-qq:1.0.2'
 
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.4-3'
+    compile 'com.h2database:h2:1.4.196'
 
     compile 'net.htmlparser.jericho:jericho-html:3.4'
     compile 'com.github.binarywang:weixin-java-mp:2.0.0'
-
-    compile 'com.h2database:h2:1.4.196'
+    compile 'com.github.lixiaocong:transmission4j:2.0'
+    compile 'com.github.lixiaocong:aria2c4j:1.0'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

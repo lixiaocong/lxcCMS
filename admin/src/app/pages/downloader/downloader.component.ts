@@ -17,11 +17,33 @@ export class DownloaderComponent implements OnInit, OnDestroy {
     constructor(public dialog: MatDialog) {
     }
 
+    private static fromJson(task2add, taskNew) {
+        task2add.id = taskNew.id;
+        task2add.name = taskNew.name;
+        task2add.status = taskNew.status;
+        task2add.isTorrent = taskNew.type == 'TORRENT';
+        task2add.totalLength = DownloaderComponent.formatBytes(taskNew.totalLength);
+        task2add.downloadLength = DownloaderComponent.formatBytes(taskNew.downloadLength);
+        task2add.downloadSpeed = DownloaderComponent.formatBytes(taskNew.downloadSpeed);
+        task2add.progressValue = taskNew.downloadLength / taskNew.totalLength * 100;
+        task2add.uploadLength = DownloaderComponent.formatBytes(taskNew.uploadLength);
+        task2add.uploadSpeed = DownloaderComponent.formatBytes(taskNew.uploadSpeed);
+    }
+
+    private static formatBytes(bytes: number, decimals: number = 2) {
+        if (bytes == 0) return '0 Bytes';
+        let k = 1000,
+            dm = decimals + 1 || 3,
+            sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+            i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
     ngOnInit() {
         let host = window.location.host;
-        if(!environment.production)
+        if (!environment.production)
             host = '127.0.0.1';
-        let url: string = 'ws://'+host+'/downloader-socket';
+        let url: string = 'ws://' + host + '/downloader-socket';
         this.ws = new WebSocket(url);
         this.downloadTasks = [];
 
@@ -33,18 +55,40 @@ export class DownloaderComponent implements OnInit, OnDestroy {
         };
 
         this.ws.onmessage = event => {
-            let tasks: DownloadTask[] = JSON.parse(event.data);
-            tasks.forEach(task => {
-                task.isChoosed = false;
-                for (let i = 0; i < this.downloadTasks.length; i++) {
-                    let oldTask: DownloadTask = this.downloadTasks[i];
-                    if (oldTask.id == task.id) {
-                        task.isChoosed = oldTask.isChoosed;
+            let tasksNew = JSON.parse(event.data);
+
+            // remove deleted tasks
+            for (let index = 0; index < this.downloadTasks.length; index++) {
+                let exists = false;
+                for (let indexNew = 0; indexNew < tasksNew.length; indexNew++) {
+                    if (tasksNew[indexNew].id == this.downloadTasks[index].id) {
+                        exists = true;
                         break;
                     }
                 }
+                if (!exists) {
+                    this.downloadTasks.splice(index, 1);
+                    index--;
+                }
+            }
+
+            // update and add new task
+            tasksNew.forEach(taskNew => {
+                taskNew.isChoosed = false;
+                let exists = false;
+                for (let index = 0; index < this.downloadTasks.length; index++) {
+                    if (this.downloadTasks[index].id == taskNew.id) {
+                        DownloaderComponent.fromJson(this.downloadTasks[index], taskNew);
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) {
+                    let task2add = new DownloadTask();
+                    DownloaderComponent.fromJson(task2add, taskNew);
+                    this.downloadTasks.push(taskNew);
+                }
             });
-            this.downloadTasks = tasks;
         };
     }
 
@@ -64,19 +108,19 @@ export class DownloaderComponent implements OnInit, OnDestroy {
 
     start_task() {
         let command = new StartTaskCommand();
-        this.downloadTasks.filter(task => task.isChoosed).forEach(task => command.addId(task.id));
+        this.downloadTasks.filter(task => task.isChosen).forEach(task => command.addId(task.id));
         this.ws.send(JSON.stringify(command));
     }
 
     pause_task() {
         let command = new PauseTaskCommand();
-        this.downloadTasks.filter(task => task.isChoosed).forEach(task => command.addId(task.id));
+        this.downloadTasks.filter(task => task.isChosen).forEach(task => command.addId(task.id));
         this.ws.send(JSON.stringify(command));
     }
 
     delete_task() {
         let command = new RemoveTaskCommand();
-        this.downloadTasks.filter(task => task.isChoosed).forEach(task => command.addId(task.id));
+        this.downloadTasks.filter(task => task.isChosen).forEach(task => command.addId(task.id));
         this.ws.send(JSON.stringify(command));
     }
 }

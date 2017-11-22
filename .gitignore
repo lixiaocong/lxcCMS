@@ -10,3 +10,5 @@
 /lxcCMS.iml
 /admin/package-lock.json
 /dev-enviroment/docker-config/aria2/.cache/
+/.classpath
+/.project

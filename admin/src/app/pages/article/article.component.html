@@ -1,6 +1,5 @@
 <div class="article">
-    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)"
-           (onRowClick)="onRowClick($event)">
+    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)">
         <ngl-datatable-column heading="ID" key="id" sortable></ngl-datatable-column>
         <ngl-datatable-column heading="TITLE" key="title"></ngl-datatable-column>
         <ngl-datatable-column heading="USER" key="user">
