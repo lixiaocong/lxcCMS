@@ -42,10 +42,10 @@ export class UserComponent implements OnInit {
 
     onDelete(id: number) {
         this.userService.deleteUser(id).subscribe(response => {
-            // if (response.result == 'success')
-            //     this.onPageChange(this.page);
-            // else
-            //     console.log("error");
+            if (response.result == 'success')
+                this.onPageChange(this.page);
+            else
+                console.log("error");
         });
     }
 }

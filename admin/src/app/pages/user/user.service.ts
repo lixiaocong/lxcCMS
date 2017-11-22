@@ -23,7 +23,7 @@ export class UserService {
         return this.getUsers().map(users => users.totalElements);
     }
 
-    deleteUser(id: number) {
+    deleteUser(id: number): Observable<any> {
         return this.http.delete(this.userUrl + "/" + id)
     }
 }

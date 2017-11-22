@@ -41,9 +41,9 @@ export class CommentComponent implements OnInit {
 
     onDelete(id: number) {
         this.commentService.deleteComment(id).subscribe(response => {
-            // if (response.result == 'success')
-            //     this.onPageChange(this.page);
-            // else
+            if (response.result == 'success')
+                this.onPageChange(this.page);
+            else
                 console.log("error");
         });
     }

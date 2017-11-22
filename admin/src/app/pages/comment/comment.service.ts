@@ -22,7 +22,7 @@ export class CommentService {
         return this.getCommends().map(comments => comments.totalElements);
     }
 
-    deleteComment(id: number) {
+    deleteComment(id: number): Observable<any> {
         return this.http.delete(this.commentUrl + "/" + id)
     }
 }
