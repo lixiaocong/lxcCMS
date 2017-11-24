@@ -33,7 +33,6 @@
         <img class="profile-image img-responsive pull-left" src="/image/logo.png"/>
         <div class="profile-content pull-left">
             <h1 class="name">lixiaocong's blog</h1>
-            <h2 class="desc">lxccs@iCloud.com</h2>
             <ul class="social list-inline">
                 <li><a href="tencent://message/?uin=960418051&Site=&Menu=yes"><i class="fa fa-qq"></i></a></li>
                 <li><a href="https://github.com/lixiaocong"><i class="fa fa-github-alt"></i></a></li>

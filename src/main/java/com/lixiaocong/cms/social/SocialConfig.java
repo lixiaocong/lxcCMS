@@ -32,7 +32,7 @@
 
 package com.lixiaocong.cms.social;
 
-import net.gplatform.spring.social.qq.connect.QQConnectionFactory;
+import com.lixiaocong.social.qq.connect.QQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

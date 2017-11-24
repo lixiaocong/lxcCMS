@@ -32,13 +32,13 @@
 
 package com.lixiaocong.cms.socket;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -87,7 +87,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
             return;
         }
 
-        String method = jsonNode.path("method").getValueAsText();
+        String method = jsonNode.path("method").asText();
         String result = null;
         switch (method) {
             case DownloaderSocketCommand.ADD_TASK:
@@ -128,16 +128,16 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     private List<String> getIds(JsonNode jsonNode) {
         JsonNode ids = jsonNode.path("ids");
         List<String> idList = new LinkedList<>();
-        ids.forEach(node -> idList.add(node.getTextValue()));
+        ids.forEach(node -> idList.add(node.asText()));
         return idList;
     }
 
     private String handleAddTask(JsonNode jsonNode) {
         JsonNode addTaskInfo = jsonNode.path("addTaskInfo");
-        String taskType = addTaskInfo.path("taskType").getValueAsText();
+        String taskType = addTaskInfo.path("taskType").asText();
         JsonNode contents = addTaskInfo.get("content");
         contents.forEach(item -> {
-            String content = item.getValueAsText();
+            String content = item.asText();
             addSingleTask(taskType, content);
         });
         return null;

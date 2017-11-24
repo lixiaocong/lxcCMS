@@ -36,7 +36,7 @@ import com.lixiaocong.cms.entity.User;
 import com.lixiaocong.cms.exception.RestParamException;
 import com.lixiaocong.cms.model.UserUpdateForm;
 import com.lixiaocong.cms.service.IUserService;
-import net.gplatform.spring.social.qq.api.QQ;
+import com.lixiaocong.social.qq.api.QQ;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

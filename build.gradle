@@ -46,27 +46,25 @@ repositories {
 }
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-aop'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'org.springframework.boot:spring-boot-starter-security'
-    compile 'org.springframework.boot:spring-boot-starter-freemarker'
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-websocket'
-    compile('org.springframework.boot:spring-boot-devtools')
+    compile 'org.springframework.boot:spring-boot-starter-aop:1.5.8.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.8.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security:1.5.8.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-freemarker:1.5.8.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web:1.5.8.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-websocket:1.5.8.RELEASE'
+    compile('org.springframework.boot:spring-boot-devtools:1.5.8.RELEASE')
+    testCompile 'org.springframework.boot:spring-boot-starter-test:1.5.8.RELEASE'
 
-    compile 'org.springframework.social:spring-social-core'
-    compile 'org.springframework.social:spring-social-web'
-    compile 'org.springframework.social:spring-social-config'
-    compile 'org.springframework.social:spring-social-security'
-    compile 'net.gplatform:spring-social-qq:1.0.2'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.9.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.2'
 
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.4-3'
     compile 'com.h2database:h2:1.4.196'
-
     compile 'net.htmlparser.jericho:jericho-html:3.4'
+
     compile 'com.github.binarywang:weixin-java-mp:2.0.0'
+    compile 'com.github.lixiaocong:spring-social-qq:1.0'
     compile 'com.github.lixiaocong:transmission4j:2.0'
     compile 'com.github.lixiaocong:aria2c4j:1.0'
-
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
