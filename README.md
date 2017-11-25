@@ -4,23 +4,14 @@ This is a personal Content Management System.
 
 The system consists of 3 parts:
 + Blog
-    - Register an account
-    - Connect to QQ ans login with QQ
-    - Post, update and delete blog
-    - Comment on blog
+    - Register an account, connect to QQ and login with QQ
+    - Write blogs and make comments
 + Admin
-    - Manage user, blog, comments
-    - Upload download task and download file to your server
+    - Manage users, blogs and comments by admin 
+    - Upload BT torrents or Http links to download files to your server
+    - Manage files downloaded to the server
 + WeChat
     - Users can get latest blog on their WeChat
-
-The project is based on Spring including:
-- Spring Framework
-- Spring Security
-- Spring Social
-- Spring Data
-- Spring Boot
-- Spring MVC
 
 ## Getting Started
 
@@ -28,43 +19,17 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-To run this project on your machine, you need to install NodeJS Tomcat8 and Aria2.
-
-I'm using H2 as my database, you can change to MySQL and other JDBC database.
-Execute db.sql to init your database
-
-The downloader is aria2cClient, you can also change to other downloader such as Transmission,checkout my [code](https://github.com/lixiaocong/transmission4j)
+Docker is recommanded to run this application. Your run the setup.sh to setup the environment. This script will install jdk, nodejs and docker on your server (tested on Ubuntu 16.04).
 
 ## Deployment
 
 Clone the project to your machine using git
-```
-cd <any folder on your machine>
-git clone git@github.com:lixiaocong/lxcCMS.git
-cd lxcCMS
-```
 
-Edit the /admin/src/environments/environments.prod.ts to config your server address.
+There is a small problem, you need to replace /admin/src/environments/environments.ts with  /admin/src/environments/environments.prod.ts. This is caused by Angular5. 
 
-Then compile the Angular admin app
-```bash
-cd admin
-npm install
-npm install -g @angular/cli
-ng build --bh /admin/ --prod --aot
-```
-Create application.properties and qqconnectconfig.properties in /src/mian/resources/. An example can be found in wiki page on my GitHub.
+Edit the .env file to config where you want to save downloaded files, your QQ_ID and QQ_SECRET etc.
 
-Compile the Java project
-```
-./gradlew war
-mv ./build/libs/lxcCMS.war ${tomcat_dir}/ROOT.war
-```
-
-Your can also use the [hook](https://github.com/lixiaocong/hook)
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to me.
+Finally, run the run.sh.
 
 ## Author
 
@@ -74,7 +39,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 BSD 3-Clause License
 
-Copyright (c) 2016, lixiaocong(lxccs@iCloud.com)
+Copyright (c) 2016 - 2017, lixiaocong(masterlxc@163.com)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
