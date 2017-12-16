@@ -47,7 +47,7 @@ public class Application extends SpringBootServletInitializer {
     }
 
     /**
-     * 打包war文件放在tomcat下运行必须实现这个接口
+     * necessary for tomcat to run the war file
      */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

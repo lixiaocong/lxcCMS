@@ -1,8 +1,14 @@
-version: "2"
+version: "2.1"
 services:
 
+  cmsdb:
+    build: ../database
+    user: "${UID}"
+    ports:
+      - 3306:3306
+
   aria2:
-    image: hobbsau/aria2 
+    image: hobbsau/aria2
     user: "${UID}"
     volumes:
       - ${STORAGE_DIR}:/downloads
@@ -16,8 +22,8 @@ services:
       - ${STORAGE_DIR}:/downloads
       - ${CONFIG_DIR}/transmission:/config
     environment:
-      - PUID= ${UID}
-      - PGID= ${GID}
+      - PUID=${UID}
+      - PGID=${GID}
     ports:
       - 9091:9091
 

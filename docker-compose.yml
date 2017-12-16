@@ -1,5 +1,14 @@
-version: "2"
+version: "2.1"
 services:
+  mysql:
+    build: ./database
+    user: "${UID}"
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 1s
+      retries: 60
 
   aria2:
     image: hobbsau/aria2 
@@ -38,6 +47,9 @@ services:
       - WEIXIN_KEY=${WEIXIN_KEY}
     network_mode: host
     restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
 
   nginx:
     image: nginx:1.13
