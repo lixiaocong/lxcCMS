@@ -30,32 +30,37 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong;
+package com.lixiaocong.cms.entity;
 
-import net.htmlparser.jericho.*;
-import org.junit.Test;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
-public class HTMLParser
-{
-    @Test
-    public void ContentTest()
-    {
-        String str = "<div><b>O</b>ne</div><div title=\"Two\"><b>Th</b><script>//a script </script>ree</div>";
-        Source source = new Source(str);
-        Segment segment = new Segment(source, 0, str.length() - 1);
-        TextExtractor textExtractor = new TextExtractor(segment);
-        assert ("One Three".equals(textExtractor.toString()));
+/**
+ * entity used to store configuration information of the system
+ * such as username and password for transmission or if the download function is enabled
+ */
+@Entity
+public class Config extends AbstractEntity{
+
+    @Column(nullable = false, unique = true, name = "config_key")
+    private String key;
+
+    @Column(nullable = false, name = "config_value")
+    private String value;
+
+    public String getKey() {
+        return key;
     }
 
-    @Test
-    public void ImgTest()
-    {
-        String str = "<img width='167' height='410' src='/images/nav_logo242.png' alt='Google'>";
-        Source source = new Source(str);
-        Element img = source.getFirstElement(HTMLElementName.IMG);
-        assert (img != null);
-        String href = img.getAttributeValue("src");
-        System.out.println(href);
-        assert ("/images/nav_logo242.png".equals(href));
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

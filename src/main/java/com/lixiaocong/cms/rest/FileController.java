@@ -32,7 +32,7 @@
 
 package com.lixiaocong.cms.rest;
 
-import com.lixiaocong.cms.service.ImageCodeService;
+import com.lixiaocong.cms.service.impl.ImageCodeService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

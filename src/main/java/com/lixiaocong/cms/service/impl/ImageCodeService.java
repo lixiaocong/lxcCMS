@@ -30,7 +30,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.service;
+package com.lixiaocong.cms.service.impl;
 
 import org.springframework.stereotype.Service;
 

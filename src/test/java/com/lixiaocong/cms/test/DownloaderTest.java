@@ -30,7 +30,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong;
+package com.lixiaocong.cms.test;
 
 import com.lixiaocong.cms.downloader.UnionDownloader;
 import com.lixiaocong.downloader.DownloadTask;

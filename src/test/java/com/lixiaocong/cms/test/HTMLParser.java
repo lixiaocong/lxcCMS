@@ -30,62 +30,32 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.entity;
+package com.lixiaocong.cms.test;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
+import net.htmlparser.jericho.*;
+import org.junit.Test;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
-/**
- * BaseEntity for all entities
- */
-@MappedSuperclass
-public class AbstractEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column
-    private long id;
-
-    @Column(nullable = false)
-    private Timestamp lastUpdateTime;
-
-    @Column(nullable = false)
-    private Timestamp createTime;
-
-    public long getId() {
-        return id;
+public class HTMLParser
+{
+    @Test
+    public void ContentTest()
+    {
+        String str = "<div><b>O</b>ne</div><div title=\"Two\"><b>Th</b><script>//a script </script>ree</div>";
+        Source source = new Source(str);
+        Segment segment = new Segment(source, 0, str.length() - 1);
+        TextExtractor textExtractor = new TextExtractor(segment);
+        assert ("One Three".equals(textExtractor.toString()));
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Timestamp getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    public void setLastUpdateTime(Timestamp lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        lastUpdateTime = new Timestamp(System.currentTimeMillis());
-    }
-
-    @PrePersist
-    public void prePersist() {
-        createTime = new Timestamp(System.currentTimeMillis());
-        lastUpdateTime = createTime;
+    @Test
+    public void ImgTest()
+    {
+        String str = "<img width='167' height='410' src='/images/nav_logo242.png' alt='Google'>";
+        Source source = new Source(str);
+        Element img = source.getFirstElement(HTMLElementName.IMG);
+        assert (img != null);
+        String href = img.getAttributeValue("src");
+        System.out.println(href);
+        assert ("/images/nav_logo242.png".equals(href));
     }
 }

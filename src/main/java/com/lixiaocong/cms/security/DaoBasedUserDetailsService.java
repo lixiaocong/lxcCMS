@@ -33,7 +33,7 @@
 package com.lixiaocong.cms.security;
 
 import com.lixiaocong.cms.repository.IUserRepository;
-import com.lixiaocong.cms.service.ImageCodeService;
+import com.lixiaocong.cms.service.impl.ImageCodeService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

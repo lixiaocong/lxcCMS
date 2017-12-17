@@ -30,62 +30,43 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.entity;
+package com.lixiaocong.cms.service;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
+public interface IConfigService {
+    String getApplicationUrl();
+    void setApplicationUrl(String applicationUrl);
 
-import static javax.persistence.GenerationType.IDENTITY;
+    boolean isBlogEnabled();
+    void setBlogEnabled(boolean isEnabled);
 
-/**
- * BaseEntity for all entities
- */
-@MappedSuperclass
-public class AbstractEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column
-    private long id;
+    boolean isQQEnabled();
+    void setQQEnabled(boolean isEnabled);
+    String getQQId();
+    void setQQId(String qqId);
+    String getQQSecret();
+    void setQQSecret(String qqSecret);
 
-    @Column(nullable = false)
-    private Timestamp lastUpdateTime;
+    boolean isWeixinEnabled();
+    void setWeixinEnabled(boolean isEnabled);
+    String getWeixinId();
+    void setWeixinId(String weixinId);
+    String getWeixinSecret();
+    void setWeixinSecret(String weixinSecret);
+    String getWeixinToken();
+    void setWeixinToken(String weixinToken);
+    String getWeixinKey();
+    void setWeixinKey(String weixinKey);
 
-    @Column(nullable = false)
-    private Timestamp createTime;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Timestamp getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    public void setLastUpdateTime(Timestamp lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        lastUpdateTime = new Timestamp(System.currentTimeMillis());
-    }
-
-    @PrePersist
-    public void prePersist() {
-        createTime = new Timestamp(System.currentTimeMillis());
-        lastUpdateTime = createTime;
-    }
+    boolean isDownloaderEnabled();
+    void setDownloaderEnabled(boolean isEnabled);
+    String getDownloaderAria2cUrl();
+    void setDownloaderAria2cUrl(String aria2cUrl);
+    String getDownloaderAria2cPassword();
+    void setDownloaderAria2cPassword(String aria2cPassword);
+    String getDownloaderTransmissionUrl();
+    void setDownloaderTransmissionUrl(String transmissionUrl);
+    String getDownloaderTransmissionUsername();
+    void setDownloaderTransmissionUsername(String transmissionUsername);
+    String getDownloaderTransmissionPassword();
+    void setDownloaderTransmissionPassword(String transmissionPassword);
 }
