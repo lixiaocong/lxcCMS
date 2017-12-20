@@ -1,7 +1,8 @@
 export const environment = {
-  production: true,
-  articleUrl: "/article",
-  commentUrl: "/comment",
-  userUrl: "/user",
+    production: true,
+    articleUrl: "/article",
+    commentUrl: "/comment",
+    userUrl: "/user",
     fileUrl: "/file",
+    configUrl: "/config",
 };

@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
+import {MatSlideToggleModule, MatExpansionModule, MatCheckboxModule } from '@angular/material'
 import {NglModule} from 'ng-lightning/ng-lightning'
 import {FormsModule} from "@angular/forms";
 import {routes} from "./app.router";
@@ -18,6 +19,7 @@ import {AddtaskDialogComponent} from "./pages/downloader/addtask-dialog/addtask-
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {DashboardCardComponent} from "./pages/dashboard/dashboard-card/dashboard-card.component";
 import {UserItemComponent} from "./pages/user/user-item/user-item.component";
+import {ConfigComponent} from "./pages/config/config.component";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 
 import {
@@ -41,6 +43,7 @@ import 'rxjs/Rx';
         DownloaderComponent,
         FileComponent,
         DownloadTaskComponent,
+        ConfigComponent,
         SideNavbarComponent,
         SideNavbarItemComponent,
         AddtaskDialogComponent,
@@ -59,7 +62,11 @@ import 'rxjs/Rx';
         MatGridListModule,
         MatCardModule,
         MatToolbarModule,
+        MatCheckboxModule,
         MatDialogModule,
+        MatToolbarModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
         HttpClientModule,
         FormsModule,
         routes,

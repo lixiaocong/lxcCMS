@@ -27,6 +27,7 @@ services:
     ports:
       - 9091:9091
 
+  # only works for Linux
   nginx:
     image: nginx:1.13
     user: "${UID}"

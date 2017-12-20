@@ -69,4 +69,6 @@ public interface IConfigService {
     void setDownloaderTransmissionUsername(String transmissionUsername);
     String getDownloaderTransmissionPassword();
     void setDownloaderTransmissionPassword(String transmissionPassword);
+
+    void setValue(String key, String value);
 }

@@ -32,7 +32,7 @@
 
 package com.lixiaocong.cms.interceptor;
 
-import com.lixiaocong.cms.exception.BlogDisabledException;
+import com.lixiaocong.cms.exception.ModuleDisabledException;
 import com.lixiaocong.cms.service.IConfigService;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -51,6 +51,6 @@ public class BlogInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if(this.configService.isBlogEnabled())
             return true;
-        throw new BlogDisabledException("blog module is disabled");
+        throw new ModuleDisabledException("blog module is disabled");
     }
 }

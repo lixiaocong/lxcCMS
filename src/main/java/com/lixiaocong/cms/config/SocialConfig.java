@@ -81,7 +81,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
         ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
         String applicationUrl = this.configService.getApplicationUrl();
         if (!applicationUrl.equals(""))
-            controller.setApplicationUrl(environment.getProperty("application.url"));
+            controller.setApplicationUrl(configService.getApplicationUrl());
         return controller;
     }
 
@@ -90,17 +90,20 @@ public class SocialConfig extends SocialConfigurerAdapter {
         ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
         String applicationUrl = this.configService.getApplicationUrl();
         if (!applicationUrl.equals(""))
-            controller.setApplicationUrl(environment.getProperty("application.url"));
+            controller.setApplicationUrl(configService.getApplicationUrl());
         return controller;
+    }
+
+    @Bean
+    public QQConnectionFactory qqConnectionFactory(){
+        String id = configService.getQQId();
+        String secret = configService.getQQSecret();
+        return new QQConnectionFactory(id, secret);
     }
 
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-        if (configService.isQQEnabled()) {
-            String id = configService.getQQId();
-            String secret = configService.getQQSecret();
-            cfConfig.addConnectionFactory(new QQConnectionFactory(id, secret));
-        }
+        cfConfig.addConnectionFactory(qqConnectionFactory());
     }
 
     @Override

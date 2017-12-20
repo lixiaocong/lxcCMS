@@ -30,43 +30,9 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.task;
+package com.lixiaocong.cms.model
 
-import com.lixiaocong.cms.service.IConfigService;
-import com.lixiaocong.cms.socket.DownloaderSocketHandler;
-import com.lixiaocong.downloader.DownloadTask;
-import com.lixiaocong.downloader.DownloaderException;
-import com.lixiaocong.downloader.IDownloader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-
-@Component
-public class DownloaderSchedulingTask {
-
-    private static final Log log = LogFactory.getLog(DownloaderSchedulingTask.class);
-
-    private IDownloader downloader;
-    private DownloaderSocketHandler downloaderSocketHandler;
-
-    @Autowired
-    public DownloaderSchedulingTask(IDownloader downloader, DownloaderSocketHandler downloaderSocketHandler) {
-        this.downloader = downloader;
-        this.downloaderSocketHandler = downloaderSocketHandler;
-    }
-
-    @Scheduled(fixedRate = 1000)
-    public void broadcastTask() {
-        try {
-            List<DownloadTask> torrents = downloader.get();
-            this.downloaderSocketHandler.broadcast(torrents);
-        } catch (DownloaderException e) {
-            log.error(e);
-        }
-    }
-}
+data class ConfigForm(
+    var key: String? = null,
+    var value: String? = null
+)

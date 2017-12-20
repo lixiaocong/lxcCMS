@@ -33,6 +33,7 @@
 package com.lixiaocong.cms.config;
 
 import com.lixiaocong.cms.interceptor.BlogInterceptor;
+import com.lixiaocong.cms.interceptor.QQInterceptor;
 import com.lixiaocong.cms.service.IConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -52,5 +53,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new BlogInterceptor(this.configService)).addPathPatterns("/blog*","/blog/**");
+        registry.addInterceptor(new QQInterceptor(this.configService)).addPathPatterns("/connect/qq*","/signin/qq*");
     }
 }

@@ -42,6 +42,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 
 //TODO if don't set order, there will be an error, to be fixed
@@ -69,6 +70,6 @@ public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter {
         admin.setAdmin(true);
         admin.setPassword("123456");
         userRepository.save(admin);
-//        http.addFilterAfter(new DevSigninFilter(userRepository), SecurityContextPersistenceFilter.class);
+        http.addFilterAfter(new DevSigninFilter(userRepository), SecurityContextPersistenceFilter.class);
     }
 }

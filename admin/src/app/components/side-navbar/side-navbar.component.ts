@@ -23,6 +23,7 @@ export class SideNavbarComponent implements OnInit {
             new NavbarItem('comment', 'comment', 'comment'),
             new NavbarItem('downloader', 'cloud_download', 'downloader'),
             new NavbarItem('file', 'insert_drive_file', 'file'),
+            new NavbarItem('config', 'settings', 'config'),
         ];
     }
 }

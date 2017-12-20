@@ -12,7 +12,6 @@ export class AppComponent {
 
   ngOnInit(): void {
       this.title = 'Admin Lixiaocong';
-      this.sideBarMode = 'over';
       this.isSideBarOpen = false;
   }
 

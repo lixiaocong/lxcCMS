@@ -36,9 +36,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class BlogExceptionHandler {
+public class ModuleDisabledExceptionHandler {
 
-    @ExceptionHandler(value = BlogDisabledException.class)
+    @ExceptionHandler(value = ModuleDisabledException.class)
     public String handle(){
         return "/error/404";
     }

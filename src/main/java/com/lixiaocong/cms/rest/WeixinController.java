@@ -34,6 +34,7 @@ package com.lixiaocong.cms.rest;
 
 import com.lixiaocong.cms.entity.Article;
 import com.lixiaocong.cms.service.IArticleService;
+import com.lixiaocong.cms.service.IConfigService;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
@@ -43,7 +44,6 @@ import me.chanjar.weixin.mp.bean.WxMpXmlOutNewsMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,14 +57,14 @@ public class WeixinController {
     private IArticleService articleService;
 
     @Autowired
-    public WeixinController(@Value("${weixin.id}") String id, @Value("${weixin.secret}") String secret, @Value("${weixin.token") String token, @Value("${weixin.key") String key, IArticleService articleService) {
+    public WeixinController(IArticleService articleService, IConfigService configService) {
         this.articleService = articleService;
 
         WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
-        config.setAppId(id);
-        config.setSecret(secret);
-        config.setToken(token);
-        config.setAesKey(key);
+        config.setAppId(configService.getWeixinId());
+        config.setSecret(configService.getWeixinSecret());
+        config.setToken(configService.getWeixinToken());
+        config.setAesKey(configService.getWeixinKey());
 
         WxMpService wxService = new WxMpServiceImpl();
         wxService.setWxMpConfigStorage(config);

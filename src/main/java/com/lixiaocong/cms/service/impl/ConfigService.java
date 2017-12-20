@@ -38,30 +38,53 @@ import com.lixiaocong.cms.service.IConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 public class ConfigService implements IConfigService {
     private static final String VALUE_TRUE = "1";
     private static final String VALUE_FALSE = "0";
 
-    private static final String BLOG_ENABLE = "BLOG_ENABLE";
+    public static final String BLOG_ENABLED = "blogEnabled";
 
-    private static final String APPLICATION_URL = "APPLICATION_URL";
-    private static final String QQ_ENABLE = "QQ_ENABLE";
-    private static final String QQ_ID = "QQ_ID";
-    private static final String QQ_SECRET = "QQ_SECRET";
+    public static final String APPLICATION_URL = "applicationUrl";
+    public static final String QQ_ENABLED = "qqEnabled";
+    public static final String QQ_ID = "qqId";
+    public static final String QQ_SECRET = "qqSecret";
 
-    private static final String WEIXIN_ENABLED = "WEIXIN_ENABLED";
-    private static final String WEIXIN_ID = "WEIXIN_ID";
-    private static final String WEIXIN_SECRET = "WEIXIN_SECRET";
-    private static final String WEIXIN_TOKEN = "WEIXIN_TOKEN";
-    private static final String WEIXIN_KEY = "WEIXIN_KEY";
+    public static final String WEIXIN_ENABLED = "weixinEnabled";
+    public static final String WEIXIN_ID = "weixinId";
+    public static final String WEIXIN_SECRET = "weixinSecret";
+    public static final String WEIXIN_TOKEN = "weixinToken";
+    public static final String WEIXIN_KEY = "weixinKey";
 
-    private static final String DOWNLOADER_ENABLED = "DOWNLOADER_ENABLED";
-    private static final String DOWNLOADER_ARIA2C_URL = "DOWNLOADER_ARIA2C_URL";
-    private static final String DOWNLOADER_ARIA2C_PASSWORD = "DOWNLOADER_ARIA2C_PASSWORD";
-    private static final String DOWNLOADER_TRANSMISSION_URL = "DOWNLOADER_TRANSMISSION_URL";
-    private static final String DOWNLOADER_TRANSMISSION_USERNAME = "DOWNLOADER_TRANSMISSION_USERNAME";
-    private static final String DOWNLOADER_TRANSMISSION_PASSWORD = "DOWNLOADER_TRANSMISSION_PASSWORD";
+    public static final String DOWNLOADER_ENABLED = "downloaderEnabled";
+    public static final String DOWNLOADER_ARIA2C_URL = "aria2cUrl";
+    public static final String DOWNLOADER_ARIA2C_PASSWORD = "aria2cPassword";
+    public static final String DOWNLOADER_TRANSMISSION_URL = "transmissionUrl";
+    public static final String DOWNLOADER_TRANSMISSION_USERNAME = "transmissionUsername";
+    public static final String DOWNLOADER_TRANSMISSION_PASSWORD = "transmissionPassword";
+    static Set<String> keySet = new HashSet<>();
+
+    static {
+        keySet.add(BLOG_ENABLED);
+        keySet.add(APPLICATION_URL);
+        keySet.add(QQ_ENABLED);
+        keySet.add(QQ_ID);
+        keySet.add(QQ_SECRET);
+        keySet.add(WEIXIN_ENABLED);
+        keySet.add(WEIXIN_ID);
+        keySet.add(WEIXIN_KEY);
+        keySet.add(WEIXIN_SECRET);
+        keySet.add(WEIXIN_TOKEN);
+        keySet.add(DOWNLOADER_ENABLED);
+        keySet.add(DOWNLOADER_ARIA2C_URL);
+        keySet.add(DOWNLOADER_ARIA2C_PASSWORD);
+        keySet.add(DOWNLOADER_TRANSMISSION_URL);
+        keySet.add(DOWNLOADER_TRANSMISSION_USERNAME);
+        keySet.add(DOWNLOADER_TRANSMISSION_PASSWORD);
+    }
 
     private final IConfigRepository configRepository;
 
@@ -75,7 +98,10 @@ public class ConfigService implements IConfigService {
         return config == null ? "" : config.getValue();
     }
 
-    private void setValue(String key, String value) {
+    @Override
+    public void setValue(String key, String value) {
+        if (!keySet.contains(key))
+            return;
         Config config = this.configRepository.findByKey(key);
         if (config == null) {
             config = new Config();
@@ -104,22 +130,22 @@ public class ConfigService implements IConfigService {
 
     @Override
     public boolean isBlogEnabled() {
-        return getValue(BLOG_ENABLE).equals(VALUE_TRUE);
+        return getValue(BLOG_ENABLED).equals(VALUE_TRUE);
     }
 
     @Override
     public void setBlogEnabled(boolean isEnabled) {
-        setValue(BLOG_ENABLE, isEnabled);
+        setValue(BLOG_ENABLED, isEnabled);
     }
 
     @Override
     public boolean isQQEnabled() {
-        return getValue(QQ_ENABLE).equals(VALUE_TRUE);
+        return getValue(QQ_ENABLED).equals(VALUE_TRUE);
     }
 
     @Override
     public void setQQEnabled(boolean isEnabled) {
-        setValue(QQ_ENABLE, isEnabled);
+        setValue(QQ_ENABLED, isEnabled);
     }
 
     @Override

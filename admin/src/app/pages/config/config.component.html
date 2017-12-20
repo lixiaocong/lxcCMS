@@ -1,0 +1,41 @@
+<div class="config">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Blog Module
+                </mat-panel-title>
+                <mat-panel-description>
+                    Blog module
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-slide-toggle [checked]="config.blogEnabled" (change)="onBlogChange($event)">Slide me!</mat-slide-toggle>
+
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    QQ Login
+                </mat-panel-title>
+                <mat-panel-description>
+                    set qq connection information
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-slide-toggle>Slide me!</mat-slide-toggle>
+            <form>
+                <mat-form-field>
+                    <input matInput placeholder="Application Url">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="QQ id">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="QQ secret">
+                </mat-form-field>
+            </form>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

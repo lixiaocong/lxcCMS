@@ -32,8 +32,8 @@
 
 package com.lixiaocong.cms.exception;
 
-public class BlogDisabledException extends Exception {
-    public BlogDisabledException(String message) {
+public class ModuleDisabledException extends Exception {
+    public ModuleDisabledException(String message) {
         super(message);
     }
 }

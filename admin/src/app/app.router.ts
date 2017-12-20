@@ -7,6 +7,7 @@ import {CommentComponent} from "./pages/comment/comment.component";
 import {DownloaderComponent} from "./pages/downloader/downloader.component";
 import {FileComponent} from "./pages/file/file.component";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
+import {ConfigComponent} from "./pages/config/config.component";
 
 export const router: Routes = [
     {path: 'user', component: UserComponent},
@@ -15,6 +16,7 @@ export const router: Routes = [
     {path: 'downloader', component: DownloaderComponent},
     {path: 'file', component: FileComponent},
     {path: 'dashboard', component: DashboardComponent},
+    {path: 'config', component: ConfigComponent},
     {path: '**', redirectTo: 'dashboard', pathMatch: 'full'},
 ];
 
