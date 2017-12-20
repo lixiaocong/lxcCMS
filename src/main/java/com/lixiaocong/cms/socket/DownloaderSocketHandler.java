@@ -57,7 +57,7 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
     private ObjectMapper mapper;
     private Set<WebSocketSession> webSocketSessions;
 
-    DownloaderSocketHandler(IDownloader downloader) {
+    public DownloaderSocketHandler(IDownloader downloader) {
         this.log = LogFactory.getLog(getClass().getName());
         this.downloader = downloader;
         this.mapper = new ObjectMapper();

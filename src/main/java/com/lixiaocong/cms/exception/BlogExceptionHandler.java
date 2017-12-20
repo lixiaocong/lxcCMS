@@ -30,29 +30,16 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.social;
+package com.lixiaocong.cms.exception;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.web.SignInAdapter;
-import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
-public class SignInUtil implements SignInAdapter {
-    private UserDetailsService userDetailsService;
+@ControllerAdvice
+public class BlogExceptionHandler {
 
-    public SignInUtil(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
-    @Override
-    public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
-        UserDetails user = userDetailsService.loadUserByUsername(localUserId);
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        return "/";
+    @ExceptionHandler(value = BlogDisabledException.class)
+    public String handle(){
+        return "/error/404";
     }
 }

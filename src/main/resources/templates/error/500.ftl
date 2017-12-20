@@ -29,14 +29,7 @@
 </head>
 
 <body>
-<script language="javascript" type="text/javascript">
-    setTimeout(function () {
-        this.location.href = "/blog"
-    }, 5000);
-</script>
 <span class="STYLE12">&nbsp;:(</span>
 <p class="STYLE7"> 　　服务器内部异常<br/>
-    　　5秒后为您跳转到首页</p>
-<p class="STYLE7">　　<span class="STYLE9">如果您想了解更多信息，请联系管理员</span></p>
 </body>
 </html>

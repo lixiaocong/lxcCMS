@@ -30,48 +30,42 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.socket;
+package com.lixiaocong.cms.config;
 
-import com.lixiaocong.cms.repository.IUserRepository;
+import com.lixiaocong.cms.downloader.UnionDownloader;
+import com.lixiaocong.downloader.DownloaderConfigurer;
+import com.lixiaocong.downloader.EnableDownloader;
 import com.lixiaocong.downloader.IDownloader;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import com.lixiaocong.downloader.aria2c4j.AriaClient;
+import com.lixiaocong.downloader.transmission4j.TransmissionClient;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
 @Configuration
-@EnableWebSocket
-public class SocketConfig implements WebSocketConfigurer {
+@EnableDownloader
+public class DownloaderConfig implements DownloaderConfigurer {
 
-    private final IUserRepository userRepository;
-    private final IDownloader downloader;
+    @Value("${aria2c.url}")
+    private String aria2cUrl;
+    @Value("${aria2c.password}")
+    private String aria2cPassword;
+    @Value("${file.dir}")
+    private String fileDir;
 
-    @Autowired
-    public SocketConfig(IUserRepository userRepository, IDownloader downloader) {
-        this.userRepository = userRepository;
-        this.downloader = downloader;
-    }
+    @Value("${transmission.url}")
+    private String transmissionUri;
+    @Value("${transmission.username}")
+    private String transmissionUsername;
+    @Value("${transmission.password}")
+    private String transmissionPassword;
 
+
+    @NotNull
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(downloaderSocketHandler(), "/downloader-socket")
-                .setAllowedOrigins("*")
-                .addInterceptors(new SocketInterceptor(userRepository));
-    }
-
-    @Bean
-    public ServletServerContainerFactoryBean createWebSocketContainer() {
-        ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
-        container.setMaxTextMessageBufferSize(1024000);
-        container.setMaxBinaryMessageBufferSize(1024000);
-        return container;
-    }
-
-    @Bean
-    public DownloaderSocketHandler downloaderSocketHandler() {
-        return new DownloaderSocketHandler(downloader);
+    public IDownloader getDownloader() {
+        AriaClient ariaClient = new AriaClient(this.aria2cUrl, this.aria2cPassword, this.fileDir);
+        TransmissionClient transmissionClient = new TransmissionClient(this.transmissionUsername, this.transmissionPassword, this.transmissionUri);
+        return new UnionDownloader(transmissionClient, ariaClient);
     }
 }

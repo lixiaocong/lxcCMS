@@ -43,9 +43,9 @@ public class ConfigService implements IConfigService {
     private static final String VALUE_TRUE = "1";
     private static final String VALUE_FALSE = "0";
 
-    private static final String APPLICATION_URL = "APPLICATION_URL";
     private static final String BLOG_ENABLE = "BLOG_ENABLE";
 
+    private static final String APPLICATION_URL = "APPLICATION_URL";
     private static final String QQ_ENABLE = "QQ_ENABLE";
     private static final String QQ_ID = "QQ_ID";
     private static final String QQ_SECRET = "QQ_SECRET";

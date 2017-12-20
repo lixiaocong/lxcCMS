@@ -30,30 +30,27 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.security;
+package com.lixiaocong.cms.interceptor;
 
-import com.lixiaocong.cms.service.IArticleService;
-import com.lixiaocong.cms.service.ICommentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import com.lixiaocong.cms.exception.BlogDisabledException;
+import com.lixiaocong.cms.service.IConfigService;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-@Configuration
-@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
-    private final IArticleService articleService;
-    private final ICommentService commentService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-    @Autowired
-    public MethodSecurityConfig(IArticleService articleService, ICommentService commentService) {
-        this.articleService = articleService;
-        this.commentService = commentService;
+public class BlogInterceptor extends HandlerInterceptorAdapter {
+
+    private final IConfigService configService;
+
+    public BlogInterceptor(IConfigService configService) {
+        this.configService = configService;
     }
 
     @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return new SecurityExpressionHandler(articleService, commentService);
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(this.configService.isBlogEnabled())
+            return true;
+        throw new BlogDisabledException("blog module is disabled");
     }
 }

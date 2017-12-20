@@ -30,8 +30,10 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.social;
+package com.lixiaocong.cms.config;
 
+import com.lixiaocong.cms.service.IConfigService;
+import com.lixiaocong.cms.social.SignInUtil;
 import com.lixiaocong.social.qq.connect.QQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -57,12 +59,13 @@ import javax.sql.DataSource;
 @Configuration
 @EnableSocial
 public class SocialConfig extends SocialConfigurerAdapter {
-    //data source used to store user connection information
     private final DataSource dataSource;
+    private final IConfigService configService;
 
     @Autowired
-    public SocialConfig(DataSource dataSource) {
+    public SocialConfig(DataSource dataSource, IConfigService configService) {
         this.dataSource = dataSource;
+        this.configService = configService;
     }
 
     @Bean
@@ -76,20 +79,28 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository, Environment environment) {
         ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
-        controller.setApplicationUrl(environment.getProperty("application.url"));
+        String applicationUrl = this.configService.getApplicationUrl();
+        if (!applicationUrl.equals(""))
+            controller.setApplicationUrl(environment.getProperty("application.url"));
         return controller;
     }
 
     @Bean
     public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter, Environment environment) {
         ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
-        controller.setApplicationUrl(environment.getProperty("application.url"));
+        String applicationUrl = this.configService.getApplicationUrl();
+        if (!applicationUrl.equals(""))
+            controller.setApplicationUrl(environment.getProperty("application.url"));
         return controller;
     }
 
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-        cfConfig.addConnectionFactory(new QQConnectionFactory(env.getProperty("qq.id"), env.getProperty("qq.secret")));
+        if (configService.isQQEnabled()) {
+            String id = configService.getQQId();
+            String secret = configService.getQQSecret();
+            cfConfig.addConnectionFactory(new QQConnectionFactory(id, secret));
+        }
     }
 
     @Override

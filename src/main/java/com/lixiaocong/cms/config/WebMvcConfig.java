@@ -30,29 +30,27 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.social;
+package com.lixiaocong.cms.config;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.web.SignInAdapter;
-import org.springframework.web.context.request.NativeWebRequest;
+import com.lixiaocong.cms.interceptor.BlogInterceptor;
+import com.lixiaocong.cms.service.IConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-public class SignInUtil implements SignInAdapter {
-    private UserDetailsService userDetailsService;
+@Configuration
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-    public SignInUtil(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    private final IConfigService configService;
+
+    @Autowired
+    public WebMvcConfig(IConfigService configService) {
+        this.configService = configService;
     }
 
     @Override
-    public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
-        UserDetails user = userDetailsService.loadUserByUsername(localUserId);
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        return "/";
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new BlogInterceptor(this.configService)).addPathPatterns("/blog*","/blog/**");
     }
 }

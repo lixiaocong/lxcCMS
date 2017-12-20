@@ -30,39 +30,31 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.security;
+package com.lixiaocong.cms.config;
 
+import com.lixiaocong.cms.security.SecurityExpressionHandler;
 import com.lixiaocong.cms.service.IArticleService;
 import com.lixiaocong.cms.service.ICommentService;
-import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
-import org.springframework.security.authentication.AuthenticationTrustResolver;
-import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
-import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
-public class SecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
-    private final AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
+@Configuration
+@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
+public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
+    private final IArticleService articleService;
+    private final ICommentService commentService;
 
-    private IArticleService articleService;
-
-    private ICommentService commentService;
-
-    public SecurityExpressionHandler(IArticleService articleService, ICommentService commentService) {
-        super();
+    @Autowired
+    public MethodSecurityConfig(IArticleService articleService, ICommentService commentService) {
         this.articleService = articleService;
         this.commentService = commentService;
     }
 
     @Override
-    protected MethodSecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication, MethodInvocation invocation) {
-        //new my own expression
-        final SecurityExpression root = new SecurityExpression(authentication, articleService, commentService);
-        root.setThis(invocation.getThis());
-        root.setPermissionEvaluator(getPermissionEvaluator());
-        root.setTrustResolver(this.trustResolver);
-        root.setRoleHierarchy(getRoleHierarchy());
-
-        return root;
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        return new SecurityExpressionHandler(articleService, commentService);
     }
 }
