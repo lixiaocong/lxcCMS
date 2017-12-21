@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
-import {MatSlideToggleModule, MatExpansionModule, MatCheckboxModule } from '@angular/material'
+import {MatSlideToggleModule, MatExpansionModule, MatCheckboxModule , MatButtonModule} from '@angular/material'
 import {NglModule} from 'ng-lightning/ng-lightning'
 import {FormsModule} from "@angular/forms";
 import {routes} from "./app.router";
@@ -63,6 +63,7 @@ import 'rxjs/Rx';
         MatCardModule,
         MatToolbarModule,
         MatCheckboxModule,
+        MatButtonModule,
         MatDialogModule,
         MatToolbarModule,
         MatExpansionModule,

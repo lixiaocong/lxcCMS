@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk
-ADD target/lxccms-3.0.jar app.jar
+ADD target/lxccms-1.0.jar app.jar
 
 ENV JAVA_OPTS=""
 ENV APPLICATION_URL=""

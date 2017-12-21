@@ -83,7 +83,9 @@ public class ConfigController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public void put(@RequestBody ConfigForm request) {
-        this.configService.setValue(request.getKey(), request.getValue());
+    public void put(@RequestBody ConfigForm[] request) {
+        for (ConfigForm configForm : request) {
+            this.configService.setValue(configForm.getKey(), configForm.getValue());
+        }
     }
 }

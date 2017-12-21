@@ -17,11 +17,7 @@ export class ConfigService {
             .map(data => data.configs)
     }
 
-    setConfigValue(key: string, value: string) {
-        return this.http.put(this.configUrl,
-            {
-                key: key,
-                value: value
-            })
+    setConfigValue(json) {
+        return this.http.put(this.configUrl, json)
     }
 }

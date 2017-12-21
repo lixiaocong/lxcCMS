@@ -33,8 +33,9 @@
 package com.lixiaocong.cms.config;
 
 import com.lixiaocong.cms.service.IConfigService;
+import com.lixiaocong.cms.social.QQServiceProviderProxy;
 import com.lixiaocong.cms.social.SignInUtil;
-import com.lixiaocong.social.qq.connect.QQConnectionFactory;
+import com.lixiaocong.social.qq.connect.QQAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,11 +47,9 @@ import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.connect.web.ProviderSignInController;
+import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
@@ -73,37 +72,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
         return new SignInUtil(userDetailsService);
     }
 
-    /*
-     * application url is used to generate OAuth call back address
-     */
-    @Bean
-    public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository, Environment environment) {
-        ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
-        String applicationUrl = this.configService.getApplicationUrl();
-        if (!applicationUrl.equals(""))
-            controller.setApplicationUrl(configService.getApplicationUrl());
-        return controller;
-    }
-
-    @Bean
-    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter, Environment environment) {
-        ProviderSignInController controller = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
-        String applicationUrl = this.configService.getApplicationUrl();
-        if (!applicationUrl.equals(""))
-            controller.setApplicationUrl(configService.getApplicationUrl());
-        return controller;
-    }
-
-    @Bean
-    public QQConnectionFactory qqConnectionFactory(){
-        String id = configService.getQQId();
-        String secret = configService.getQQSecret();
-        return new QQConnectionFactory(id, secret);
-    }
-
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-        cfConfig.addConnectionFactory(qqConnectionFactory());
+        cfConfig.addConnectionFactory(new OAuth2ConnectionFactory<>("qq", new QQServiceProviderProxy(this.configService), new QQAdapter()));
     }
 
     @Override

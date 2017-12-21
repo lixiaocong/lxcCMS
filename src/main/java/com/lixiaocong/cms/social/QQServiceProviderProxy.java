@@ -30,35 +30,47 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.config;
+package com.lixiaocong.cms.social;
 
-import com.lixiaocong.cms.interceptor.BlogInterceptor;
-import com.lixiaocong.cms.interceptor.QQInterceptor;
 import com.lixiaocong.cms.service.IConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.connect.web.ProviderSignInController;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import com.lixiaocong.social.qq.api.QQ;
+import com.lixiaocong.social.qq.connect.QQServiceProvider;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2ServiceProvider;
 
-@Configuration
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+public class QQServiceProviderProxy implements OAuth2ServiceProvider<QQ> {
+    private IConfigService configService;
 
-    private final IConfigService configService;
-    private final ConnectController connectController;
-    private final ProviderSignInController signInController;
+    private QQServiceProvider serviceProvider;
+    private String id;
+    private String secret;
 
-    @Autowired
-    public WebMvcConfig(IConfigService configService, ConnectController connectController, ProviderSignInController signInController) {
+    public QQServiceProviderProxy(IConfigService configService) {
         this.configService = configService;
-        this.connectController = connectController;
-        this.signInController = signInController;
+        this.id=configService.getQQId();
+        this.secret=configService.getQQSecret();
+        this.serviceProvider = new QQServiceProvider(this.id,this.secret);
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new BlogInterceptor(this.configService)).addPathPatterns("/blog*","/blog/**");
-        registry.addInterceptor(new QQInterceptor(this.configService, connectController, signInController)).addPathPatterns("/connect/qq*","/signin/qq*");
+    public OAuth2Operations getOAuthOperations() {
+        checkUpdate();
+        return serviceProvider.getOAuthOperations();
+    }
+
+    @Override
+    public QQ getApi(String accessToken) {
+        checkUpdate();
+        return serviceProvider.getApi(accessToken);
+    }
+
+    private void checkUpdate(){
+        String newId = this.configService.getQQId();
+        String newSecret = this.configService.getQQSecret();
+        if(!newId.equals(this.id)||!newSecret.equals(this.secret)) {
+            this.id=newId;
+            this.secret=newSecret;
+            this.serviceProvider = new QQServiceProvider(newId, newSecret);
+        }
     }
 }
