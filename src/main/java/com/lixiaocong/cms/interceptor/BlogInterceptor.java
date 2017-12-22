@@ -49,7 +49,7 @@ public class BlogInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(this.configService.isBlogEnabled())
+        if (this.configService.isBlogEnabled())
             return true;
         throw new ModuleDisabledException("blog module is disabled");
     }

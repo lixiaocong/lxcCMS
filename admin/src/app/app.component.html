@@ -1,9 +1,9 @@
 <mat-toolbar>
-  <i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i> {{title}}
+    <i id="menuIcon" class="material-icons" (click)="sideBarClicked()">menu</i> {{title}}
 </mat-toolbar>
 <mat-sidenav-container>
-  <mat-sidenav id="sidebar" mode="push" [opened]="isSideBarOpen" (click)="sideBarClicked()">
-    <app-side-navbar></app-side-navbar>
-  </mat-sidenav>
-  <router-outlet></router-outlet>
+    <mat-sidenav id="sidebar" mode="push" [opened]="isSideBarOpen" (click)="sideBarClicked()">
+        <app-side-navbar></app-side-navbar>
+    </mat-sidenav>
+    <router-outlet></router-outlet>
 </mat-sidenav-container>

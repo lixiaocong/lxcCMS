@@ -40,7 +40,6 @@ import com.lixiaocong.downloader.IDownloader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -53,15 +52,21 @@ public class DownloaderSchedulingTask {
 
     private IDownloader downloader;
     private DownloaderSocketHandler downloaderSocketHandler;
+    private IConfigService configService;
 
     @Autowired
-    public DownloaderSchedulingTask(IDownloader downloader, DownloaderSocketHandler downloaderSocketHandler) {
+    public DownloaderSchedulingTask(IDownloader downloader, DownloaderSocketHandler downloaderSocketHandler, IConfigService configService) {
         this.downloader = downloader;
         this.downloaderSocketHandler = downloaderSocketHandler;
+        this.configService = configService;
     }
 
     @Scheduled(fixedRate = 1000)
     public void broadcastTask() {
+        if (!configService.isDownloaderEnabled()) {
+            this.downloaderSocketHandler.closeAll();
+            return;
+        }
         try {
             List<DownloadTask> torrents = downloader.get();
             this.downloaderSocketHandler.broadcast(torrents);

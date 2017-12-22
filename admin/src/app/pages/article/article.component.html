@@ -1,27 +1,30 @@
 <div class="article">
-    <table ngl-datatable [data]="data" [(sort)]="sort" (sortChange)="onSort($event)">
-        <ngl-datatable-column heading="ID" key="id" sortable></ngl-datatable-column>
-        <ngl-datatable-column heading="TITLE" key="title"></ngl-datatable-column>
-        <ngl-datatable-column heading="USER" key="user">
-            <ng-template nglDatatableCell let-value>
-                <ngl-badge>{{value.username}}</ngl-badge>
-            </ng-template>
-        </ngl-datatable-column>
-        <ngl-datatable-column heading="Opeations" key="id">
-            <ng-template nglDatatableCell let-value>
-                <button type="button" nglButton="neutral" (click)="onDelete(value)">delete</button>
-            </ng-template>
-        </ngl-datatable-column>
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> No.</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
+        </ng-container>
 
-        <!-- Loading overlay -->
-        <ng-template nglLoadingOverlay>
-            <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">Loading...</div>
-        </ng-template>
+        <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef> title</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.title}}</mat-cell>
+        </ng-container>
 
-        <!-- No rows overlay -->
-        <ng-template nglNoRowsOverlay>No data available in table!</ng-template>
-    </table>
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef>
+                action
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-raised-button color="primary" (click)="onDelete(row.id)">delete</button>
+            </mat-cell>
+        </ng-container>
 
-    <ngl-pagination [(page)]="page" [total]="total" limit="10" (pageChange)="onPageChange($event)"
-                    #pagination></ngl-pagination>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [length]="total"
+                   [pageSize]="10"
+                   (page)="onPage($event)">
+    </mat-paginator>
 </div>

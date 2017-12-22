@@ -30,28 +30,23 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.lixiaocong.cms.rest;
+package com.lixiaocong.cms.downloader;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
-public class ResponseMsgFactory {
-    static Map<String, Object> createSuccessResponse() {
-        Map<String, Object> ret = new HashMap<>();
-        ret.put("result", "success");
-        return ret;
+public class DownloaderProxyHandler implements InvocationHandler {
+
+    private UnionDownloader downloader;
+
+    public DownloaderProxyHandler(UnionDownloader downloader) {
+        this.downloader = downloader;
     }
 
-    static Map<String, Object> createSuccessResponse(String name, Object value) {
-        Map<String, Object> ret = createSuccessResponse();
-        ret.put(name, value);
-        return ret;
-    }
-
-    public static Map<String, Object> createFailedResponse(String msg) {
-        Map<String, Object> ret = new HashMap<>();
-        ret.put("result", "failed");
-        ret.put("message", msg);
-        return ret;
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        this.downloader.checkAria();
+        this.downloader.checkTransmission();
+        return method.invoke(this.downloader, args);
     }
 }

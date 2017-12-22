@@ -1,8 +1,23 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
-import {MatSlideToggleModule, MatExpansionModule, MatCheckboxModule , MatButtonModule} from '@angular/material'
-import {NglModule} from 'ng-lightning/ng-lightning'
+import {
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatRadioModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatTableModule,
+    MatToolbarModule
+} from '@angular/material'
 import {FormsModule} from "@angular/forms";
 import {routes} from "./app.router";
 
@@ -21,16 +36,6 @@ import {DashboardCardComponent} from "./pages/dashboard/dashboard-card/dashboard
 import {UserItemComponent} from "./pages/user/user-item/user-item.component";
 import {ConfigComponent} from "./pages/config/config.component";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
-
-import {
-    MatCardModule,
-    MatGridListModule,
-    MatInputModule,
-    MatRadioModule,
-    MatSidenavModule,
-    MatProgressBarModule,
-    MatIconModule, MatToolbarModule, MatDialogModule
-} from '@angular/material'
 import {HttpClientModule} from "@angular/common/http";
 import 'rxjs/Rx';
 
@@ -57,12 +62,14 @@ import 'rxjs/Rx';
         MatSidenavModule,
         MatProgressBarModule,
         MatIconModule,
+        MatPaginatorModule,
         MatRadioModule,
         MatInputModule,
         MatGridListModule,
         MatCardModule,
         MatToolbarModule,
         MatCheckboxModule,
+        MatTableModule,
         MatButtonModule,
         MatDialogModule,
         MatToolbarModule,
@@ -71,9 +78,6 @@ import 'rxjs/Rx';
         HttpClientModule,
         FormsModule,
         routes,
-        NglModule.forRoot({
-            svgPath: 'assets'
-        }),
     ],
     providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
     entryComponents: [AddtaskDialogComponent],

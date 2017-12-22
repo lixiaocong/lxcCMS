@@ -33,6 +33,6 @@
 package com.lixiaocong.cms.model
 
 data class ConfigForm(
-    var key: String? = null,
-    var value: String? = null
+        var key: String? = null,
+        var value: String? = null
 )

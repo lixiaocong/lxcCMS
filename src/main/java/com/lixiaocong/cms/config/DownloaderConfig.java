@@ -32,18 +32,18 @@
 
 package com.lixiaocong.cms.config;
 
+import com.lixiaocong.cms.downloader.DownloaderProxyHandler;
 import com.lixiaocong.cms.downloader.UnionDownloader;
 import com.lixiaocong.cms.service.IConfigService;
 import com.lixiaocong.downloader.DownloaderConfigurer;
 import com.lixiaocong.downloader.EnableDownloader;
 import com.lixiaocong.downloader.IDownloader;
-import com.lixiaocong.downloader.aria2c4j.AriaClient;
-import com.lixiaocong.downloader.transmission4j.TransmissionClient;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.lang.reflect.Proxy;
 
 @Configuration
 @EnableDownloader
@@ -59,18 +59,12 @@ public class DownloaderConfig implements DownloaderConfigurer {
     @NotNull
     @Override
     public IDownloader getDownloader() {
-        return unionDownloader();
+        return downloader();
     }
 
     @Bean
-    public UnionDownloader unionDownloader(){
-         String aria2cUrl = configService.getDownloaderAria2cUrl();
-        String aria2cPassword = configService.getDownloaderAria2cPassword();
-        String transmissionUrl = configService.getDownloaderTransmissionUrl();
-        String transmissionUsername = configService.getDownloaderTransmissionUsername();
-        String transmissionPassword = configService.getDownloaderTransmissionPassword();
-        AriaClient ariaClient = new AriaClient(aria2cUrl, aria2cPassword, "/cms");
-        TransmissionClient transmissionClient = new TransmissionClient(transmissionUsername, transmissionPassword, transmissionUrl);
-        return new UnionDownloader(transmissionClient, ariaClient);
+    public IDownloader downloader() {
+        UnionDownloader unionDownloader = new UnionDownloader(configService);
+        return (IDownloader) Proxy.newProxyInstance(unionDownloader.getClass().getClassLoader(), unionDownloader.getClass().getInterfaces(), new DownloaderProxyHandler(unionDownloader));
     }
 }

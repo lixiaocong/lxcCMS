@@ -47,9 +47,9 @@ public class QQServiceProviderProxy implements OAuth2ServiceProvider<QQ> {
 
     public QQServiceProviderProxy(IConfigService configService) {
         this.configService = configService;
-        this.id=configService.getQQId();
-        this.secret=configService.getQQSecret();
-        this.serviceProvider = new QQServiceProvider(this.id,this.secret);
+        this.id = configService.getQQId();
+        this.secret = configService.getQQSecret();
+        this.serviceProvider = new QQServiceProvider(this.id, this.secret);
     }
 
     @Override
@@ -64,12 +64,12 @@ public class QQServiceProviderProxy implements OAuth2ServiceProvider<QQ> {
         return serviceProvider.getApi(accessToken);
     }
 
-    private void checkUpdate(){
+    private void checkUpdate() {
         String newId = this.configService.getQQId();
         String newSecret = this.configService.getQQSecret();
-        if(!newId.equals(this.id)||!newSecret.equals(this.secret)) {
-            this.id=newId;
-            this.secret=newSecret;
+        if (!newId.equals(this.id) || !newSecret.equals(this.secret)) {
+            this.id = newId;
+            this.secret = newSecret;
             this.serviceProvider = new QQServiceProvider(newId, newSecret);
         }
     }

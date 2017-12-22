@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {UserService} from "./user.service";
-import {INglDatatableSort} from "ng-lightning/ng-lightning";
+import {MatTableDataSource, PageEvent} from '@angular/material';
 
 @Component({
     selector: 'app-user',
@@ -10,11 +10,10 @@ import {INglDatatableSort} from "ng-lightning/ng-lightning";
 })
 export class UserComponent implements OnInit {
 
-    data;
+    displayedColumns = ['id', 'username', 'action'];
+    data = new MatTableDataSource<User>();
     page: number;
     total: number;
-
-    sort: INglDatatableSort = {key: 'id', order: 'asc'};
 
     constructor(private userService: UserService) {
     }
@@ -23,29 +22,31 @@ export class UserComponent implements OnInit {
         this.onPageChange();
     }
 
-    onSort($event: INglDatatableSort) {
-        const {key, order} = $event;
-        this.data.sort((a: any, b: any) => {
-            return (key === 'id' ? b[key] - a[key] : b[key].localeCompare(a[key])) * (order === 'desc' ? 1 : -1);
+    onDelete(id: number) {
+        this.userService.deleteUser(id).subscribe(response => {
+            if (response.result == 'success')
+                this.onPageChange();
+            else
+                console.log("error");
         });
+    }
+
+    onPage(page: PageEvent) {
+        this.onPageChange(page.pageIndex)
     }
 
     onPageChange(pageNumber: number = 1) {
         if (pageNumber < 1)
             return;
         this.userService.getUsers(pageNumber, 10).subscribe(users => {
-            this.data = users.content;
+            this.data.data = users.content;
             this.page = users.number + 1;
             this.total = users.totalElements;
         })
     }
+}
 
-    onDelete(id: number) {
-        this.userService.deleteUser(id).subscribe(response => {
-            if (response.result == 'success')
-                this.onPageChange(this.page);
-            else
-                console.log("error");
-        });
-    }
+export interface User {
+    id: number;
+    username: string
 }

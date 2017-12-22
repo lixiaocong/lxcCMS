@@ -36,7 +36,6 @@ import com.lixiaocong.cms.entity.User;
 import com.lixiaocong.cms.repository.IUserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.socket.WebSocketHandler;
@@ -46,10 +45,10 @@ import java.util.Map;
 
 public class SocketInterceptor implements HandshakeInterceptor {
 
-    private final IUserRepository userRepository;
-    private Log log = LogFactory.getLog(getClass().getName());
+    private static final Log log = LogFactory.getLog(SocketInterceptor.class);
 
-    @Autowired
+    private final IUserRepository userRepository;
+
     public SocketInterceptor(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }

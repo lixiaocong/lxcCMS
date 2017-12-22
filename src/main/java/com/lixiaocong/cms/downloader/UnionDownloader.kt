@@ -32,24 +32,69 @@
 
 package com.lixiaocong.cms.downloader
 
+import com.lixiaocong.cms.service.IConfigService
 import com.lixiaocong.downloader.DownloadTask
 import com.lixiaocong.downloader.DownloaderException
 import com.lixiaocong.downloader.IDownloader
 import com.lixiaocong.downloader.aria2c4j.AriaClient
 import com.lixiaocong.downloader.transmission4j.TransmissionClient
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 import java.util.*
 
-class UnionDownloader(transmissionClient: TransmissionClient, AriaClient: AriaClient) : IDownloader {
+class UnionDownloader(private var configService: IConfigService) : IDownloader {
 
+    private val log: Log = LogFactory.getLog(javaClass)
     private val downloaderMap: MutableMap<String, IDownloader>
 
-    private val transmissionClient: IDownloader
-    private val aria2cClient: IDownloader
+    private var aria2cClient: IDownloader
+    private var aria2cUrl: String
+    private var aria2cPassword: String
+    private var aria2cDir: String
+
+    private var transmissionClient: IDownloader
+    private var transmissionUrl: String
+    private var transmissionUsername: String
+    private var transmissionPassword: String
 
     init {
         this.downloaderMap = HashMap()
-        this.transmissionClient = transmissionClient
-        this.aria2cClient = AriaClient
+
+        this.aria2cUrl = configService.downloaderAria2cUrl
+        this.aria2cPassword = configService.downloaderAria2cPassword
+        this.aria2cDir = configService.storageDir
+        this.aria2cClient = AriaClient(this.aria2cUrl, this.aria2cPassword, this.aria2cDir)
+
+        this.transmissionUrl = configService.downloaderTransmissionUrl
+        this.transmissionUsername = configService.downloaderTransmissionUsername
+        this.transmissionPassword = configService.downloaderTransmissionPassword
+        this.transmissionClient = TransmissionClient(this.transmissionUsername, this.transmissionPassword, this.transmissionUrl)
+    }
+
+    fun checkAria() {
+        val newAria2cUrl = this.configService.downloaderAria2cUrl
+        val newAria2cPassword = this.configService.downloaderAria2cPassword
+        val newAria2cDir = this.configService.storageDir
+        if (newAria2cUrl != this.aria2cUrl || newAria2cPassword != this.aria2cPassword || newAria2cDir != this.aria2cDir) {
+            log.info("update Aria2c")
+            this.aria2cClient = AriaClient(newAria2cUrl, newAria2cPassword, newAria2cDir)
+            this.aria2cUrl = newAria2cUrl
+            this.aria2cPassword = newAria2cPassword
+            this.aria2cDir = newAria2cDir
+        }
+    }
+
+    fun checkTransmission() {
+        val newTransmissionUrl = this.configService.downloaderTransmissionUrl
+        val newTransmissionUsername = this.configService.downloaderTransmissionUsername
+        val newTransmissionPassword = this.configService.downloaderTransmissionPassword
+        if (newTransmissionUrl != this.transmissionUrl || newTransmissionUsername != this.transmissionUsername || newTransmissionPassword != this.transmissionPassword) {
+            log.info("update Transmission")
+            this.transmissionClient = TransmissionClient(newTransmissionUsername, newTransmissionPassword, newTransmissionUrl)
+            this.transmissionUrl = newTransmissionUrl
+            this.transmissionUsername = newTransmissionUsername
+            this.transmissionPassword = newTransmissionPassword
+        }
     }
 
     @Throws(DownloaderException::class)

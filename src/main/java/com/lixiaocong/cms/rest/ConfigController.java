@@ -78,6 +78,7 @@ public class ConfigController {
         ret.put(ConfigService.DOWNLOADER_TRANSMISSION_URL, configService.getDownloaderTransmissionUrl());
         ret.put(ConfigService.DOWNLOADER_TRANSMISSION_USERNAME, configService.getDownloaderTransmissionUsername());
         ret.put(ConfigService.DOWNLOADER_TRANSMISSION_PASSWORD, configService.getDownloaderTransmissionPassword());
+        ret.put(ConfigService.STORAGE_DIR, configService.getStorageDir());
 
         return ResponseMsgFactory.createSuccessResponse("configs", ret);
     }

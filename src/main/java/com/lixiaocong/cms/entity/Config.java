@@ -40,7 +40,7 @@ import javax.persistence.Entity;
  * such as username and password for transmission or if the download function is enabled
  */
 @Entity
-public class Config extends AbstractEntity{
+public class Config extends AbstractEntity {
 
     @Column(nullable = false, unique = true, name = "config_key")
     private String key;

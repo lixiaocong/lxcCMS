@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
-import {INglDatatableSort} from "ng-lightning/ng-lightning";
 import {ArticleService} from "./article.service";
+import {MatTableDataSource, PageEvent} from "@angular/material";
 
 @Component({
     selector: 'app-article',
@@ -9,12 +9,11 @@ import {ArticleService} from "./article.service";
     providers: [ArticleService]
 })
 export class ArticleComponent implements OnInit {
-    data;
 
+    displayedColumns = ['id', 'title', 'action'];
+    dataSource = new MatTableDataSource();
     page: number;
     total: number;
-
-    sort: INglDatatableSort = {key: 'id', order: 'asc'};
 
     constructor(private articleService: ArticleService) {
     }
@@ -23,18 +22,15 @@ export class ArticleComponent implements OnInit {
         this.onPageChange();
     }
 
-    onSort($event: INglDatatableSort) {
-        const {key, order} = $event;
-        this.data.sort((a: any, b: any) => {
-            return (key === 'id' ? b[key] - a[key] : b[key].localeCompare(a[key])) * (order === 'desc' ? 1 : -1);
-        });
+    onPage(page: PageEvent) {
+        this.onPageChange(page.pageIndex)
     }
 
     onPageChange(pageNumber: number = 1) {
         if (pageNumber < 1)
             return;
         this.articleService.getArticles(pageNumber, 10).subscribe(articles => {
-            this.data = articles.content;
+            this.dataSource.data = articles.content;
             this.page = articles.number + 1;
             this.total = articles.totalElements;
         })

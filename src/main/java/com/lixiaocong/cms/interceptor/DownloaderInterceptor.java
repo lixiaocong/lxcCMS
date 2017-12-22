@@ -34,41 +34,22 @@ package com.lixiaocong.cms.interceptor;
 
 import com.lixiaocong.cms.exception.ModuleDisabledException;
 import com.lixiaocong.cms.service.IConfigService;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class QQInterceptor extends HandlerInterceptorAdapter {
-
+public class DownloaderInterceptor extends HandlerInterceptorAdapter {
     private final IConfigService configService;
-    private final ConnectController connectController;
-    private final ProviderSignInController signInController;
-    private String applicationUrl;
 
-
-    public QQInterceptor(IConfigService configService, ConnectController connectController, ProviderSignInController signInController) {
+    public DownloaderInterceptor(IConfigService configService) {
         this.configService = configService;
-        this.connectController = connectController;
-        this.signInController = signInController;
-        this.applicationUrl = configService.getApplicationUrl();
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (this.configService.isQQEnabled()) {
-            String newApplicationUrl = this.configService.getApplicationUrl();
-            if (!newApplicationUrl.equals(this.applicationUrl)) {
-                this.applicationUrl = newApplicationUrl;
-                connectController.setApplicationUrl(newApplicationUrl);
-                connectController.afterPropertiesSet();
-                signInController.setApplicationUrl(newApplicationUrl);
-                signInController.afterPropertiesSet();
-            }
+        if (configService.isDownloaderEnabled())
             return true;
-        }
-        throw new ModuleDisabledException("QQ module is disabled");
+        throw new ModuleDisabledException("Downloader is disabled");
     }
 }

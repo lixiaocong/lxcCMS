@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ModuleDisabledExceptionHandler {
 
     @ExceptionHandler(value = ModuleDisabledException.class)
-    public String handle(){
+    public String handle() {
         return "/error/404";
     }
 }

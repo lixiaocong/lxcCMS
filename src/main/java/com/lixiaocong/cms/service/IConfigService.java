@@ -34,41 +34,72 @@ package com.lixiaocong.cms.service;
 
 public interface IConfigService {
     String getApplicationUrl();
+
     void setApplicationUrl(String applicationUrl);
 
     boolean isBlogEnabled();
+
     void setBlogEnabled(boolean isEnabled);
 
     boolean isQQEnabled();
+
     void setQQEnabled(boolean isEnabled);
+
     String getQQId();
+
     void setQQId(String qqId);
+
     String getQQSecret();
+
     void setQQSecret(String qqSecret);
 
     boolean isWeixinEnabled();
+
     void setWeixinEnabled(boolean isEnabled);
+
     String getWeixinId();
+
     void setWeixinId(String weixinId);
+
     String getWeixinSecret();
+
     void setWeixinSecret(String weixinSecret);
+
     String getWeixinToken();
+
     void setWeixinToken(String weixinToken);
+
     String getWeixinKey();
+
     void setWeixinKey(String weixinKey);
 
     boolean isDownloaderEnabled();
+
     void setDownloaderEnabled(boolean isEnabled);
+
     String getDownloaderAria2cUrl();
+
     void setDownloaderAria2cUrl(String aria2cUrl);
+
     String getDownloaderAria2cPassword();
+
     void setDownloaderAria2cPassword(String aria2cPassword);
+
     String getDownloaderTransmissionUrl();
+
     void setDownloaderTransmissionUrl(String transmissionUrl);
+
     String getDownloaderTransmissionUsername();
+
     void setDownloaderTransmissionUsername(String transmissionUsername);
+
     String getDownloaderTransmissionPassword();
+
     void setDownloaderTransmissionPassword(String transmissionPassword);
+
+    String getStorageDir();
+
+    void setStorageDir(String storageDir);
 
     void setValue(String key, String value);
 }

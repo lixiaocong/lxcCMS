@@ -38,52 +38,50 @@ import com.lixiaocong.cms.service.IConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ConfigService implements IConfigService {
-    private static final String VALUE_TRUE = "1";
-    private static final String VALUE_FALSE = "0";
-
     public static final String BLOG_ENABLED = "blogEnabled";
-
     public static final String APPLICATION_URL = "applicationUrl";
     public static final String QQ_ENABLED = "qqEnabled";
     public static final String QQ_ID = "qqId";
     public static final String QQ_SECRET = "qqSecret";
-
     public static final String WEIXIN_ENABLED = "weixinEnabled";
     public static final String WEIXIN_ID = "weixinId";
     public static final String WEIXIN_SECRET = "weixinSecret";
     public static final String WEIXIN_TOKEN = "weixinToken";
     public static final String WEIXIN_KEY = "weixinKey";
-
     public static final String DOWNLOADER_ENABLED = "downloaderEnabled";
     public static final String DOWNLOADER_ARIA2C_URL = "aria2cUrl";
     public static final String DOWNLOADER_ARIA2C_PASSWORD = "aria2cPassword";
     public static final String DOWNLOADER_TRANSMISSION_URL = "transmissionUrl";
     public static final String DOWNLOADER_TRANSMISSION_USERNAME = "transmissionUsername";
     public static final String DOWNLOADER_TRANSMISSION_PASSWORD = "transmissionPassword";
-    static Set<String> keySet = new HashSet<>();
+    public static final String STORAGE_DIR = "storageDir";
+    private static final String VALUE_TRUE = "1";
+    private static final String VALUE_FALSE = "0";
+    private static Map<String, String> defaultKeyValueMap = new HashMap<>();
 
     static {
-        keySet.add(BLOG_ENABLED);
-        keySet.add(APPLICATION_URL);
-        keySet.add(QQ_ENABLED);
-        keySet.add(QQ_ID);
-        keySet.add(QQ_SECRET);
-        keySet.add(WEIXIN_ENABLED);
-        keySet.add(WEIXIN_ID);
-        keySet.add(WEIXIN_KEY);
-        keySet.add(WEIXIN_SECRET);
-        keySet.add(WEIXIN_TOKEN);
-        keySet.add(DOWNLOADER_ENABLED);
-        keySet.add(DOWNLOADER_ARIA2C_URL);
-        keySet.add(DOWNLOADER_ARIA2C_PASSWORD);
-        keySet.add(DOWNLOADER_TRANSMISSION_URL);
-        keySet.add(DOWNLOADER_TRANSMISSION_USERNAME);
-        keySet.add(DOWNLOADER_TRANSMISSION_PASSWORD);
+        defaultKeyValueMap.put(BLOG_ENABLED, "1");
+        defaultKeyValueMap.put(APPLICATION_URL, "127.0.0.1");
+        defaultKeyValueMap.put(QQ_ENABLED, "0");
+        defaultKeyValueMap.put(QQ_ID, "");
+        defaultKeyValueMap.put(QQ_SECRET, "");
+        defaultKeyValueMap.put(WEIXIN_ENABLED, "0");
+        defaultKeyValueMap.put(WEIXIN_ID, "");
+        defaultKeyValueMap.put(WEIXIN_KEY, "");
+        defaultKeyValueMap.put(WEIXIN_SECRET, "");
+        defaultKeyValueMap.put(WEIXIN_TOKEN, "");
+        defaultKeyValueMap.put(DOWNLOADER_ENABLED, "1");
+        defaultKeyValueMap.put(DOWNLOADER_ARIA2C_URL, "http://127.0.0.1:6800/jsonrpc");
+        defaultKeyValueMap.put(DOWNLOADER_ARIA2C_PASSWORD, "password");
+        defaultKeyValueMap.put(DOWNLOADER_TRANSMISSION_URL, "http://127.0.0.1:9091/transmission/rpc");
+        defaultKeyValueMap.put(DOWNLOADER_TRANSMISSION_USERNAME, "username");
+        defaultKeyValueMap.put(DOWNLOADER_TRANSMISSION_PASSWORD, "password");
+        defaultKeyValueMap.put(STORAGE_DIR, "/cms");
     }
 
     private final IConfigRepository configRepository;
@@ -95,12 +93,12 @@ public class ConfigService implements IConfigService {
 
     private String getValue(String key) {
         Config config = this.configRepository.findByKey(key);
-        return config == null ? "" : config.getValue();
+        return config == null ? defaultKeyValueMap.get(key) : config.getValue();
     }
 
     @Override
     public void setValue(String key, String value) {
-        if (!keySet.contains(key))
+        if (!defaultKeyValueMap.containsKey(key))
             return;
         Config config = this.configRepository.findByKey(key);
         if (config == null) {
@@ -276,5 +274,15 @@ public class ConfigService implements IConfigService {
     @Override
     public void setDownloaderTransmissionPassword(String transmissionPassword) {
         setValue(DOWNLOADER_TRANSMISSION_PASSWORD, transmissionPassword);
+    }
+
+    @Override
+    public String getStorageDir() {
+        return getValue(STORAGE_DIR);
+    }
+
+    @Override
+    public void setStorageDir(String storageDir) {
+        setValue(STORAGE_DIR, storageDir);
     }
 }

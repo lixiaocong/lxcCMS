@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {FileService} from "./file.service";
 import {environment} from "../../../environments/environment";
+import {MatTableDataSource} from "@angular/material";
 
 @Component({
     selector: 'app-file',
@@ -12,7 +13,8 @@ export class FileComponent implements OnInit {
 
     baseUrl: string;
     path: string;
-    files: File[];
+    files = new MatTableDataSource<File>();
+    displayedColumns = ['name', 'action'];
 
     constructor(private fileService: FileService) {
     }
@@ -56,8 +58,8 @@ export class FileComponent implements OnInit {
 
     private update() {
         this.fileService.getFiles(this.path).subscribe(data => {
-            this.files = data.files;
-            this.files.sort((a: File, b: File) => {
+            this.files.data = data.files;
+            this.files.data.sort((a: File, b: File) => {
                 if (a.file != b.file) {
                     if (a.file)
                         return 1;

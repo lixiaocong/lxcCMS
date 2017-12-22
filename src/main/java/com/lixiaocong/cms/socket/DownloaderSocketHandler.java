@@ -52,13 +52,13 @@ import java.util.Set;
 
 public class DownloaderSocketHandler extends TextWebSocketHandler {
 
-    private Log log;
+    private static final Log log = LogFactory.getLog(DownloaderSocketHandler.class);
+
     private IDownloader downloader;
     private ObjectMapper mapper;
     private Set<WebSocketSession> webSocketSessions;
 
     public DownloaderSocketHandler(IDownloader downloader) {
-        this.log = LogFactory.getLog(getClass().getName());
         this.downloader = downloader;
         this.mapper = new ObjectMapper();
         this.webSocketSessions = new HashSet<>();
@@ -195,5 +195,16 @@ public class DownloaderSocketHandler extends TextWebSocketHandler {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void closeAll() {
+        this.webSocketSessions.forEach(webSocketSession -> {
+            try {
+                webSocketSession.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        this.webSocketSessions.clear();
     }
 }

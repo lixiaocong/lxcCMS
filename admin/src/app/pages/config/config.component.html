@@ -31,7 +31,8 @@
             </mat-slide-toggle>
             <form>
                 <mat-form-field>
-                    <input matInput placeholder="Application Url" [(ngModel)]="config.applicationUrl" name="applicationUrl">
+                    <input matInput placeholder="Application Url" [(ngModel)]="config.applicationUrl"
+                           name="applicationUrl">
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput placeholder="QQ id" [(ngModel)]="config.qqId" name="qqId">
@@ -89,16 +90,20 @@
                     <input matInput placeholder="aria2c url" [(ngModel)]="config.aria2cUrl" name="aria2cUrl">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="aria2c password" [(ngModel)]="config.aria2cPassword" name="aria2cPassword">
+                    <input matInput placeholder="aria2c password" [(ngModel)]="config.aria2cPassword"
+                           name="aria2cPassword">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="transmission url" [(ngModel)]="config.transmissionUrl" name="transmissionUrl">
+                    <input matInput placeholder="transmission url" [(ngModel)]="config.transmissionUrl"
+                           name="transmissionUrl">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="transmission username" [(ngModel)]="config.transmissionUsername" name="transmissionUsername">
+                    <input matInput placeholder="transmission username" [(ngModel)]="config.transmissionUsername"
+                           name="transmissionUsername">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="transmission password" [(ngModel)]="config.transmissionPassword" name="transmissionPassword">
+                    <input matInput placeholder="transmission password" [(ngModel)]="config.transmissionPassword"
+                           name="transmissionPassword">
                 </mat-form-field>
                 <button mat-raised-button color="primary" (click)="onDownloaderSave()">save</button>
             </form>

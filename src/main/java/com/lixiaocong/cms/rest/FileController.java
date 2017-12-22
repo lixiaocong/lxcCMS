@@ -32,12 +32,12 @@
 
 package com.lixiaocong.cms.rest;
 
+import com.lixiaocong.cms.service.IConfigService;
 import com.lixiaocong.cms.service.impl.ImageCodeService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,15 +59,18 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/file")
 public class FileController {
+    private static final Log logger = LogFactory.getLog(FileController.class);
+
     private final ImageCodeService codeService;
-    private Log logger = LogFactory.getLog(getClass());
+    private final IConfigService configService;
 
     private String fileDir;
 
     @Autowired
-    public FileController(ImageCodeService codeService, @Value("${file.dir}") String fileDir) {
+    public FileController(ImageCodeService codeService, IConfigService configService) {
         this.codeService = codeService;
-        this.fileDir = fileDir;
+        this.configService = configService;
+        this.fileDir = configService.getStorageDir();
         if (this.fileDir.endsWith("/"))
             this.fileDir = fileDir.substring(0, fileDir.length() - 1);
     }

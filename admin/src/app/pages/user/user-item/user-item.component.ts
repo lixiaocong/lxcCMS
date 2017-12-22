@@ -15,6 +15,7 @@ export class UserItemComponent implements OnInit {
     }
 
 }
+
 export class User {
     id: number;
     createTime: number;
