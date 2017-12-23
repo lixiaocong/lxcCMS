@@ -8,7 +8,7 @@ import {ConfigService} from "./config.service";
     providers: [ConfigService]
 })
 export class ConfigComponent implements OnInit {
-    private config = new Config();
+    config = new Config();
 
     constructor(private configService: ConfigService) {
     }

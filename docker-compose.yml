@@ -36,15 +36,6 @@ services:
     volumes:
       - ${STORAGE_DIR}:/storage
       - ${CONFIG_DIR}:/config
-    environment:
-      - JAVA_OPTS=${JAVA_OPTS}
-      - APPLICATION_URL=${APPLICATION_URL}
-      - QQ_ID=${QQ_ID}
-      - QQ_SECRET=${QQ_SECRET}
-      - WEIXIN_ID=${WEIXIN_ID}
-      - WEIXIN_SECRET=${WEIXIN_SECRET}
-      - WEIXIN_TOKEN=${WEIXIN_TOKEN}
-      - WEIXIN_KEY=${WEIXIN_KEY}
     network_mode: host
     restart: always
     depends_on:

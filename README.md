@@ -5,11 +5,12 @@ This is a personal Content Management System.
 The system consists of 3 parts:
 + Blog
     - Register an account, connect to QQ and login with QQ
-    - Write blogs and make comments
+    - Write blog and make comments
 + Admin
-    - Manage users, blogs and comments by admin 
+    - Manage users, blog and comments by admin
+    - Manage system configuration
     - Upload BT torrents or Http links to download files to your server
-    - Manage files downloaded to the server
+    - Download files from the server
 + WeChat
     - Users can get latest blog on their WeChat
 
@@ -19,17 +20,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Docker is recommanded to run this application. Your run the setup.sh to setup the environment. This script will install jdk, nodejs and docker on your server (tested on Ubuntu 16.04).
+Docker is recommended to run this application. Your run the setup.sh to setup the environment. This script will install jdk, nodejs and docker on your server (tested on Ubuntu 16.04).
 
 ## Deployment
 
 Clone the project to your machine using git
 
-There is a small problem, you need to replace /admin/src/environments/environments.ts with  /admin/src/environments/environments.prod.ts. This is caused by Angular5. 
+Edit the .env file to config where you want to save downloaded files
 
-Edit the .env file to config where you want to save downloaded files, your QQ_ID and QQ_SECRET etc.
-
-Finally, run the run.sh.
+Finally, run the setup.sh and then run.sh.
 
 ## Author
 
