@@ -40,21 +40,30 @@ CREATE TABLE comment
 CREATE INDEX FK_comment_article ON comment (article_id);
 CREATE INDEX FK_comment_user ON comment (user_id);
 
--- 创建spring social 数据库 --
-create table UserConnection (
-  userId varchar(255) not null,
-	providerId varchar(255) not null,
-	providerUserId varchar(255),
-	rank int not null,
-	displayName varchar(255),
-	profileUrl varchar(512),
-	imageUrl varchar(512),
-	accessToken varchar(512) not null,
-	secret varchar(512),
-	refreshToken varchar(512),
-	expireTime bigint,
-	primary key (userId, providerId, providerUserId)
+CREATE TABLE UserConnection (
+  userId VARCHAR(255) NOT NULL,
+	providerId VARCHAR(255) NOT NULL,
+	providerUserId VARCHAR(255),
+	rank INT NOT NULL,
+	displayName VARCHAR(255),
+	profileUrl VARCHAR(512),
+	imageUrl VARCHAR(512),
+	accessToken VARCHAR(512) NOT NULL,
+	secret VARCHAR(512),
+	refreshToken VARCHAR(512),
+	expireTime BIGINT,
+	PRIMARY KEY (userId, providerId, providerUserId)
 );
-create unique index UserConnectionRank on UserConnection(userId, providerId, rank);
+CREATE UNIQUE INDEX UK_user_connection_rank ON UserConnection(userId, providerId, rank);
+
+CREATE TABLE config
+(
+  id BIGINT AUTO_INCREMENT PRIMARY KEY ,
+  create_time DATETIME NOT NULL,
+  last_update_time DATETIME NOT NULL,
+  config_key VARCHAR(255) NOT NULL,
+  config_value VARCHAR(255) NOT NULL
+);
+CREATE UNIQUE INDEX UK_config_index ON config (config_key);
 
 INSERT INTO user (create_time, last_update_time, admin, password, username) VALUES ('2017-01-01 00:00:00', '2017-01-01 00:00:00', true, '$2a$10$mQStoPcXwGUIRzJXbr87aukqNhtl5np325iof39Rdt7zIMI8oUYaG', 'admin');

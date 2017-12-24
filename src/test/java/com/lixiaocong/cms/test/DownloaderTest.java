@@ -32,11 +32,9 @@
 
 package com.lixiaocong.cms.test;
 
-import com.lixiaocong.cms.downloader.UnionDownloader;
 import com.lixiaocong.downloader.DownloadTask;
 import com.lixiaocong.downloader.DownloaderException;
 import com.lixiaocong.downloader.IDownloader;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +77,7 @@ public class DownloaderTest {
     @Test
     public void get() throws DownloaderException {
         List<DownloadTask> downloadTasks = downloader.get();
-        downloadTasks.forEach(task->{
+        downloadTasks.forEach(task -> {
             System.out.println(task.getName());
         });
     }

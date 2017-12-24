@@ -41,7 +41,6 @@ import com.lixiaocong.cms.service.IUserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,13 +49,14 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
-@RolesAllowed("ROLE_USER")
+@RolesAllowed("ROLE_ADMIN")
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
+    private static final Log log = LogFactory.getLog(CommentController.class);
+
     private final ICommentService commentService;
     private final IUserService userService;
-    private Log log = LogFactory.getLog(getClass().getName());
 
     @Autowired
     public CommentController(ICommentService commentService, IUserService userService) {
@@ -73,14 +73,12 @@ public class CommentController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or isCommentOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable long id) {
         commentService.delete(id);
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or isCommentOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Map<String, Object> put(@PathVariable long id, @RequestBody @Valid CommentForm comment, BindingResult result) throws RestParamException {
         if (result.hasErrors()) throw new RestParamException();

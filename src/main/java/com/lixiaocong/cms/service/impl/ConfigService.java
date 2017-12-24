@@ -81,7 +81,7 @@ public class ConfigService implements IConfigService {
         defaultKeyValueMap.put(DOWNLOADER_TRANSMISSION_URL, "http://127.0.0.1:9091/transmission/rpc");
         defaultKeyValueMap.put(DOWNLOADER_TRANSMISSION_USERNAME, "username");
         defaultKeyValueMap.put(DOWNLOADER_TRANSMISSION_PASSWORD, "password");
-        defaultKeyValueMap.put(STORAGE_DIR, "/storage");
+        defaultKeyValueMap.put(STORAGE_DIR, "/downloads");
     }
 
     private final IConfigRepository configRepository;

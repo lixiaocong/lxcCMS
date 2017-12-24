@@ -52,7 +52,8 @@ import java.util.Map;
 @RolesAllowed("ROLE_ADMIN")
 @RequestMapping("/downloader")
 public class DownloaderController {
-    private Log log = LogFactory.getLog(getClass().getName());
+
+    private static final Log log = LogFactory.getLog(DownloaderController.class);
     private IDownloader downloader;
 
     @Autowired

@@ -42,7 +42,6 @@ import com.lixiaocong.cms.service.IUserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -52,13 +51,14 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
-@RolesAllowed("ROLE_USER")
+@RolesAllowed("ROLE_ADMIN")
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
+    private static final Log log = LogFactory.getLog(ArticleController.class);
+
     private final IArticleService articleService;
     private final IUserService userService;
-    private Log log = LogFactory.getLog(getClass().getName());
 
     @Autowired
     public ArticleController(IArticleService articleService, IUserService userService) {
@@ -75,7 +75,6 @@ public class ArticleController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or isArticleOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Map<String, Object> delete(@PathVariable long id) {
         Article article = articleService.get(id);
@@ -84,7 +83,6 @@ public class ArticleController {
         return ResponseMsgFactory.createSuccessResponse();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or isArticleOwner(#id)")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Map<String, Object> put(@PathVariable long id, @RequestBody @Valid ArticleForm article, BindingResult result) throws RestParamException {
         if (result.hasErrors()) throw new RestParamException();

@@ -17,7 +17,7 @@ services:
       - 6800:6800
 
   transmission:
-    image: linuxserver/transmission
+    image: linuxserver/transmission:100
     volumes:
       - ${STORAGE_DIR}:/downloads
       - ${CONFIG_DIR}/transmission:/config
@@ -32,7 +32,7 @@ services:
     image: nginx:1.13
     user: "${UID}"
     volumes:
-      - ${STORAGE_DIR}:/storage
+      - ${STORAGE_DIR}:/downloads
       - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ${CONFIG_DIR}/nginx/ariaNG:/ariaNG
     network_mode: host

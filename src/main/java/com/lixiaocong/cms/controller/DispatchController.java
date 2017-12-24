@@ -32,7 +32,7 @@
 
 package com.lixiaocong.cms.controller;
 
-import com.lixiaocong.cms.entity.User;
+import com.lixiaocong.cms.service.IConfigService;
 import com.lixiaocong.cms.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,28 +41,32 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.security.RolesAllowed;
-import java.security.Principal;
 
 @Controller
 public class DispatchController {
     private final IUserService userService;
+    private final IConfigService configService;
 
     @Autowired
-    public DispatchController(IUserService userService) {
+    public DispatchController(IUserService userService, IConfigService configService) {
         this.userService = userService;
+        this.configService = configService;
     }
 
+    /**
+     * if blog module is enabled, return to blog page
+     * else go to admin panel
+     */
     @RequestMapping("/")
     public View main() {
-        return new RedirectView("/blog");
+        if (configService.isBlogEnabled())
+            return new RedirectView("/blog");
+        return new RedirectView("/admin");
     }
 
-    @RolesAllowed("ROLE_USER")
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/admin")
-    public RedirectView admin(Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        if (user.isAdmin())
-            return new RedirectView("/admin/index.html");
-        return new RedirectView("/blog");
+    public RedirectView admin() {
+        return new RedirectView("/admin/index.html");
     }
 }

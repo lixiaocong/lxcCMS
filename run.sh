@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
+# update code
+sudo git pull
+
 # build the angular project
 cd admin
-npm install
-npm run devBuild
+sudo npm install
+sudo npm run build
 
 # build the docker image
 cd ..
-./gradlew buildDocker
+sudo ./gradlew buildDocker
 
 # run the project
-docker-compose up -d
+sudo docker-compose up

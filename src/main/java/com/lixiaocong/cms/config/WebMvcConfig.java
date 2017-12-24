@@ -60,9 +60,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new BlogInterceptor(this.configService)).addPathPatterns("/blog*", "/blog/**");
-        registry.addInterceptor(new QQInterceptor(this.configService, connectController, signInController)).addPathPatterns("/connect/qq*", "/signin/qq*");
-        registry.addInterceptor(new WeixinInterceptor(this.configService)).addPathPatterns("/weixin*");
-        registry.addInterceptor(new DownloaderInterceptor(this.configService)).addPathPatterns("/downloader-socket*");
+        registry.addInterceptor(new BlogInterceptor(this.configService)).addPathPatterns("/blog/**");
+        registry.addInterceptor(new QQInterceptor(this.configService, connectController, signInController)).addPathPatterns("/connect/qq/**", "/signin/qq/**");
+        registry.addInterceptor(new WeixinInterceptor(this.configService)).addPathPatterns("/weixin/**");
+        registry.addInterceptor(new DownloaderInterceptor(this.configService)).addPathPatterns("/downloader-socket/**");
     }
 }

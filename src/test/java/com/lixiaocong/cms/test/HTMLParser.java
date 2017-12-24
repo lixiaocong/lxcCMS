@@ -35,11 +35,9 @@ package com.lixiaocong.cms.test;
 import net.htmlparser.jericho.*;
 import org.junit.Test;
 
-public class HTMLParser
-{
+public class HTMLParser {
     @Test
-    public void ContentTest()
-    {
+    public void ContentTest() {
         String str = "<div><b>O</b>ne</div><div title=\"Two\"><b>Th</b><script>//a script </script>ree</div>";
         Source source = new Source(str);
         Segment segment = new Segment(source, 0, str.length() - 1);
@@ -48,8 +46,7 @@ public class HTMLParser
     }
 
     @Test
-    public void ImgTest()
-    {
+    public void ImgTest() {
         String str = "<img width='167' height='410' src='/images/nav_logo242.png' alt='Google'>";
         Source source = new Source(str);
         Element img = source.getFirstElement(HTMLElementName.IMG);

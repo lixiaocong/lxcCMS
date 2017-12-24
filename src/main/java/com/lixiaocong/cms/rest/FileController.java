@@ -51,10 +51,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/file")
@@ -64,28 +61,28 @@ public class FileController {
     private final ImageCodeService codeService;
     private final IConfigService configService;
 
-    private String fileDir;
 
     @Autowired
     public FileController(ImageCodeService codeService, IConfigService configService) {
         this.codeService = codeService;
         this.configService = configService;
-        this.fileDir = configService.getStorageDir();
-        if (this.fileDir.endsWith("/"))
-            this.fileDir = fileDir.substring(0, fileDir.length() - 1);
     }
 
     @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String post(MultipartFile imageFile) {
+
+        String fileDir = this.configService.getStorageDir();
+        if (fileDir.endsWith("/"))
+            fileDir = fileDir.substring(0, fileDir.length() - 1);
         try {
-            File newFile = new File(fileDir + "image/" + UUID.randomUUID() + imageFile.getOriginalFilename());
+            File newFile = new File(fileDir + "/image/" + UUID.randomUUID() + imageFile.getOriginalFilename());
             imageFile.transferTo(newFile);
-            return "image/" + newFile.getName();
+            return "download/image/" + newFile.getName();
         } catch (Exception e) {
             logger.error(e);
         }
-        return "image/" + "error.jpg";
+        return "download/image/" + "error.jpg";
     }
 
     @RolesAllowed("ROLE_ADMIN")
@@ -95,7 +92,7 @@ public class FileController {
             private boolean isFile;
             private String name;
 
-            public Item(String name, boolean isFile) {
+            private Item(String name, boolean isFile) {
                 this.name = name;
                 this.isFile = isFile;
             }
@@ -117,19 +114,24 @@ public class FileController {
             }
         }
 
+        String fileDir = this.configService.getStorageDir();
+        if (fileDir.endsWith("/"))
+            fileDir = fileDir.substring(0, fileDir.length() - 1);
+
         File folderFile = new File(fileDir + path);
         if (!folderFile.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
         List<Item> ret = new LinkedList<>();
-        File[] fileList = folderFile.listFiles();
-        for (File file : fileList)
+        for (File file : Objects.requireNonNull(folderFile.listFiles()))
             ret.add(new Item(file.getName(), file.isFile()));
-        Map<String, Object> response = ResponseMsgFactory.createSuccessResponse("files", ret);
-        return response;
+        return ResponseMsgFactory.createSuccessResponse("files", ret);
     }
 
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.DELETE)
     public Map<String, Object> delete(@RequestParam String fileName) {
+        String fileDir = this.configService.getStorageDir();
+        if (fileDir.endsWith("/"))
+            fileDir = fileDir.substring(0, fileDir.length() - 1);
         File file = new File(fileDir + fileName);
         if (!file.exists()) return ResponseMsgFactory.createFailedResponse("文件不存在");
         else {

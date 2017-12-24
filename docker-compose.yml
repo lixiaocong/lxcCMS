@@ -3,15 +3,14 @@ services:
   mysql:
     build: ./database
     user: "${UID}"
-    ports:
-      - 3306:3306
+    network_mode: host
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 1s
       retries: 60
 
   aria2:
-    image: hobbsau/aria2 
+    image: hobbsau/aria2
     user: "${UID}"
     volumes:
       - ${STORAGE_DIR}:/downloads
@@ -20,7 +19,7 @@ services:
     restart: always
 
   transmission:
-    image: linuxserver/transmission
+    image: linuxserver/transmission:100
     volumes:
       - ${CONFIG_DIR}/transmission:/config
       - ${STORAGE_DIR}:/downloads
@@ -34,7 +33,7 @@ services:
     image: lixiaocong/lxccms
     user: "${UID}"
     volumes:
-      - ${STORAGE_DIR}:/storage
+      - ${STORAGE_DIR}:/downloads
       - ${CONFIG_DIR}:/config
     network_mode: host
     restart: always
@@ -47,6 +46,6 @@ services:
     user: "${UID}"
     volumes:
       - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ${STORAGE_DIR}:/storage
+      - ${STORAGE_DIR}:/downloads
     network_mode: host
     restart: always

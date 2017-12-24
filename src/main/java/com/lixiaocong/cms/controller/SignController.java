@@ -70,7 +70,6 @@ public class SignController {
         this.userDetailsService = userDetailsService;
     }
 
-    //sign in post is handled by spring security
     @RequestMapping(value = "signin", method = RequestMethod.GET)
     public String signin() {
         return "sign/signin";
@@ -84,7 +83,7 @@ public class SignController {
         if (connection != null) {
             String name = connection.fetchUserProfile().getName();
             ret.addObject("username", name);
-            ret.addObject("message", "请设置密码");
+            ret.addObject("message", "please set your password");
         }
         return ret;
     }
@@ -103,7 +102,7 @@ public class SignController {
             return new ModelAndView("/");
         } catch (Exception e) {
             ModelAndView ret = new ModelAndView("sign/signup");
-            ret.addObject("message", "注册失败,请尝试其他用户名");
+            ret.addObject("message", "please use another username");
             return ret;
         }
     }
