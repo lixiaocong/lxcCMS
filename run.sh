@@ -13,4 +13,5 @@ cd ..
 sudo ./gradlew buildDocker
 
 # run the project
-sudo docker-compose up
+sudo docker-compose up -d
+sudo docker-compose logs -t >> cms.log
