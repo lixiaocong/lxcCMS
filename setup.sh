@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # update
-sudo apt update
-sudo apt upgrade
+sudo apt update -y
+sudo apt upgrade -y
 
 # install jdk and curl
 sudo apt install -y openjdk-8-jdk git curl
@@ -18,3 +18,6 @@ sudo sh get-docker.sh
 # install docker compose
 sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+
+# install Google bbr
+sudo sh ./bbr.sh
