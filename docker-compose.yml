@@ -1,6 +1,7 @@
 version: "2.1"
 services:
-  mysql:
+
+  cmsdb:
     build: ./database
     user: "${UID}"
     network_mode: host
