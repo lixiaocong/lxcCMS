@@ -4,6 +4,8 @@ services:
   cmsdb:
     build: ../database
     user: "${UID}"
+    volumes:
+      - ${CONFIG_DIR}/data:/var/lib/mysql
     ports:
       - 3306:3306
 

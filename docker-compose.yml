@@ -5,6 +5,8 @@ services:
     build: ./database
     user: "${UID}"
     network_mode: host
+    volumes:
+      - ${CONFIG_DIR}/data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 1s
