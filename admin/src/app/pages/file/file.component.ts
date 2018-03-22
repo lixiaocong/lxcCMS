@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {FileService} from "./file.service";
 import {environment} from "../../../environments/environment";
 import {MatTableDataSource} from "@angular/material";
+import {FormatUtil} from "../../utils/FormatUtil";
 
 @Component({
     selector: 'app-file',
@@ -13,8 +14,9 @@ export class FileComponent implements OnInit {
 
     baseUrl: string;
     path: string;
+    freeSpace: string;
     files = new MatTableDataSource<File>();
-    displayedColumns = ['name', 'action'];
+    displayedColumns = ['name', 'size', 'action'];
 
     constructor(private fileService: FileService) {
     }
@@ -25,6 +27,7 @@ export class FileComponent implements OnInit {
             host = '127.0.0.1';
         this.baseUrl = 'http://' + host + '/download';
         this.path = '/';
+        this.freeSpace = '-';
         this.update();
     }
 
@@ -58,12 +61,13 @@ export class FileComponent implements OnInit {
 
     private update() {
         this.fileService.getFiles(this.path).subscribe(data => {
-            this.files.data = data.files;
-            this.files.data.sort((a: File, b: File) => {
+            this.files.data = data.files.sort((a: File, b: File) => {
                 if (a.file != b.file) {
+                    console.log(a.name + " " + b.name);
                     if (a.file)
                         return 1;
-                    return -1;
+                    else
+                        return -1;
                 }
                 else {
                     if (a.name.toLowerCase() < b.name.toLowerCase())
@@ -75,10 +79,20 @@ export class FileComponent implements OnInit {
                 }
             });
         });
+        this.fileService.getSpace().subscribe(data => {
+            this.freeSpace = FormatUtil.formatBytes(data.space);
+        });
+    }
+
+    private format(size: number): string {
+        if (size > 0)
+            return FormatUtil.formatBytes(size);
+        return '-';
     }
 }
 
 class File {
     name: string;
     file: boolean;
+    size: number;
 }

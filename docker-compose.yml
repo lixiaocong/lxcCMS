@@ -41,7 +41,7 @@ services:
     network_mode: host
     restart: always
     depends_on:
-      mysql:
+      cmsdb:
         condition: service_healthy
 
   nginx:

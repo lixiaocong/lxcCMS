@@ -52,12 +52,11 @@ public class SystemService {
         this.configService = configService;
     }
 
-    public String getFreeSpace(){
+    public long getFreeSpace(){
         File file = new File(configService.getStorageDir());
-        return FileUtils.byteCountToDisplaySize(file.getUsableSpace());
-    }
-
-    public String getFileSize(String path){
-        return FileUtils.byteCountToDisplaySize(FileUtils.sizeOf(new File(path)));
+        if(file.exists())
+            return file.getFreeSpace();
+        else
+            return new File("/").getFreeSpace();
     }
 }

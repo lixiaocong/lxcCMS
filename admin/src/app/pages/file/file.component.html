@@ -5,16 +5,19 @@
     <div>
         {{path}}
     </div>
+    <div>
+        free space: {{freeSpace}}
+    </div>
 
     <mat-table [dataSource]="files">
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef> No.</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef> content</mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="size">
+            <mat-header-cell *matHeaderCellDef> size</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{format(row.size)}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action">

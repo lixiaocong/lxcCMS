@@ -3,6 +3,7 @@ import {MatDialog} from "@angular/material";
 import {DownloadTask} from "./download-task/download-task.component";
 import {AddtaskDialogComponent, AddTaskInfo} from "./addtask-dialog/addtask-dialog.component";
 import {environment} from "../../../environments/environment";
+import {FormatUtil} from "../../utils/FormatUtil";
 
 @Component({
     selector: 'app-downloader',
@@ -22,21 +23,12 @@ export class DownloaderComponent implements OnInit, OnDestroy {
         task2add.name = taskNew.name;
         task2add.status = taskNew.status;
         task2add.isTorrent = taskNew.type == 'TORRENT';
-        task2add.totalLength = DownloaderComponent.formatBytes(taskNew.totalLength);
-        task2add.downloadLength = DownloaderComponent.formatBytes(taskNew.downloadLength);
-        task2add.downloadSpeed = DownloaderComponent.formatBytes(taskNew.downloadSpeed);
+        task2add.totalLength = FormatUtil.formatBytes(taskNew.totalLength);
+        task2add.downloadLength = FormatUtil.formatBytes(taskNew.downloadLength);
+        task2add.downloadSpeed = FormatUtil.formatBytes(taskNew.downloadSpeed);
         task2add.progressValue = taskNew.downloadLength / taskNew.totalLength * 100;
-        task2add.uploadLength = DownloaderComponent.formatBytes(taskNew.uploadLength);
-        task2add.uploadSpeed = DownloaderComponent.formatBytes(taskNew.uploadSpeed);
-    }
-
-    private static formatBytes(bytes: number, decimals: number = 2) {
-        if (bytes == 0) return '0 Bytes';
-        let k = 1000,
-            dm = decimals + 1 || 3,
-            sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-            i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        task2add.uploadLength = FormatUtil.formatBytes(taskNew.uploadLength);
+        task2add.uploadSpeed = FormatUtil.formatBytes(taskNew.uploadSpeed);
     }
 
     ngOnInit() {

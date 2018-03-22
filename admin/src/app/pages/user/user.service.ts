@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/Rx";
 import {PageDataHandler} from "../../utils/PageDataHandler";
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
@@ -16,7 +16,7 @@ export class UserService {
         let params = new HttpParams().set("page", page.toString()).set("size", size.toString());
         return this.http.get(this.userUrl, {params: params})
             .filter(PageDataHandler.successResponseFilter)
-            .map(data => data.users)
+            .map(data => data.users);
     }
 
     getUserNumber(): Observable<number> {

@@ -34,6 +34,7 @@ package com.lixiaocong.cms.rest;
 
 import com.lixiaocong.cms.service.IConfigService;
 import com.lixiaocong.cms.service.impl.ImageCodeService;
+import com.lixiaocong.cms.service.impl.SystemService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,12 +61,13 @@ public class FileController {
 
     private final ImageCodeService codeService;
     private final IConfigService configService;
-
+    private final SystemService systemService;
 
     @Autowired
-    public FileController(ImageCodeService codeService, IConfigService configService) {
+    public FileController(ImageCodeService codeService, IConfigService configService, SystemService systemService) {
         this.codeService = codeService;
         this.configService = configService;
+        this.systemService = systemService;
     }
 
     @RolesAllowed("ROLE_USER")
@@ -92,10 +94,13 @@ public class FileController {
             private boolean isFile;
             private String name;
 
-            private Item(String name, boolean isFile) {
-                this.name = name;
+            public Item(boolean isFile, String name, long size) {
                 this.isFile = isFile;
+                this.name = name;
+                this.size = size;
             }
+
+            private long size;
 
             public boolean isFile() {
                 return isFile;
@@ -112,6 +117,14 @@ public class FileController {
             public void setName(String name) {
                 this.name = name;
             }
+
+            public long getSize() {
+                return size;
+            }
+
+            public void setSize(long size) {
+                this.size = size;
+            }
         }
 
         String fileDir = this.configService.getStorageDir();
@@ -121,8 +134,9 @@ public class FileController {
         File folderFile = new File(fileDir + path);
         if (!folderFile.exists()) return ResponseMsgFactory.createFailedResponse("目标文件夹不存在");
         List<Item> ret = new LinkedList<>();
-        for (File file : Objects.requireNonNull(folderFile.listFiles()))
-            ret.add(new Item(file.getName(), file.isFile()));
+        for (File file : Objects.requireNonNull(folderFile.listFiles())) {
+            ret.add(new Item(file.isFile(),file.getName(), FileUtils.sizeOf(file)));
+        }
         return ResponseMsgFactory.createSuccessResponse("files", ret);
     }
 
@@ -154,5 +168,11 @@ public class FileController {
         response.setContentType("image/png");
         OutputStream os = response.getOutputStream();
         ImageIO.write(codeService.getImage(session), "png", os);
+    }
+
+    @RolesAllowed("ROLE_ADMIN")
+    @RequestMapping(value = "/space")
+    public Map<String, Object> getSpace(){
+        return ResponseMsgFactory.createSuccessResponse("space",systemService.getFreeSpace());
     }
 }

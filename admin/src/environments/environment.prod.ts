@@ -5,4 +5,5 @@ export const environment = {
     userUrl: "/user",
     fileUrl: "/file",
     configUrl: "/config",
+    spaceUrl: "/file/space",
 };
