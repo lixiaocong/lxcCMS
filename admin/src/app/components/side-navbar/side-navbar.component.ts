@@ -1,5 +1,5 @@
-import {Component, OnInit} from "@angular/core";
-import {NavbarItem} from "../side-navbar-item/side-navbar-item.component";
+import { Component, OnInit } from "@angular/core";
+import { NavbarItem } from "../side-navbar-item/side-navbar-item.component";
 
 @Component({
     selector: 'app-side-navbar',
@@ -8,9 +8,19 @@ import {NavbarItem} from "../side-navbar-item/side-navbar-item.component";
             <div *ngFor="let navbarItem of navbarItems">
                 <app-side-navbar-item [navbarItem]=navbarItem></app-side-navbar-item>
             </div>
+            <div><a href='/'>back to blog</a></div>
         </div>
     `,
-    styles: [``]
+    styles: [`
+    a {
+        display: block;
+        text-decoration: none;
+        height: 40px;
+        padding: 6px;
+        padding-left: 21px;
+        font-size: 21px;
+    }
+    `]
 })
 export class SideNavbarComponent implements OnInit {
     navbarItems: Array<NavbarItem>;

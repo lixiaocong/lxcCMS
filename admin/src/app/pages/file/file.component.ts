@@ -25,7 +25,7 @@ export class FileComponent implements OnInit {
         let host = window.location.host;
         if (!environment.production)
             host = '127.0.0.1';
-        this.baseUrl = 'http://' + host + '/download';
+        this.baseUrl = 'http://' + host + '/downloads';
         this.path = '/';
         this.freeSpace = '-';
         this.update();

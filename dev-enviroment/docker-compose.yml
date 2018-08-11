@@ -28,13 +28,8 @@ services:
       - PGID=${GID}
     ports:
       - 9091:9091
-
-  # only works for Linux
-  nginx:
-    image: nginx:1.13
-    user: "${UID}"
-    volumes:
-      - ${STORAGE_DIR}:/downloads
-      - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ${CONFIG_DIR}/nginx/ariaNG:/ariaNG
-    network_mode: host
+  
+  redis:
+    image: redis:5.0-rc4
+    ports:
+      - 6379:6379

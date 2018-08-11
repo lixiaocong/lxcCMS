@@ -7,10 +7,12 @@ sudo git pull
 cd admin
 sudo npm install
 sudo npm run build
+cd ..
 
 # build the docker image
-cd ..
+cd cms
 sudo ./gradlew buildDocker
+cd ..
 
 # run the project
 sudo docker-compose up -d
