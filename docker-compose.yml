@@ -2,11 +2,15 @@ version: "2.1"
 services:
 
   cmsdb:
-    build: ./database
+    image: mysql:5.7
     user: "${UID}"
     network_mode: host
     volumes:
-      - ${CONFIG_DIR}/data:/var/lib/mysql
+      - ${CONFIG_DIR}/db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - ${CONFIG_DIR}/db/charset.cnf:/etc/mysql/conf.d/charset.cnf
+      - ${STORAGE_DIR}/cms_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 1s
@@ -16,7 +20,7 @@ services:
     image: hobbsau/aria2
     user: "${UID}"
     volumes:
-      - ${STORAGE_DIR}:/downloads
+      - ${STORAGE_DIR}/downloads:/downloads
       - ${CONFIG_DIR}/aria2:/home/aria2
     network_mode: host
     restart: always
@@ -25,7 +29,7 @@ services:
     image: linuxserver/transmission:100
     volumes:
       - ${CONFIG_DIR}/transmission:/config
-      - ${STORAGE_DIR}:/downloads
+      - ${STORAGE_DIR}/downloads:/downloads
     environment:
       - PUID=${UID}
       - PGID=${GID}
@@ -36,7 +40,7 @@ services:
     image: lixiaocong/lxccms
     user: "${UID}"
     volumes:
-      - ${STORAGE_DIR}:/downloads
+      - ${STORAGE_DIR}/downloads:/downloads
       - ${CONFIG_DIR}:/config
     network_mode: host
     restart: always
@@ -49,6 +53,12 @@ services:
     user: "${UID}"
     volumes:
       - ${CONFIG_DIR}/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ${STORAGE_DIR}:/downloads
+      - ${STORAGE_DIR}/downloads:/downloads
     network_mode: host
+    restart: always
+  
+  redis:
+    image: redis:5.0-rc4
+    ports:
+      - 6379:6379
     restart: always

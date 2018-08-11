@@ -1,0 +1,8 @@
+.gradle/
+.idea/
+build/
+out/
+
+/src/main/resources/application-develop.properties
+/src/main/resources/qqconnectconfig.properties
+/src/main/resources/static/admin/
