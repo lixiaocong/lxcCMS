@@ -78,7 +78,10 @@ public class DaoBasedUserDetailsService implements UserDetailsService {
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if (user.isAdmin()) authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (user.isAdmin()) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            request.getSession().setAttribute("admin", true);
+        }
 
         return new DaoBasedUserDetails(user.getId(), user.getUsername(), user.getPassword(), authorities);
     }
