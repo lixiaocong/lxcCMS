@@ -5,7 +5,7 @@
             <ul class="list-unstyled">
                 <li><i class="fa fa-map-marker"></i>Beijing</li>
                 <li><i class="fa fa-envelope-o"></i><a href="mailto:master@163.com.com">masterlxc@163.com</a></li>
-                <li><i class="fa fa-link"></i><a href="http://www.lixiaocong.com">http://www.lixiaocong.com</a></li>
+                <li><i class="fa fa-link"></i><a href="https://www.lixiaocong.com">http://www.lixiaocong.com</a></li>
                 <li><i class="fa fa-wechat"></i><i class="fa fa-qq"></i>960418051</li>
             </ul>
         </div>
