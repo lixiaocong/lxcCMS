@@ -38,7 +38,7 @@ Finally, run the setup.sh and then run.sh.
 
 BSD 3-Clause License
 
-Copyright (c) 2016 - 2017, lixiaocong(masterlxc@163.com)
+Copyright (c) 2016 - 2018, lixiaocong(masterlxc@163.com)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
