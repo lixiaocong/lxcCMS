@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
@@ -63,7 +64,6 @@ public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll().and().formLogin().loginPage("/signin").defaultSuccessUrl("/blog").and().logout().logoutUrl("/logout").logoutSuccessUrl("/blog").and().rememberMe().rememberMeParameter("remember-me").and().csrf().disable();
-
         User admin = userRepository.findByUsername("admin");
         if (admin == null)
             admin = new User("admin", "123456");
@@ -71,5 +71,9 @@ public class DevWebSecurityConfig extends WebSecurityConfigurerAdapter {
         admin.setPassword("123456");
         userRepository.save(admin);
         http.addFilterAfter(new DevSigninFilter(userRepository), SecurityContextPersistenceFilter.class);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     }
 }

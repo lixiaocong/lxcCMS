@@ -20,61 +20,69 @@
 <div class="container sections-wrapper">
     <div class="row">
         <div class="primary col-sm-8 col-xs-12">
-        <#list articles as article>
-        <div class="latest section">
-            <div class="section-inner">
-                <h1 class="title"><a href="/blog/detail?id=${article.id}">${article.title}</a></h1>
-                <h5>作者:${article.user.username}</h5>
-                <div class="content">
-                    <div class="item row">
-                        <#if article.image??>
+            <#list articles as article>
+            <div class="latest section">
+                <div class="section-inner">
+                    <h1 class="title"><a href="/blog/detail?id=${article.id}">${article.title}</a></h1>
+                    <h5>作者:${article.user.username}</h5>
+                    <div class="content">
+                        <div class="item row">
+                            <#if article.image??>
                             <div class="col-sm-4 col-xs-12">
                                 <img class="img-responsive project-image" src="${article.image}"/>
                             </div>
-                        <div class="desc col-sm-8 col-xs-12">
-                        <#else >
-                        <div class="desc col-xs-12">
-                        </#if>
-                        <p>${article.summary}</p>
-                        <p><a class="more-link" href="/blog/detail?id=${article.id}"><i
-                                class="fa fa-external-link"></i>阅读全文</a></p>
+                            <div class="desc col-sm-8 col-xs-12">
+                                <#else >
+                                <div class="desc col-xs-12">
+                                    </#if>
+                                    <p>${article.summary}</p>
+                                    <p><a class="more-link" href="/blog/detail?id=${article.id}"><i
+                                                    class="fa fa-external-link"></i>阅读全文</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="year">${article.createTime?string("yyyy年MM月dd HH:mm")}</h6>
                     </div>
-                    </div>
-                    </div>
-                    <h6 class="year">${article.createTime?string("yyyy年MM月dd HH:mm")}</h6>
                 </div>
+                </#list>
+
+                <ul class="pagination">
+                    <#if pageCurr != pageMin>
+                        <li><a href="/blog?page=${pageCurr-1}&key_word=${key_word!""}">&laquo;</a></li>
+                    <#else >
+                        <li class="disabled"><span>&laquo;</span></li>
+                    </#if>
+
+                    <#list pageMin..pageMax as page>
+                        <#if page == pageCurr>
+                            <li class="active"><span>${page}</span></li>
+                        <#else >
+                            <li><a class="page-btn" href="/blog?page=${page}&key_word=${key_word!""}">${page}</a></li>
+                        </#if>
+                    </#list>
+
+                    <#if pageCurr != pageMax>
+                        <li><a href="/blog?page=${pageCurr+1}&key_word=${key_word!""}">&raquo;</a></li>
+                    <#else >
+                        <li class="disabled"><span>&raquo;</span></li>
+                    </#if>
+                </ul>
             </div>
-        </#list>
-
-            <ul class="pagination">
-            <#if pageCurr != pageMin>
-                <li><a href="/blog?page=${pageCurr-1}">&laquo;</a></li>
-            <#else >
-                <li class="disabled"><span>&laquo;</span></li>
-            </#if>
-
-            <#list pageMin..pageMax as page>
-                <#if page == pageCurr>
-                    <li class="active"><span>${page}</span></li>
-                <#else >
-                    <li><a class="page-btn" href="/blog?page=${page}">${page}</a></li>
-                </#if>
-            </#list>
-
-            <#if pageCurr != pageMax>
-                <li><a href="/blog?page=${pageCurr+1}">&raquo;</a></li>
-            <#else >
-                <li class="disabled"><span>&raquo;</span></li>
-            </#if>
-            </ul>
-        </div>
-
             <div class="secondary col-sm-4 col-xs-12">
-            <#include "side.ftl">
+                <#include "side.ftl">
             </div>
         </div>
     </div>
-    <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#search_button").click(function () {
+                var key_word = $("#key_word").val();
+                var new_href = './blog?key_word=' + key_word;
+                $(location).attr('href', new_href);
+            });
+        });
+    </script>
 </body>
 </html>

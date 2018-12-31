@@ -35,6 +35,7 @@ package com.lixiaocong.cms.rest;
 import com.lixiaocong.cms.entity.Article;
 import com.lixiaocong.cms.service.IArticleService;
 import com.lixiaocong.cms.service.IConfigService;
+import com.lixiaocong.cms.utils.PageInfo;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.impl.WxMpServiceImpl;
@@ -82,8 +83,8 @@ public class WeixinController {
             default:
                 WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS().fromUser(message.getToUserName()).toUser(message.getFromUserName()).build();
 
-                Page<Article> articles = articleService.get(0, 4);
-                for (Article article : articles) {
+                PageInfo<Article> articles = articleService.get(0, 4, null);
+                for (Article article : articles.items) {
                     WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
                     item.setDescription(article.getTitle());
                     if (article.getImage() == null) item.setPicUrl("http://www.lixiaocong.com/image/logo.png");

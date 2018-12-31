@@ -27,8 +27,3 @@
         </div>
     </div>
 </aside>
-
-<aside>
-    <a href="https://www.vultr.com/?ref=7181273"><img src="https://www.vultr.com/media/banner_3.png" width="300"
-                                                      height="250"></a>
-</aside>

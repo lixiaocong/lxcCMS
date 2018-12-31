@@ -33,6 +33,7 @@
 package com.lixiaocong.cms.service;
 
 import com.lixiaocong.cms.entity.Article;
+import com.lixiaocong.cms.utils.PageInfo;
 import org.springframework.data.domain.Page;
 
 public interface IArticleService {
@@ -44,7 +45,7 @@ public interface IArticleService {
 
     Article get(long id);
 
-    Page<Article> get(int page, int size);
+    PageInfo<Article> get(int page, int size, String keyWord);
 
     Page<Article> getByUser(int page, int size, long userId);
 }

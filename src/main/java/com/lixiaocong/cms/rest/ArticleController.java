@@ -98,7 +98,7 @@ public class ArticleController {
     public Map<String, Object> get(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int size, Principal principal) {
         User user = userService.getByUsername(principal.getName());
         if (user.isAdmin())
-            return ResponseMsgFactory.createSuccessResponse("articles", articleService.get(page - 1, size));
+            return ResponseMsgFactory.createSuccessResponse("articles", articleService.get(page - 1, size, null));
         else
             return ResponseMsgFactory.createSuccessResponse("articles", articleService.getByUser(page - 1, size, user.getId()));
     }

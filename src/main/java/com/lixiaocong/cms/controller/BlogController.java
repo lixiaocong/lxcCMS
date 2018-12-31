@@ -40,6 +40,7 @@ import com.lixiaocong.cms.model.CommentForm;
 import com.lixiaocong.cms.service.IArticleService;
 import com.lixiaocong.cms.service.ICommentService;
 import com.lixiaocong.cms.service.IUserService;
+import com.lixiaocong.cms.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -69,20 +70,19 @@ public class BlogController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView blog(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int size) {
+    public ModelAndView blog(@RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int size, @RequestParam(required = false, name = "key_word") String keyWord) {
         ModelAndView ret = new ModelAndView("blog/list");
 
-        //处理文章,默认每页10篇
-        Page<Article> articles = articleService.get(page - 1, size);
-        ret.addObject("articles", articles.getContent());
+        PageInfo<Article> articles = articleService.get(page - 1, size, keyWord);
+        ret.addObject("articles", articles.items);
+        long pageNumber = articles.totalPages;
+        if (pageNumber == 0)
+            pageNumber++;
 
-        //处理分页
-        int pageNumber = articles.getTotalPages();
-        if (pageNumber == 0) pageNumber++;
-
-        int pageMin = page - 5 > 1 ? page - 5 : 1;
-        int pageMax = page + 5 > pageNumber ? pageNumber : page + 5;
+        long pageMin = page - 5 > 1 ? page - 5 : 1;
+        long pageMax = page + 5 > pageNumber ? pageNumber : page + 5;
         ret.addObject("pageCurr", page);
+        ret.addObject("key_word", keyWord);
         ret.addObject("pageMin", pageMin);
         ret.addObject("pageMax", pageMax);
         return ret;

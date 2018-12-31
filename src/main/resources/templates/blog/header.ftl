@@ -17,13 +17,19 @@
             <li><a href="/blog">articles</a></li>
             <li><a href="/blog/edit">publish</a></li>
         </ul>
+        <div class="navbar-form navbar-left">
+            <div class="form-group">
+                <input type="text" class="form-control" id="key_word" placeholder="Search" value='${key_word!""}'>
+            </div>
+            <button class="btn btn-default" id="search_button">Search</button>
+        </div>
         <ul class="nav navbar-nav" id="logout">
-        <#if username??>
-            <li><a href="/admin">admin</a></li>
-            <li><a href="/logout">logout</a></li>
-        <#else>
-            <li><a href="/signin">login</a></li>
-        </#if>
+            <#if username??>
+                <li><a href="/admin">admin</a></li>
+                <li><a href="/logout">logout</a></li>
+            <#else>
+                <li><a href="/signin">login</a></li>
+            </#if>
         </ul>
     </div>
 </nav>
@@ -40,4 +46,3 @@
         </div>
     </div>
 </header>
-</div>
