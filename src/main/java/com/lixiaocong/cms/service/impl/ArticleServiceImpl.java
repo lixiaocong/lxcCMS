@@ -75,7 +75,8 @@ public class ArticleServiceImpl implements IArticleService {
     public ArticleServiceImpl(IArticleRepository articleRepository, IUserRepository userRepository) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
-        this.elasticClient = new RestHighLevelClient(RestClient.builder(new HttpHost("localhost", 9200, "http")));
+        // todo add es address to config file
+        this.elasticClient = new RestHighLevelClient(RestClient.builder(new HttpHost("data.lixiaocong.com", 9200, "http")));
     }
 
     @Override
